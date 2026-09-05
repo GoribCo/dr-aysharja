@@ -3,12 +3,17 @@
 import Link from 'next/link'
 import ResourcePageLayout from './ResourcePageLayout'
 import { useUiLang } from './UiLanguageProvider'
-import { resourceContent, type ResourcePage as PageKind } from '@/lib/resourceContent'
+import type { ResourcePage as PageKind } from '@/lib/resources'
+import { useContentLanguage } from './ContentLanguageProvider'
 import { navigation } from '@/lib/navigation'
 
 export default function ResourcePage({ page }: { page: PageKind }) {
-  const { lang, t } = useUiLang()
-  const content = resourceContent[lang][page]
+  const { t } = useUiLang()
+  const { content: doctorContent } = useContentLanguage()
+  const content = doctorContent?.resources[page]
+  if (!content) return <ResourcePageLayout title={t.nav[page]} intro={t.common.unavailable}>
+    <p className="text-sm text-slate-600 dark:text-slate-300">{t.common.unavailable}</p>
+  </ResourcePageLayout>
   const linkLabel = (href: string) => {
     const item = navigation.primary.flatMap(item => item.children ?? [item]).find(item => item.path === href)
     return item ? t.nav[item.label.toLowerCase() as keyof typeof t.nav] : t.nav.contact

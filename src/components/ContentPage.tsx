@@ -11,7 +11,7 @@ import type { DoctorContent, DoctorSection } from '@/lib/doctorContent'
 import ContentPageTitle from "@/components/ContentPageTitle";
 
 interface ContentPageProps {
-  sectionKey: Exclude<keyof DoctorContent, 'servicesList' | 'site' | 'ui'>
+  sectionKey: Exclude<keyof DoctorContent, 'servicesList' | 'site' | 'ui' | 'resources'>
   title: string
   description?: string
 }

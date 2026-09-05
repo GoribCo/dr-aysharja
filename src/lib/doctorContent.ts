@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 import { getFullName, getNameTemplateVars, resolveContentTemplates, type DoctorNameParts } from './doctorName'
 import type { Chamber } from './chamber'
 import { parseChambers } from './chamber'
+import { RESOURCE_PAGES, type ResourcePage, type ResourceContent } from './resources'
 
 export type ContentLanguage = 'bn' | 'hi' | 'en'
 
@@ -146,9 +147,21 @@ export function getServicesList(lang: ContentLanguage = DEFAULT_CONTENT_LANG): D
   return result
 }
 
+/** Resource copy uses the same localized Markdown and template loader as profile content. */
+export function getResourceContent(page: ResourcePage, lang: ContentLanguage = DEFAULT_CONTENT_LANG): ResourceContent | null {
+  const section = getSectionContent(`resources/${page}.md`, lang)
+  if (!section?.isVisible) return null
+  const data = section as DoctorSection & Partial<ResourceContent>
+  if (typeof data.intro !== 'string' || !Array.isArray(data.sections)) return null
+  const sections = data.sections.filter(item => item && typeof item.title === 'string' &&
+    typeof item.body === 'string' && (item.href === undefined || typeof item.href === 'string'))
+  return { intro: data.intro, sections }
+}
+
 export function getAllDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG) {
   return {
     site: getSiteSettings(),
+    resources: Object.fromEntries(RESOURCE_PAGES.map(page => [page, getResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
     profile: getSectionContent('profile.md', lang),
     about: getSectionContent('about.md', lang),
     speciality: getSectionContent('speciality.md', lang),
@@ -194,7 +207,9 @@ export function getAvailableContentLanguages(): ContentLanguage[] {
   const dirs = fs.readdirSync(contentRoot)
     .filter(dir => {
       const fullPath = path.join(contentRoot, dir)
-      return fs.statSync(fullPath).isDirectory() && ['bn', 'hi', 'en'].includes(dir)
+      // Resource-only translations do not enable an incomplete profile language.
+      return fs.statSync(fullPath).isDirectory() && ['bn', 'hi', 'en'].includes(dir) &&
+        fs.existsSync(path.join(fullPath, 'profile.md'))
     }) as ContentLanguage[]
 
   const available = ['bn', 'en', 'hi'].filter(lang => dirs.includes(lang as ContentLanguage)) as ContentLanguage[]
