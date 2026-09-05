@@ -16,6 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/review',
     '/appointment',
     '/contact',
+    '/privacy',
+    '/terms',
+    '/faq',
+    '/settings',
+    '/help',
   ]
 
   return routes.map((route, index) => ({

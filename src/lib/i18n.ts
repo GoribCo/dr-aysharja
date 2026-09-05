@@ -17,6 +17,11 @@ export interface Translations {
     services: string
     appointment: string
     contact: string
+    resources: string
+    privacy: string
+    terms: string
+    faq: string
+    help: string
     more: string
   }
   settings: {
@@ -96,6 +101,11 @@ export interface Translations {
 
 const en: Translations = {
   nav: {
+    resources: 'Resources',
+    privacy: 'Privacy policy',
+    terms: 'Terms of use',
+    faq: 'FAQ',
+    help: 'Help',
     home: 'Home',
     reviews: 'Review',
     settings: 'Settings',
@@ -188,6 +198,11 @@ const en: Translations = {
 
 const bn: Translations = {
   nav: {
+    resources: 'প্রয়োজনীয় তথ্য',
+    privacy: 'গোপনীয়তা নীতি',
+    terms: 'ব্যবহারের শর্তাবলি',
+    faq: 'সচরাচর জিজ্ঞাসা',
+    help: 'সহায়তা',
     home: 'হোম',
     reviews: 'রিভিউ',
     settings: 'সেটিংস',
@@ -280,6 +295,11 @@ const bn: Translations = {
 
 const hi: Translations = {
   nav: {
+    resources: 'उपयोगी जानकारी',
+    privacy: 'गोपनीयता नीति',
+    terms: 'उपयोग की शर्तें',
+    faq: 'अक्सर पूछे जाने वाले प्रश्न',
+    help: 'सहायता',
     home: 'होम',
     reviews: 'समीक्षा',
     settings: 'सेटिंग्स',

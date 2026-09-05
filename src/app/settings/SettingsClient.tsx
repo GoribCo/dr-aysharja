@@ -8,6 +8,7 @@ import { useUiLang } from '@/components/UiLanguageProvider'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useSpeciality } from '@/components/SpecialityProvider'
 import { UI_LANGUAGES } from '@/lib/i18n'
+import { specialityLabels } from '@/lib/specialityLabels'
 import { SPECIALITY_THEMES, type Speciality } from '@/lib/specialities'
 
 type FontSize = 'small' | 'medium' | 'large'
@@ -124,14 +125,14 @@ export default function SettingsClient() {
 
   return (
     <>
-      <AppearanceSettings />
+      <AppearanceSettings embedded />
 
       {/* Medical Speciality */}
       <section className="mb-6">
         <h2 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
           {t.settings.speciality}
         </h2>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-4">
+        <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{t.settings.specialityDesc}</p>
           <div className="flex flex-wrap gap-2 mb-4">
             <button
@@ -161,13 +162,13 @@ export default function SettingsClient() {
                 }}
               >
                 <span>{theme.icon}</span>
-                <span>{theme.label}</span>
+                <span>{specialityLabels[lang][key as Exclude<Speciality, null>]}</span>
               </button>
             ))}
           </div>
           {speciality && SPECIALITY_THEMES[speciality] && (
             <div className="text-xs text-gray-500 dark:text-gray-400 p-3 rounded-lg" style={{ backgroundColor: SPECIALITY_THEMES[speciality].secondary }}>
-              <p className="font-medium">{SPECIALITY_THEMES[speciality].description}</p>
+              <p className="font-medium">{specialityLabels[lang][speciality]}</p>
             </div>
           )}
         </div>

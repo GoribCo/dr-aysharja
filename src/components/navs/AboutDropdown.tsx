@@ -1,13 +1,15 @@
 'use client'
 
 import Link from 'next/link'
+import { useUiLang } from '@/components/UiLanguageProvider'
 import { useEffect, useRef, useState } from 'react'
-import { navigation, isNavigationItemActive } from '@/lib/navigation'
+import { navigation, isNavigationItemActive, type NavigationItem } from '@/lib/navigation'
 
-export default function AboutDropdown({ pathname }: { pathname: string }) {
+export default function AboutDropdown({ pathname, item: about = navigation.primary[1] }: { pathname: string; item?: NavigationItem }) {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const about = navigation.primary[1]
+  const { t } = useUiLang()
+  const label = (value: string) => t.nav[value.toLowerCase() as keyof typeof t.nav] || value
 
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
@@ -35,7 +37,7 @@ export default function AboutDropdown({ pathname }: { pathname: string }) {
         aria-haspopup="menu"
         onClick={() => setOpen(value => !value)}
       >
-        {about.label}<span className={`dropdown-chevron ${open ? 'open' : ''}`} aria-hidden="true">⌄</span>
+        {label(about.label)}<span className={`dropdown-chevron ${open ? 'open' : ''}`} aria-hidden="true">⌄</span>
       </button>
       <div className={`about-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
         {about.children?.map(item => (
@@ -47,7 +49,7 @@ export default function AboutDropdown({ pathname }: { pathname: string }) {
             className={isNavigationItemActive(pathname, item.path) ? 'active' : ''}
             onClick={() => setOpen(false)}
           >
-            {item.label}
+            {label(item.label)}
           </Link>
         ))}
       </div>

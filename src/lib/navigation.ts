@@ -23,8 +23,18 @@ export const navigation: { primary: NavigationItem[]; authenticatedOnly: Navigat
     { label: 'Reviews', path: '/review/' },
     { label: 'Appointment', path: '/appointment/' },
     { label: 'Contact', path: '/contact/' },
+    {
+      label: 'Resources', path: '/resources/',
+      children: [
+        { label: 'Privacy', path: '/privacy/' },
+        { label: 'Terms', path: '/terms/' },
+        { label: 'FAQ', path: '/faq/' },
+        { label: 'Settings', path: '/settings/' },
+        { label: 'Help', path: '/help/' },
+      ],
+    },
   ],
-  authenticatedOnly: [{ label: 'Settings', path: '/settings/' }],
+  authenticatedOnly: [],
 }
 
 export function isNavigationItemActive(pathname: string, path: string) {
