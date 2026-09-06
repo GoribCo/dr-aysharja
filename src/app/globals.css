@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../content/appearance/speciality-themes.md";
 
 /* Use class-based dark mode (.dark on <html>) instead of media query */
 @variant dark (&:is(.dark *));

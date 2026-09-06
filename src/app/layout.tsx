@@ -6,6 +6,9 @@ import ThemeProvider from '@/components/ThemeProvider'
 import FontSizeProvider from '@/components/FontSizeProvider'
 import UiLanguageProvider from '@/components/UiLanguageProvider'
 import SpecialityProvider from '@/components/SpecialityProvider'
+import { loadSpecialityThemes } from '@/lib/appearance/speciality-themes'
+import { loadSpecialityLabels } from '@/lib/appearance/speciality-labels'
+import type { Speciality } from '@/lib/types'
 import ContentLanguageProvider from '@/components/ContentLanguageProvider'
 import BottomNav from '@/components/navs/BottomNav'
 import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar'
@@ -85,6 +88,11 @@ export default function RootLayout({
   children,
 }: RootLayoutProps) {
   const contentByLanguage = loadDoctorContentByLanguage()
+  const appearance = loadSpecialityThemes()
+  const specialityConfiguration = {
+    ...appearance,
+    labels: loadSpecialityLabels(Object.keys(appearance.themes) as Exclude<Speciality, null>[]),
+  }
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -97,7 +105,7 @@ export default function RootLayout({
         <ThemeProvider>
           <FontSizeProvider>
           <ContentLanguageProvider contentByLanguage={contentByLanguage}>
-            <SpecialityProvider>
+            <SpecialityProvider configuration={specialityConfiguration}>
               <UiLanguageProvider>
                 <ServiceWorkerRegistrar />
                 {/*

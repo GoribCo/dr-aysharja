@@ -1,7 +1,23 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import matter from 'gray-matter'
 import type { UiLang, Speciality } from '../types'
 
-export const specialityLabels: Record<UiLang, Record<Exclude<Speciality, null>, string>> = {
-  en: { medicine: 'Medicine', dental: 'Dental', orthopaedic: 'Orthopaedic', gynaecology: 'Gynaecology', cardiology: 'Cardiology', ent: 'ENT', ophthalmology: 'Ophthalmology', surgery: 'Surgery', other: 'Other' },
-  bn: { medicine: 'মেডিসিন', dental: 'দন্ত চিকিৎসা', orthopaedic: 'অস্থি ও জয়েন্ট', gynaecology: 'স্ত্রীরোগ', cardiology: 'হৃদরোগ', ent: 'নাক, কান ও গলা', ophthalmology: 'চক্ষু চিকিৎসা', surgery: 'শল্যচিকিৎসা', other: 'অন্যান্য' },
-  hi: { medicine: 'सामान्य चिकित्सा', dental: 'दंत चिकित्सा', orthopaedic: 'हड्डी और जोड़', gynaecology: 'स्त्री रोग', cardiology: 'हृदय रोग', ent: 'नाक, कान और गला', ophthalmology: 'नेत्र चिकित्सा', surgery: 'शल्य चिकित्सा', other: 'अन्य' },
+type SpecialityLabels = Record<UiLang, Record<Exclude<Speciality, null>, string>>
+
+/** Read on the server and validate labels against the loaded theme keys. */
+export function loadSpecialityLabels(
+  keys: Exclude<Speciality, null>[],
+  filePath = path.join(process.cwd(), 'content/appearance/speciality-labels.md'),
+): SpecialityLabels {
+  const { data } = matter(fs.readFileSync(filePath, 'utf8'))
+  for (const lang of ['en', 'bn', 'hi'] as const) {
+    for (const key of keys) {
+      const label = data.labels?.[lang]?.[key]
+      if (typeof label !== 'string' || !label.trim()) {
+        throw new Error(`Expected a non-empty label at ${filePath}: labels.${lang}.${key}`)
+      }
+    }
+  }
+  return structuredClone(data.labels) as SpecialityLabels
 }

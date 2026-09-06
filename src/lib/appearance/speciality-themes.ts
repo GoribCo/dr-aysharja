@@ -1,104 +1,43 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import matter from 'gray-matter'
 import type { Speciality, SpecialityTheme } from '../types'
 
-// Speciality definitions and theme configuration
-// System is agnostic until speciality is provided
+const specialityKeys: Exclude<Speciality, null>[] = [
+  'medicine', 'dental', 'orthopaedic', 'gynaecology', 'cardiology',
+  'ent', 'ophthalmology', 'surgery', 'other',
+]
 
-export const SPECIALITY_THEMES: Record<Exclude<Speciality, null>, SpecialityTheme> = {
-  medicine: {
-    primary: '#ef4444',
-    secondary: '#fee2e2',
-    accent: '#991b1b',
-    gradient: { from: 'from-red-50', to: 'to-rose-50' },
-    icon: '🏥',
-    label: 'Medicine',
-    description: 'General Medical Practice',
-  },
-  dental: {
-    primary: '#0ea5e9',
-    secondary: '#e0f2fe',
-    accent: '#164e63',
-    gradient: { from: 'from-sky-50', to: 'to-cyan-50' },
-    icon: '🦷',
-    label: 'Dental',
-    description: 'Dental Care & Surgery',
-  },
-  orthopaedic: {
-    primary: '#f59e0b',
-    secondary: '#fef3c7',
-    accent: '#92400e',
-    gradient: { from: 'from-amber-50', to: 'to-yellow-50' },
-    icon: '🦴',
-    label: 'Orthopaedic',
-    description: 'Bone & Joint Specialist',
-  },
-  gynaecology: {
-    primary: '#ec4899',
-    secondary: '#fce7f3',
-    accent: '#831843',
-    gradient: { from: 'from-pink-50', to: 'to-rose-50' },
-    icon: '👩‍⚕️',
-    label: 'Gynaecology',
-    description: "Women's Health Specialist",
-  },
-  cardiology: {
-    primary: '#e11d48',
-    secondary: '#ffe4e6',
-    accent: '#600312',
-    gradient: { from: 'from-rose-50', to: 'to-red-50' },
-    icon: '❤️',
-    label: 'Cardiology',
-    description: 'Heart & Cardiovascular Specialist',
-  },
-  ent: {
-    primary: '#6366f1',
-    secondary: '#e0e7ff',
-    accent: '#312e81',
-    gradient: { from: 'from-indigo-50', to: 'to-purple-50' },
-    icon: '👂',
-    label: 'ENT',
-    description: 'Ear, Nose & Throat Specialist',
-  },
-  ophthalmology: {
-    primary: '#06b6d4',
-    secondary: '#cffafe',
-    accent: '#164e63',
-    gradient: { from: 'from-cyan-50', to: 'to-blue-50' },
-    icon: '👁️',
-    label: 'Ophthalmology',
-    description: 'Eye Care Specialist',
-  },
-  surgery: {
-    primary: '#7c3aed',
-    secondary: '#f3e8ff',
-    accent: '#4c1d95',
-    gradient: { from: 'from-violet-50', to: 'to-purple-50' },
-    icon: '🔪',
-    label: 'Surgery',
-    description: 'Surgical Specialist',
-  },
-  other: {
-    primary: '#6b7280',
-    secondary: '#f3f4f6',
-    accent: '#374151',
-    gradient: { from: 'from-gray-50', to: 'to-slate-50' },
-    icon: '⚕️',
-    label: 'Other',
-    description: 'Medical Professional',
-  },
+function validateTheme(value: unknown, location: string): asserts value is SpecialityTheme {
+  if (!value || typeof value !== 'object') throw new Error(`Missing theme: ${location}`)
+  const theme = value as Record<string, unknown>
+  for (const field of ['primary', 'secondary', 'accent', 'icon', 'label', 'description']) {
+    if (typeof theme[field] !== 'string' || !theme[field].trim()) {
+      throw new Error(`Expected non-empty text at ${location}.${field}`)
+    }
+  }
+  for (const field of ['primary', 'secondary', 'accent']) {
+    if (!/^#[\da-f]{6}$/i.test(theme[field] as string)) {
+      throw new Error(`Expected a quoted six-digit hex color at ${location}.${field}`)
+    }
+  }
+  const gradient = theme.gradient as Record<string, unknown> | undefined
+  if (!gradient || typeof gradient.from !== 'string' || !gradient.from.trim()
+    || typeof gradient.to !== 'string' || !gradient.to.trim()) {
+    throw new Error(`Expected from and to classes at ${location}.gradient`)
+  }
 }
 
-export function getSpecialityTheme(speciality: Speciality): SpecialityTheme | null {
-  if (!speciality) return null
-  return SPECIALITY_THEMES[speciality]
-}
-
-// Neutral/agnostic theme when no speciality is selected
-export const NEUTRAL_THEME: SpecialityTheme = {
-  primary: '#4f46e5',
-  secondary: '#eef2ff',
-  accent: '#312e81',
-  gradient: { from: 'from-indigo-50', to: 'to-blue-50' },
-  icon: '⚕️',
-  label: 'Professional Profile',
-  description: 'Medical Professional',
+/** Read on the server; pass the result to SpecialityProvider for browser use. */
+export function loadSpecialityThemes(filePath = path.join(process.cwd(), 'content/appearance/speciality-themes.md')) {
+  const { data } = matter(fs.readFileSync(filePath, 'utf8'))
+  for (const key of specialityKeys) validateTheme(data.themes?.[key], `${filePath}: themes.${key}`)
+  for (const key of Object.keys(data.themes)) {
+    if (!specialityKeys.includes(key as Exclude<Speciality, null>)) throw new Error(`Unknown speciality at ${filePath}: ${key}`)
+  }
+  validateTheme(data.neutralTheme, `${filePath}: neutralTheme`)
+  return structuredClone({
+    themes: data.themes as Record<Exclude<Speciality, null>, SpecialityTheme>,
+    neutralTheme: data.neutralTheme,
+  })
 }

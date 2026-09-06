@@ -9,7 +9,14 @@ export interface ContentLanguageContextValue {
 
 export type FontSize = 'small' | 'medium' | 'large'
 
+export interface SpecialityConfiguration {
+  themes: Record<Exclude<Speciality, null>, SpecialityTheme>
+  neutralTheme: SpecialityTheme
+  labels: Record<UiLang, Record<Exclude<Speciality, null>, string>>
+}
+
 export interface SpecialityContextValue {
+  configuration: SpecialityConfiguration
   speciality: Speciality
   theme: SpecialityTheme
   setSpeciality: (speciality: Speciality) => void
