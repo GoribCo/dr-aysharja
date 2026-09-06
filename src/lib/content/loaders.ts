@@ -1,4 +1,4 @@
-import type { ContentLanguage, DoctorSection, DoctorService, SiteSettings, DoctorContent, DoctorContentByLanguage, DoctorNameParts, ResourcePage, ResourceContent } from '../types'
+import type { ContentLanguage, DoctorSection, DoctorService, SiteSettings, DoctorContent, DoctorContentByLanguage, DoctorNameParts, ResourcePage, ResourceContent, SettingsPageContent } from '../types'
 
 import { resolveContentTemplates } from './templates'
 import fs from 'fs'
@@ -130,10 +130,24 @@ export function loadResourceContent(page: ResourcePage, lang: ContentLanguage = 
   return { intro: data.intro, sections }
 }
 
+export function loadSettingsPageContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG): SettingsPageContent | null {
+  const section = loadContentSection('resources/settings.md', lang)
+  if (!section?.isVisible) return null
+  const data = section as DoctorSection & Partial<SettingsPageContent>
+  const { heading, description, emailLabel, emailHref, phoneLabel, phoneHref } = data
+  if (typeof heading !== 'string' || typeof description !== 'string' ||
+    typeof emailLabel !== 'string' || typeof emailHref !== 'string' ||
+    typeof phoneLabel !== 'string' || typeof phoneHref !== 'string') return null
+  return { heading, description, emailLabel, emailHref, phoneLabel, phoneHref }
+}
+
 export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorContent {
   return {
     site: loadSiteSettings(),
-    resources: Object.fromEntries(RESOURCE_PAGES.map(page => [page, loadResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
+    resources: {
+      ...Object.fromEntries(RESOURCE_PAGES.map(page => [page, loadResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
+      settings: loadSettingsPageContent(lang),
+    },
     profile: loadContentSection('profile.md', lang),
     about: loadContentSection('about.md', lang),
     speciality: loadContentSection('speciality.md', lang),

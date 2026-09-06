@@ -189,7 +189,7 @@ export type DoctorSectionKey = 'profile' | 'about' | 'speciality' | 'subSpeciali
 
 export type DoctorContent = Record<DoctorSectionKey, DoctorSection | null> & {
   site: SiteSettings
-  resources: Record<ResourcePage, ResourceContent | null>
+  resources: Record<ResourcePage, ResourceContent | null> & { settings: SettingsPageContent | null }
   servicesList: DoctorService[]
 }
 
@@ -377,3 +377,12 @@ export type NavigationAccordionProps = { item: NavigationItem; pathname: string;
 export type BottomNavProps = { isAuthenticated?: boolean }
 
 export type DesktopNavProps = { isAuthenticated?: boolean }
+
+export interface SettingsPageContent {
+  heading: string
+  description: string
+  emailLabel: string
+  emailHref: string
+  phoneLabel: string
+  phoneHref: string
+}
