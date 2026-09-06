@@ -25,6 +25,11 @@ export default function AppointmentClient() {
   const appointment = content?.appointment as AppointmentContent | null
   const action = getAppointmentAction(content?.site.appointment ?? {})
   const chamber = appointment?.chambers?.[0]
+  const latitude = content?.site.contact?.latitude ?? null
+  const longitude = content?.site.contact?.longitude ?? null
+  const mapUrl = latitude !== null && longitude !== null
+    ? `https://www.google.com/maps?q=${latitude},${longitude}&output=embed`
+    : chamber?.googleMapsUrl
 
   if (isLoading) {
     return <div className="px-5 pb-28 pt-10 text-center text-sm text-slate-500 dark:text-slate-400">{t.common.loading}</div>
@@ -62,13 +67,19 @@ export default function AppointmentClient() {
               </dl>
             </div>
             <div className="min-h-64 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900">
-              {chamber.googleMapsUrl ? (
-                <iframe title={`Map of ${chamber.name}`} src={chamber.googleMapsUrl} className="h-full min-h-64 w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              {mapUrl ? (
+                <iframe title={`Map of ${chamber.name}`} src={mapUrl} className="h-full min-h-64 w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
               ) : (
                 <div className="flex h-full min-h-64 items-center justify-center p-6 text-center text-sm text-slate-500 dark:text-slate-400">Map location will be added when the chamber address is confirmed.</div>
               )}
             </div>
           </section>
+        )}
+
+        {!chamber && mapUrl && (
+          <div className="mt-6 min-h-64 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900">
+            <iframe title={t.doctor.address} src={mapUrl} className="min-h-64 w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          </div>
         )}
 
         <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:p-8" aria-labelledby="prepare-heading">
