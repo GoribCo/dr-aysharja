@@ -209,6 +209,8 @@ export interface Translations {
     faq: string
     help: string
     more: string
+    previousSections: string
+    nextSections: string
   }
   settings: {
     panelTitle: string

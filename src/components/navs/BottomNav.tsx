@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import SectionIcon from './SectionIcon'
 import { version as appVersion } from '../../../package.json'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -82,10 +83,10 @@ function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate
         aria-controls={`${mobile ? 'mobile' : 'desktop'}-${about.label.toLowerCase()}-links`}
         onClick={toggle}
         className={mobile
-          ? `flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${childActive ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'}`
+          ? `flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${childActive ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'}`
           : `flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left font-medium text-sm transition-colors ${childActive ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
       >
-        <span className="flex items-center gap-3">{translatedLabel(about.label, t.nav)}</span>
+        <span className="flex items-center gap-3"><SectionIcon path={about.path} />{translatedLabel(about.label, t.nav)}</span>
         <Chevron open={open} />
       </button>
       <div
@@ -105,9 +106,10 @@ function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate
                   onClick={onNavigate}
                   aria-current={active ? 'page' : undefined}
                   className={mobile
-                    ? `block border-b border-gray-100 px-3 py-2.5 text-sm dark:border-gray-800 ${active ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'}`
-                    : `block rounded-xl px-3 py-2 text-sm ${active ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                    ? `flex items-center gap-2.5 border-b border-gray-100 px-3 py-2.5 text-sm dark:border-gray-800 ${active ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'}`
+                    : `flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm ${active ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
                 >
+                  <SectionIcon path={item.path} small />
                   {translatedLabel(item.label, t.nav)}
                 </Link>
               )
@@ -152,7 +154,9 @@ export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
   const mobileItems = ['/', '/profile/', '/services/', '/appointment/']
     .map(path => primaryItems.find(item => item.path === path))
     .filter((item): item is NavigationItem => Boolean(item))
-  const moreItems = navigation.primary.filter(item => !mobileItems.some(primary => primary.path === item.path) && item.path !== '/contact/')
+  const moreItems = ['/about/', '/resources/', '/review/']
+    .map(path => navigation.primary.find(item => item.path === path))
+    .filter((item): item is NavigationItem => Boolean(item))
   const contact = navigation.primary.find(item => item.path === '/contact/')
 
   return (

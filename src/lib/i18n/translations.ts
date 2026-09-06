@@ -23,6 +23,8 @@ const en: Translations = {
     appointment: 'Appointment',
     contact: 'Contact',
     more: 'More',
+    previousSections: 'Scroll to earlier About sections',
+    nextSections: 'Scroll to more About sections',
   },
   settings: {
     panelTitle: 'Display settings',
@@ -120,6 +122,8 @@ const bn: Translations = {
     appointment: 'অ্যাপয়েন্টমেন্ট',
     contact: 'যোগাযোগ',
     more: 'আরও',
+    previousSections: 'পরিচিতির আগের বিভাগগুলো দেখুন',
+    nextSections: 'পরিচিতির আরও বিভাগ দেখুন',
   },
   settings: {
     panelTitle: 'প্রদর্শন সেটিংস',
@@ -217,6 +221,8 @@ const hi: Translations = {
     appointment: 'अपॉइंटमेंट',
     contact: 'संपर्क',
     more: 'अधिक',
+    previousSections: 'परिचय के पिछले अनुभाग देखें',
+    nextSections: 'परिचय के और अनुभाग देखें',
   },
   settings: {
     panelTitle: 'डिस्प्ले सेटिंग्स',
