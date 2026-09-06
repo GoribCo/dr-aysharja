@@ -1,10 +1,12 @@
 'use client'
 
+import type { ChevronProps, NavigationAccordionProps, BottomNavProps, NavigationItem } from '@/lib/types'
+
 import Link from 'next/link'
+import { version as appVersion } from '../../../package.json'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import config from '@/config'
-import { navigation, isNavigationItemActive, type NavigationItem } from '@/lib/navigation'
+import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '@/components/UiLanguageProvider'
 
 function translatedLabel(label: string, nav: Record<string, string>) {
@@ -49,11 +51,11 @@ const icons = {
   ),
 }
 
-function Chevron({ open }: { open: boolean }) {
+function Chevron({ open }: ChevronProps) {
   return <svg aria-hidden="true" className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
 }
 
-function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate }: { item: NavigationItem; pathname: string; mobile?: boolean; onNavigate?: () => void }) {
+function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate }: NavigationAccordionProps) {
   const { t } = useUiLang()
   const childActive = about.children?.some(item => isNavigationItemActive(pathname, item.path)) ?? false
   const [open, setOpen] = useState(childActive)
@@ -111,7 +113,7 @@ function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate
   )
 }
 
-export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?: boolean }) {
+export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
   const { t } = useUiLang()
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
@@ -251,7 +253,7 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
 
         {/* Footer */}
         <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800">
-          <p className="text-xs text-gray-400 dark:text-gray-600">v{config.app.version}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600">v{appVersion}</p>
         </div>
       </nav>
     </>

@@ -1,14 +1,9 @@
+import type { PageHeaderProps } from '@/lib/types'
+
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 
-interface Props {
-  backHref: string
-  backLabel: string
-  /** Extra items for the right side (e.g. StreakBadge) */
-  right?: React.ReactNode
-}
-
-export default function PageHeader({ backHref, backLabel, right }: Props) {
+export default function PageHeader({ backHref, backLabel, right }: PageHeaderProps) {
   return (
     <div className="flex items-center justify-between mb-6">
       {/* Left: logo (mobile only) + back link */}

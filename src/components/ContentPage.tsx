@@ -1,5 +1,7 @@
 'use client'
 
+import type { ContentPageProps, DoctorSection } from '@/lib/types'
+
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { useUiLang } from '@/components/UiLanguageProvider'
@@ -7,14 +9,8 @@ import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useSpeciality } from '@/components/SpecialityProvider'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
-import type { DoctorContent, DoctorSection } from '@/lib/doctorContent'
-import ContentPageTitle from "@/components/ContentPageTitle";
 
-interface ContentPageProps {
-  sectionKey: Exclude<keyof DoctorContent, 'servicesList' | 'site' | 'ui' | 'resources'>
-  title: string
-  description?: string
-}
+import ContentPageTitle from "@/components/ContentPageTitle";
 
 export default function ContentPage({ sectionKey, title, description }: ContentPageProps) {
   const { t } = useUiLang()

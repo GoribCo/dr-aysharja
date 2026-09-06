@@ -1,16 +1,12 @@
 'use client'
 
+import type { SpecialityProviderProps, SpecialityContextValue, Speciality, SpecialityTheme } from '@/lib/types'
+
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { Speciality } from '@/lib/specialities'
-import { NEUTRAL_THEME, getSpecialityTheme, type SpecialityTheme } from '@/lib/specialities'
+
+import { NEUTRAL_THEME, getSpecialityTheme } from '@/lib/appearance/speciality-themes'
 
 const STORAGE_KEY = 'rxprofile_speciality'
-
-interface SpecialityContextValue {
-  speciality: Speciality
-  theme: SpecialityTheme
-  setSpeciality: (speciality: Speciality) => void
-}
 
 const SpecialityContext = createContext<SpecialityContextValue>({
   speciality: null,
@@ -22,7 +18,7 @@ export function useSpeciality() {
   return useContext(SpecialityContext)
 }
 
-export default function SpecialityProvider({ children }: { children: React.ReactNode }) {
+export default function SpecialityProvider({ children }: SpecialityProviderProps) {
   const [speciality, setSpecialityState] = useState<Speciality>(null)
   const [theme, setTheme] = useState<SpecialityTheme>(NEUTRAL_THEME)
 

@@ -1,19 +1,13 @@
 'use client'
 
+import type { ContactContent } from '@/lib/types'
+
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import ContentPageTitle from '@/components/ContentPageTitle'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
-import { getAppointmentAction, normalizePhone } from '@/lib/appointment'
-import type { Chamber } from '@/lib/chamber'
-
-type ContactContent = {
-  description?: string
-  content: string
-  isVisible: boolean
-  chambers?: Chamber[]
-}
+import { getAppointmentAction, normalizePhone } from '@/lib/doctor/appointments'
 
 function PhoneIcon() {
   return (

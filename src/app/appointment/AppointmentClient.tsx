@@ -1,20 +1,14 @@
 'use client'
 
+import type { AppointmentContent } from '@/lib/types'
+
 import ReactMarkdown from 'react-markdown'
 import ContentPageTitle from '@/components/ContentPageTitle'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
-import { getAppointmentAction } from '@/lib/appointment'
-import type { Chamber } from '@/lib/chamber'
-import { useUiLang } from '@/components/UiLanguageProvider'
+import { getAppointmentAction } from '@/lib/doctor/appointments'
 
-type AppointmentContent = {
-  title?: string
-  description?: string
-  content: string
-  isVisible: boolean
-  chambers?: Chamber[]
-}
+import { useUiLang } from '@/components/UiLanguageProvider'
 
 function PhoneIcon() {
   return (

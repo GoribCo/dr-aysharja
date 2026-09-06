@@ -1,18 +1,4 @@
-export interface AppointmentConfig {
-  phone?: string | null
-  url?: string | null
-  instructions?: string | null
-}
-
-export interface AppointmentAction {
-  type: 'none' | 'phone' | 'external' | 'mixed'
-  primaryLabel: string
-  primaryHref: string | null
-  secondaryLabel: string | null
-  secondaryHref: string | null
-  phone: string | null
-  url: string | null
-}
+import type { AppointmentConfig, AppointmentAction } from '../types'
 
 export function normalizePhone(value?: string | null): string | null {
   if (typeof value !== 'string') return null

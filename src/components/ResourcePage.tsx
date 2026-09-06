@@ -1,13 +1,15 @@
 'use client'
 
+import type { ResourcePageProps } from '@/lib/types'
+
 import Link from 'next/link'
 import ResourcePageLayout from './ResourcePageLayout'
 import { useUiLang } from './UiLanguageProvider'
-import type { ResourcePage as PageKind } from '@/lib/resources'
-import { useContentLanguage } from './ContentLanguageProvider'
-import { navigation } from '@/lib/navigation'
 
-export default function ResourcePage({ page }: { page: PageKind }) {
+import { useContentLanguage } from './ContentLanguageProvider'
+import { navigation } from '@/lib/navigation/routes'
+
+export default function ResourcePage({ page }: ResourcePageProps) {
   const { t } = useUiLang()
   const { content: doctorContent } = useContentLanguage()
   const content = doctorContent?.resources[page]

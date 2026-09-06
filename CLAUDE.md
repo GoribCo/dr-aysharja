@@ -79,18 +79,11 @@ rxprofile/
 
 `generateStaticParams` in all route pages is **data-driven** — reads from `languages.json` / `levels.json` / content filesystem. No hardcoded slugs (except `[level]/page.tsx` which iterates all levels × all pairs).
 
-## Content System (`src/lib/content.ts`)
+## Content System (`src/lib/content/loaders.ts`)
 
-All functions use `process.cwd()` to resolve paths — never `__dirname`.
+Doctor and resource pages load Markdown from `content/site.md` and `content/{language}/`, including `resources/*.md`. Server code uses `loadDoctorContent()` and `loadDoctorContentByLanguage()`; client components read the language provider.
 
-| Function | Returns |
-|----------|---------|
-| `getLanguagePairs()` | All pairs from `languages.json` |
-| `getLanguages()` | All languages from `languages.json` |
-| `getLevels()` | All CEFR levels from `levels.json` |
-| `getPairMeta(pair)` | `meta.json` for a pair slug |
-| `getStages(pair, level)` | All stages for a pair+level, sorted by filename |
-| `getStage(pair, level, n)` | Single stage by number |
+All application types and component props are defined in `src/lib/types.ts` and imported with `import type`. Learning utilities and their unused components have been removed.
 
 ## Stage Markdown Format
 

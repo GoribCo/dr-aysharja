@@ -1,6 +1,8 @@
 'use client'
 
-import { useTheme, type ThemePreference } from './ThemeProvider'
+import type { ThemePreference } from '@/lib/types'
+
+import { useTheme } from './ThemeProvider'
 import { useUiLang } from './UiLanguageProvider'
 
 export default function ThemeSelector() {

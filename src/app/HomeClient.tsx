@@ -1,19 +1,13 @@
 'use client'
 
+import type { SectionLabelProps, HomeClientProps } from '@/lib/types'
+
+import { BASE_PATH } from '@/lib/site/deployment'
+
 import Link from 'next/link'
 import {useEffect, useState} from 'react'
-import {useContentLanguage} from '@/components/ContentLanguageProvider'
-import {useDoctorContent} from '@/hooks/useDoctorContent'
-
-interface Props {
-    doctorContent: any
-    config: {
-        url: {
-            site: string;
-            basePath: string
-        },
-    }
-}
+import { useContentLanguage } from '@/components/ContentLanguageProvider'
+import { useDoctorContent } from '@/hooks/useDoctorContent'
 
 function text(content: Record<string, unknown>, key: string, fallback = '') {
     return typeof content[key] === 'string' ? content[key] as string : fallback
@@ -35,12 +29,12 @@ function PhoneIcon() {
     </svg>
 }
 
-function SectionLabel({children}: { children: React.ReactNode }) {
+function SectionLabel({children}: SectionLabelProps) {
     return <p
         className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-teal-700 dark:text-teal-300">{children}</p>
 }
 
-export default function HomeClient({doctorContent: initialContent, config}: Props) {
+export default function HomeClient({doctorContent: initialContent}: HomeClientProps) {
     const [visible, setVisible] = useState(false)
     const {lang} = useContentLanguage()
     const {content: fetchedContent} = useDoctorContent(lang)
@@ -74,7 +68,7 @@ export default function HomeClient({doctorContent: initialContent, config}: Prop
                 </div>
                 <div className="hero-portrait reveal reveal-delay">
                     <div className="portrait-frame">
-                      {profileImage && <img src={`${config.url.basePath}${profileImage}`} alt={doctorName}/>} 
+                      {profileImage && <img src={`${BASE_PATH}${profileImage}`} alt={doctorName}/>}
                     </div>
                     <div className="portrait-caption"><span className="status-dot"/> {text(home, 'availability')}
                         <small>{text(home, 'availabilityNote')}</small>

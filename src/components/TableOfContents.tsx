@@ -1,16 +1,8 @@
 'use client'
 
+import type { Heading, TableOfContentsProps } from '@/lib/types'
+
 import { useEffect, useState } from 'react'
-
-interface Heading {
-  id: string
-  text: string
-  level: number
-}
-
-interface Props {
-  content: string // raw markdown
-}
 
 function extractHeadings(markdown: string): Heading[] {
   const lines = markdown.split('\n')
@@ -30,7 +22,7 @@ function extractHeadings(markdown: string): Heading[] {
   return headings
 }
 
-export default function TableOfContents({ content }: Props) {
+export default function TableOfContents({ content }: TableOfContentsProps) {
   const [active, setActive] = useState<string>('')
   const headings = extractHeadings(content)
 

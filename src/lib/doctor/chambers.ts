@@ -1,11 +1,4 @@
-export interface Chamber {
-  name: string
-  address: string
-  visitingDays: string
-  visitingHours: string
-  phone: string
-  googleMapsUrl: string
-}
+import type { Chamber } from '../types'
 
 export function normalizeChamber(value: Partial<Chamber> | null | undefined): Chamber | null {
   if (!value || typeof value !== 'object') return null

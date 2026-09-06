@@ -1,25 +1,16 @@
 'use client'
 
+import type { ProfileClientProps, ProfileContent } from '@/lib/types'
+
+import { BASE_PATH } from '@/lib/site/deployment'
+
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import {useEffect, useRef, useState} from 'react'
-import {useContentLanguage} from '@/components/ContentLanguageProvider'
-import {useDoctorContent} from '@/hooks/useDoctorContent'
-import type {DoctorSection} from '@/lib/doctorContent'
-import config from '@/config'
-import { useUiLang } from '@/components/UiLanguageProvider'
+import { useContentLanguage } from '@/components/ContentLanguageProvider'
+import { useDoctorContent } from '@/hooks/useDoctorContent'
 
-interface ProfileContent {
-    doctorName: string
-    designation: string
-    affiliation: string
-    role: string
-    yearsOfExperience: string
-    languages: string[]
-    bio: string
-    specializationSummary: string
-    specializationTags: string[]
-}
+import { useUiLang } from '@/components/UiLanguageProvider'
 
 function ArrowIcon() {
     return <span aria-hidden="true">&#8594;</span>
@@ -33,7 +24,7 @@ function PhoneIcon() {
     </svg>
 }
 
-export default function ProfileClient({initialProfile}: {initialProfile: DoctorSection | null}) {
+export default function ProfileClient({initialProfile}: ProfileClientProps) {
     const [visible, setVisible] = useState(false)
     const pageRef = useRef<HTMLDivElement>(null)
     const {lang} = useContentLanguage()
@@ -72,7 +63,7 @@ export default function ProfileClient({initialProfile}: {initialProfile: DoctorS
                         className="profile-designation">{profile.designation}</p></div>
                     <figure className="profile-portrait profile-reveal profile-reveal-delay">
                         <div className="profile-portrait-frame">
-                            {site?.profileImage && <img src={`${config.url.basePath}${site.profileImage}`} alt={`Portrait of ${profile.doctorName}`}/>} 
+                            {site?.profileImage && <img src={`${BASE_PATH}${site.profileImage}`} alt={`Portrait of ${profile.doctorName}`}/>}
                         </div>
                     </figure>
                 </section>

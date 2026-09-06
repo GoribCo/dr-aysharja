@@ -1,8 +1,4 @@
-export interface NavigationItem {
-  label: string
-  path: string
-  children?: NavigationItem[]
-}
+import type { NavigationItem } from '../types'
 
 export const navigation: { primary: NavigationItem[]; authenticatedOnly: NavigationItem[] } = {
   primary: [

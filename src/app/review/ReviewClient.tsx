@@ -1,21 +1,13 @@
 'use client'
 
+import type { StarsProps, ReviewContent, PatientReview } from '@/lib/types'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 import ContentPageTitle from "@/components/ContentPageTitle";
-
-type ReviewContent = Record<string, unknown>
-type PatientReview = {
-  name: string
-  rating: number
-  date: string
-  service?: string
-  review: string
-  status: string
-}
 
 function text(content: ReviewContent | null, key: string, fallback: string) {
   return typeof content?.[key] === 'string' ? content[key] as string : fallback
@@ -33,7 +25,7 @@ function reviews(content: ReviewContent): PatientReview[] {
     : []
 }
 
-function Stars({ rating, label }: { rating: number; label?: string }) {
+function Stars({ rating, label }: StarsProps) {
   return (
     <span className="flex items-center gap-0.5 text-amber-400" aria-label={label ?? `${rating} out of 5 stars`}>
       {[1, 2, 3, 4, 5].map(star => <span key={star} aria-hidden="true">{star <= rating ? '★' : '☆'}</span>)}

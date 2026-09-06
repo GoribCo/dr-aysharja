@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { getAppointmentAction, normalizePhone } from './appointment'
+import { getAppointmentAction, normalizePhone } from './appointments'
 
 test('normalizePhone ignores TODO and blank values', () => {
   assert.equal(normalizePhone('TODO'), null)

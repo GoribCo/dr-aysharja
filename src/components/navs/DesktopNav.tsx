@@ -1,12 +1,14 @@
 'use client'
 
+import type { DesktopNavProps } from '@/lib/types'
+
 import Link from 'next/link'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import { usePathname } from 'next/navigation'
-import { navigation, isNavigationItemActive } from '@/lib/navigation'
+import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import AboutDropdown from './AboutDropdown'
 
-export default function DesktopNav({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
+export default function DesktopNav({ isAuthenticated = false }: DesktopNavProps) {
   const pathname = usePathname()
   const { t } = useUiLang()
   const items = isAuthenticated ? [...navigation.primary, ...navigation.authenticatedOnly] : navigation.primary

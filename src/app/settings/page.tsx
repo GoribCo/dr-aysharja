@@ -1,11 +1,11 @@
 import SettingsPageClient from './SettingsPageClient'
 import type { Metadata } from 'next'
-import { getDoctorName } from '@/lib/doctorContent'
+import { loadDoctorName } from '@/lib/content/loaders'
 
 export const dynamic = 'force-static'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = getDoctorName('en');
+  const doctorName = loadDoctorName('en');
   return {
   title: 'Settings',
   alternates: { canonical: '/settings/' },

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import ContentPage from '@/components/ContentPage'
-import { getDoctorName } from '@/lib/doctorContent'
+import { loadDoctorName } from '@/lib/content/loaders'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = getDoctorName('en');
+  const doctorName = loadDoctorName('en');
   return {
   title: 'Awards & Recognition',
   description: 'Awards, honors, and recognition received',

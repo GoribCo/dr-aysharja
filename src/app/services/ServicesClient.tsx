@@ -1,14 +1,16 @@
 'use client'
 
+import type { ServiceIconProps, DoctorService } from '@/lib/types'
+
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import ContentPageTitle from '@/components/ContentPageTitle'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
-import { getAppointmentAction } from '@/lib/appointment'
-import type { DoctorService } from '@/lib/doctorContent'
+import { getAppointmentAction } from '@/lib/doctor/appointments'
+
 import { useUiLang } from '@/components/UiLanguageProvider'
 import ReactMarkdown from 'react-markdown'
 
-function ServiceIcon({ name }: { name?: string }) {
+function ServiceIcon({ name }: ServiceIconProps) {
   if (name === 'Bone') {
     return (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">

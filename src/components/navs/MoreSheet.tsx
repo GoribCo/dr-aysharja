@@ -1,18 +1,13 @@
 'use client'
 
+import type { MoreSheetProps } from '@/lib/types'
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { navigation, isNavigationItemActive } from '@/lib/navigation'
+import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '@/components/UiLanguageProvider'
 
-interface Props {
-  open: boolean
-  pathname: string
-  isAuthenticated: boolean
-  onClose: () => void
-}
-
-export default function MoreSheet({ open, pathname, isAuthenticated, onClose }: Props) {
+export default function MoreSheet({ open, pathname, isAuthenticated, onClose }: MoreSheetProps) {
   const { t } = useUiLang()
   const label = (value: string) => t.nav[value.toLowerCase() as keyof typeof t.nav] || value
   const about = navigation.primary.find(item => item.children)

@@ -1,5 +1,4 @@
-import type { UiLang } from './i18n'
-import type { Speciality } from './specialities'
+import type { UiLang, Speciality } from '../types'
 
 export const specialityLabels: Record<UiLang, Record<Exclude<Speciality, null>, string>> = {
   en: { medicine: 'Medicine', dental: 'Dental', orthopaedic: 'Orthopaedic', gynaecology: 'Gynaecology', cardiology: 'Cardiology', ent: 'ENT', ophthalmology: 'Ophthalmology', surgery: 'Surgery', other: 'Other' },

@@ -1,182 +1,58 @@
 # RxProfile
 
-A mobile-first language learning website built with Next.js. Learn new languages step by step through structured CEFR levels and bite-sized stages — no database required, all content lives in Markdown files.
+A multilingual doctor profile website built with Next.js, React and Tailwind CSS. Doctor information and resource pages live in Markdown; the site exports static files with no database.
 
-## Features
-
-- **Structured CEFR levels** — A1 through C2 with clear learning goals
-- **Step-by-step stages** — each stage covers vocabulary, grammar notes, dialogues, and cultural notes
-- **Bilingual content** — lessons written in both the source and target language
-- **Dark / light theme** — persisted in `localStorage`
-- **Mobile-first** — bottom navigation, optimized for phones
-- **Static export** — deployable to GitHub Pages or any static host
-- **No database** — all content is plain Markdown files
-
-## Available Language Pairs
-
-| From | To | Slug |
-|------|----|------|
-| 🇧🇩 Bengali | 🇩🇪 German | `bn-de` |
-| 🇧🇩 Bengali | 🇵🇱 Polish | `bn-pl` |
-
-## Tech Stack
-
-| Tool | Version |
-|------|---------|
-| [Next.js](https://nextjs.org) | 15 (App Router, static export) |
-| [React](https://react.dev) | 19 |
-| [Tailwind CSS](https://tailwindcss.com) | 4 |
-| [gray-matter](https://github.com/jonschlinkert/gray-matter) | 4 |
-| [react-markdown](https://github.com/remarkjs/react-markdown) | 9 |
-| [remark-gfm](https://github.com/remarkjs/remark-gfm) | 4 |
-
-## Getting Started
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/rxprofile.git
-cd rxprofile
-
-# Install dependencies and start the dev server
-./run.sh
-```
-
-Or manually:
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Or run `./run.sh` to install dependencies when needed and start on port 3010. Use `PORT=3000 ./run.sh` to override that port.
 
-## Project Structure
+## Project structure
 
-```
-rxprofile/
-├── src/
-│   ├── app/                        # Next.js App Router pages
-│   │   ├── layout.tsx              # Root layout (ThemeProvider, BottomNav)
-│   │   ├── page.tsx                # Home — language pair selector
-│   │   ├── globals.css             # Tailwind v4 + global styles
-│   │   ├── [pair]/
-│   │   │   ├── page.tsx            # Level selection (A1–C2)
-│   │   │   └── [level]/
-│   │   │       ├── page.tsx        # Stage list
-│   │   │       └── [stage]/
-│   │   │           └── page.tsx    # Stage content with prev/next
-│   │   └── settings/
-│   │       └── page.tsx            # Settings page
-│   ├── components/
-│   │   ├── BottomNav.tsx           # Fixed bottom navigation
-│   │   ├── ThemeProvider.tsx       # Dark/light mode context
-│   │   └── ThemeToggle.tsx         # Sun/moon toggle button
-│   └── lib/
-│       ├── content.ts              # Filesystem content loaders
-│       └── types.ts                # TypeScript interfaces
-├── content/                        # All lesson content (Markdown + JSON)
-│   ├── languages.json              # Language definitions and pairs
-│   ├── levels.json                 # CEFR level definitions (A1–C2)
-│   ├── bn-de/
-│   │   ├── meta.json
-│   │   └── a1/
-│   │       ├── stage-01.md         # Greetings
-│   │       ├── stage-02.md         # Numbers
-│   │       └── ...
-│   └── bn-pl/
-│       ├── meta.json
-│       └── a1/
-│           ├── stage-01.md
-│           └── ...
-├── public/
-│   └── .nojekyll                   # Required for GitHub Pages
-├── next.config.ts
-├── run.sh                          # Quick start script
-└── README.md
+```text
+src/
+  app/                 Pages and page-specific client components
+  components/          Shared UI, navigation and preference providers
+  hooks/               Client access to loaded doctor content
+  lib/
+    appearance/        Speciality themes and labels
+    content/           Markdown loaders and templates
+    doctor/            Names, chambers and appointment helpers
+    i18n/              Interface translations
+    navigation/        Menu definitions and route matching
+    site/              Deployment URL and base path
+    types.ts           All shared types and component props
+content/
+  site.md              Shared doctor-site settings
+  en/                  English profile and service content
+    resources/         Privacy, terms, FAQ and help Markdown
+  bn/                  Bengali profile, services and resources
+  hi/resources/        Prepared Hindi resource translations
+public/                Static assets and service worker
 ```
 
-## Adding a New Language Pair
+See [the library guide](src/lib/README.md) for module boundaries and function naming, and [doctor name templates](docs/doctor-name.md) for reusable identity placeholders.
 
-1. **Register the pair** in `content/languages.json`:
+## Editing content
 
-```json
-{
-  "pairs": [
-    {
-      "from": { "code": "bn", "name": "Bengali", "nativeName": "বাংলা", "flag": "🇧🇩" },
-      "to":   { "code": "fr", "name": "French",  "nativeName": "Français", "flag": "🇫🇷" },
-      "slug": "bn-fr",
-      "description": "Learn French starting from Bengali",
-      "totalLearners": "0"
-    }
-  ]
-}
-```
+Edit `content/site.md` for shared contact, booking, image and SEO settings. Edit `content/{language}/*.md` for localized profile pages and `content/{language}/services/*.md` for services. Resource text belongs in `content/{language}/resources/{privacy,terms,faq,help}.md`.
 
-2. **Create the pair folder** and meta file:
+The language selector enables languages with a profile file. Hindi resource files alone do not enable Hindi across the website. Interface labels live in `src/lib/i18n/translations.ts`.
 
-```
-content/bn-fr/
-  meta.json
-  a1/
-    stage-01.md
-    stage-02.md
-    ...
-```
+Rebuild after changing content to update the static export.
 
-3. **Write stage files** using this frontmatter:
+## Deployment
 
-```markdown
----
-stage: 1
-title: "Bonjour – Greetings"
-titleBn: "শুভেচ্ছা"
-description: "Learn essential French greetings."
-duration: "15 min"
-vocabulary: 8
----
-
-## Content here...
-```
-
-That's it — routes are generated automatically from the filesystem.
-
-## Adding a New Stage
-
-Drop a new `.md` file into the appropriate `content/[pair]/[level]/` folder. Files are sorted alphabetically, so use zero-padded names: `stage-06.md`, `stage-07.md`, etc. Update `totalStages` in the pair's `meta.json` if you want the count to show correctly on the level page.
-
-## Deployment to GitHub Pages
-
-1. Set the base path in your environment or `next.config.ts`:
-
-```ts
-basePath: '/your-repo-name'
-```
-
-2. Build the static export:
+Set `NEXT_PUBLIC_SITE_URL` to the full public website URL and `NEXT_PUBLIC_BASE_PATH` to the deployment subdirectory (or leave it empty for a domain root). The shared defaults live in `src/lib/site/deployment.ts`; the base path is also read by `next.config.ts`.
 
 ```bash
 npm run build
 ```
 
-3. Deploy the `out/` folder to the `gh-pages` branch:
+Deploy the generated `out/` directory to a static host. The GitHub Actions workflow supplies the GitHub Pages URL and base path during its build.
 
-```bash
-# Using gh-pages package
-npx gh-pages -d out
-```
-
-Or configure a GitHub Actions workflow to build and deploy on every push to `main`.
-
-## Scripts
-
-| Command | Description |
-|---------|-------------|
-| `./run.sh` | Install deps (if needed) and start dev server |
-| `npm run dev` | Start development server on port 3000 |
-| `npm run build` | Build and export static files to `out/` |
-| `npm run lint` | Run ESLint |
-
-## License
-
-MIT
+The displayed application version comes from `package.json`.

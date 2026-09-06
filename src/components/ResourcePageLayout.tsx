@@ -1,16 +1,12 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ResourcePageLayoutProps } from '@/lib/types'
+
 import Link from 'next/link'
 import ContentPageTitle from './ContentPageTitle'
 import { useUiLang } from './UiLanguageProvider'
 
-export default function ResourcePageLayout({ title, intro, children, footer }: {
-  title: string
-  intro: string
-  children: ReactNode
-  footer?: ReactNode
-}) {
+export default function ResourcePageLayout({ title, intro, children, footer }: ResourcePageLayoutProps) {
   const { t } = useUiLang()
   return <div className="px-5 pb-28 pt-6 sm:px-8 lg:pb-10 lg:pt-10">
     <div className="mx-auto max-w-4xl">

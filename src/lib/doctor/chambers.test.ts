@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { parseChamberList, normalizeChamber } from './chamber'
+import { parseChamberList, normalizeChamber } from './chambers'
 
 test('normalizeChamber filters empty entries', () => {
   assert.equal(normalizeChamber(null), null)

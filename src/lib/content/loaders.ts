@@ -1,40 +1,12 @@
+import type { ContentLanguage, DoctorSection, DoctorService, SiteSettings, DoctorContent, DoctorContentByLanguage, DoctorNameParts, ResourcePage, ResourceContent } from '../types'
+
+import { resolveContentTemplates } from './templates'
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { getFullName, getNameTemplateVars, resolveContentTemplates, type DoctorNameParts } from './doctorName'
-import type { Chamber } from './chamber'
-import { parseChambers } from './chamber'
-import { RESOURCE_PAGES, type ResourcePage, type ResourceContent } from './resources'
-
-export type ContentLanguage = 'bn' | 'hi' | 'en'
-
-export interface DoctorSection {
-  title: string;
-  description: string;
-  content: string;
-  isVisible: boolean;
-  chambers?: Chamber[];
-}
-
-export interface DoctorService {
-  id: string;
-  order?: number;
-  title: string;
-  shortDescription: string;
-  icon?: string;
-  image?: string;
-  content: string;
-  isVisible: boolean;
-}
-
-export interface SiteSettings {
-  profileImage?: string
-  appointment?: { phone?: string; bookingUrl?: string }
-  contact?: { phone?: string; email?: string; whatsapp?: string; latitude?: number | null; longitude?: number | null }
-  branding?: { shortName?: string; version?: string }
-  seo?: { defaultDescription?: string }
-  theme?: { colorLight?: string; colorDark?: string; primary?: string }
-}
+import { formatDoctorName, createDoctorNameVariables } from '../doctor/name'
+import { parseChambers } from '../doctor/chambers'
+import { RESOURCE_PAGES } from './resources'
 
 // Default language for content
 const DEFAULT_CONTENT_LANG: ContentLanguage = 'bn'
@@ -46,7 +18,7 @@ function getContentDir(lang: ContentLanguage = DEFAULT_CONTENT_LANG): string {
   return path.join(process.cwd(), 'content', lang)
 }
 
-export function getSiteSettings(): SiteSettings {
+export function loadSiteSettings(): SiteSettings {
   const cacheKey = 'site_settings'
   if (process.env.NODE_ENV === 'production' && contentCache.has(cacheKey)) return contentCache.get(cacheKey)
   const filePath = path.join(process.cwd(), 'content', 'site.md')
@@ -56,22 +28,22 @@ export function getSiteSettings(): SiteSettings {
   return data as SiteSettings
 }
 
-export function getDoctorIdentity(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorNameParts {
+export function loadDoctorIdentity(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorNameParts {
   const profilePath = path.join(getContentDir(lang), 'profile.md')
   const data = fs.existsSync(profilePath) ? matter(fs.readFileSync(profilePath, 'utf-8')).data : {}
   const field = (key: string) => typeof data[key] === 'string' ? data[key].trim() : ''
   const name = { salutation: field('salutation'), firstName: field('firstName'), middleName: field('middleName'), lastName: field('lastName') }
   if (!name.firstName && !name.middleName && !name.lastName) {
-    return lang === 'en' ? { ...name, firstName: 'Doctor' } : getDoctorIdentity('en')
+    return lang === 'en' ? { ...name, firstName: 'Doctor' } : loadDoctorIdentity('en')
   }
   return name
 }
 
-export function getDoctorName(lang: ContentLanguage = DEFAULT_CONTENT_LANG): string {
-  return getFullName(getDoctorIdentity(lang))
+export function loadDoctorName(lang: ContentLanguage = DEFAULT_CONTENT_LANG): string {
+  return formatDoctorName(loadDoctorIdentity(lang))
 }
 
-export function getSectionContent(filename: string, lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorSection | null {
+export function loadContentSection(filename: string, lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorSection | null {
   const contentDir = getContentDir(lang)
   const cacheKey = `${lang}:${filename}`
 
@@ -84,7 +56,7 @@ export function getSectionContent(filename: string, lang: ContentLanguage = DEFA
 
   const raw = fs.readFileSync(filePath, 'utf-8')
   const { data, content } = matter(raw)
-  const templateVars = getNameTemplateVars(getDoctorIdentity(lang))
+  const templateVars = createDoctorNameVariables(loadDoctorIdentity(lang))
   const finalData = resolveContentTemplates(data, templateVars)
   const finalContent = resolveContentTemplates(content, templateVars)
   const parsedChambers = parseChambers(finalData.chambers ?? [])
@@ -107,7 +79,7 @@ export function getSectionContent(filename: string, lang: ContentLanguage = DEFA
   return result
 }
 
-export function getServicesList(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorService[] {
+export function loadDoctorServices(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorService[] {
   const contentDir = getContentDir(lang)
   const cacheKey = `${lang}:services_list`
 
@@ -127,7 +99,7 @@ export function getServicesList(lang: ContentLanguage = DEFAULT_CONTENT_LANG): D
     // If the content includes "TODO", we hide the service.
     const isVisible = !content.includes('TODO');
 
-    const templateVars = getNameTemplateVars(getDoctorIdentity(lang))
+    const templateVars = createDoctorNameVariables(loadDoctorIdentity(lang))
     const finalContent = resolveContentTemplates(content, templateVars)
     
     return {
@@ -148,8 +120,8 @@ export function getServicesList(lang: ContentLanguage = DEFAULT_CONTENT_LANG): D
 }
 
 /** Resource copy uses the same localized Markdown and template loader as profile content. */
-export function getResourceContent(page: ResourcePage, lang: ContentLanguage = DEFAULT_CONTENT_LANG): ResourceContent | null {
-  const section = getSectionContent(`resources/${page}.md`, lang)
+export function loadResourceContent(page: ResourcePage, lang: ContentLanguage = DEFAULT_CONTENT_LANG): ResourceContent | null {
+  const section = loadContentSection(`resources/${page}.md`, lang)
   if (!section?.isVisible) return null
   const data = section as DoctorSection & Partial<ResourceContent>
   if (typeof data.intro !== 'string' || !Array.isArray(data.sections)) return null
@@ -158,49 +130,46 @@ export function getResourceContent(page: ResourcePage, lang: ContentLanguage = D
   return { intro: data.intro, sections }
 }
 
-export function getAllDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG) {
+export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorContent {
   return {
-    site: getSiteSettings(),
-    resources: Object.fromEntries(RESOURCE_PAGES.map(page => [page, getResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
-    profile: getSectionContent('profile.md', lang),
-    about: getSectionContent('about.md', lang),
-    speciality: getSectionContent('speciality.md', lang),
-    subSpeciality: getSectionContent('sub-speciality.md', lang),
-    qualifications: getSectionContent('qualifications.md', lang),
-    experience: getSectionContent('experience.md', lang),
-    languages: getSectionContent('languages.md', lang),
-    memberships: getSectionContent('memberships.md', lang),
-    awards: getSectionContent('awards.md', lang),
-    publications: getSectionContent('publications.md', lang),
-    services: getSectionContent('services.md', lang), // Kept for backwards compatibility if needed, but not used in UI anymore
-    servicesList: getServicesList(lang),
-    chamber: getSectionContent('chamber.md', lang),
-    appointment: getSectionContent('appointment.md', lang),
-    review: getSectionContent('review.md', lang),
-    home: getSectionContent('home.md', lang),
-    articles: getSectionContent('articles.md', lang),
-    faq: getSectionContent('faq.md', lang),
-    contact: getSectionContent('contact.md', lang),
+    site: loadSiteSettings(),
+    resources: Object.fromEntries(RESOURCE_PAGES.map(page => [page, loadResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
+    profile: loadContentSection('profile.md', lang),
+    about: loadContentSection('about.md', lang),
+    speciality: loadContentSection('speciality.md', lang),
+    subSpeciality: loadContentSection('sub-speciality.md', lang),
+    qualifications: loadContentSection('qualifications.md', lang),
+    experience: loadContentSection('experience.md', lang),
+    languages: loadContentSection('languages.md', lang),
+    memberships: loadContentSection('memberships.md', lang),
+    awards: loadContentSection('awards.md', lang),
+    publications: loadContentSection('publications.md', lang),
+    services: loadContentSection('services.md', lang), // Kept for backwards compatibility if needed, but not used in UI anymore
+    servicesList: loadDoctorServices(lang),
+    chamber: loadContentSection('chamber.md', lang),
+    appointment: loadContentSection('appointment.md', lang),
+    review: loadContentSection('review.md', lang),
+    home: loadContentSection('home.md', lang),
+    articles: loadContentSection('articles.md', lang),
+    faq: loadContentSection('faq.md', lang),
+    contact: loadContentSection('contact.md', lang),
   }
 }
 
-export type DoctorContent = ReturnType<typeof getAllDoctorContent>
-export type DoctorContentByLanguage = Partial<Record<ContentLanguage, DoctorContent>>
-
 /** Load every configured translation during the static build. */
-export function getDoctorContentByLanguage(): DoctorContentByLanguage {
+export function loadDoctorContentByLanguage(): DoctorContentByLanguage {
   return Object.fromEntries(
-    getAvailableContentLanguages().map(lang => [lang, getAllDoctorContent(lang)]),
+    listContentLanguages().map(lang => [lang, loadDoctorContent(lang)]),
   ) as DoctorContentByLanguage
 }
 
 // Helper to check if a language's content directory exists
-export function contentLanguageExists(lang: ContentLanguage): boolean {
+export function hasContentLanguageDirectory(lang: ContentLanguage): boolean {
   return fs.existsSync(getContentDir(lang))
 }
 
 // Get available content languages
-export function getAvailableContentLanguages(): ContentLanguage[] {
+export function listContentLanguages(): ContentLanguage[] {
   const contentRoot = path.join(process.cwd(), 'content')
   if (!fs.existsSync(contentRoot)) return [DEFAULT_CONTENT_LANG]
   

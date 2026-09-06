@@ -1,11 +1,13 @@
 'use client'
 
+import type { AboutDropdownProps } from '@/lib/types'
+
 import Link from 'next/link'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import { useEffect, useRef, useState } from 'react'
-import { navigation, isNavigationItemActive, type NavigationItem } from '@/lib/navigation'
+import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 
-export default function AboutDropdown({ pathname, item: about = navigation.primary[1] }: { pathname: string; item?: NavigationItem }) {
+export default function AboutDropdown({ pathname, item: about = navigation.primary[1] }: AboutDropdownProps) {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const { t } = useUiLang()

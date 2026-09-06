@@ -1,6 +1,6 @@
 'use client'
 
-import { getAppointmentAction } from '@/lib/appointment'
+import { getAppointmentAction } from '@/lib/doctor/appointments'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 
 export default function StickyAppointmentCTA() {

@@ -1,30 +1,7 @@
+import type { Speciality, SpecialityTheme } from '../types'
+
 // Speciality definitions and theme configuration
 // System is agnostic until speciality is provided
-
-export type Speciality =
-  | 'medicine'
-  | 'dental'
-  | 'orthopaedic'
-  | 'gynaecology'
-  | 'cardiology'
-  | 'ent'
-  | 'ophthalmology'
-  | 'surgery'
-  | 'other'
-  | null
-
-export interface SpecialityTheme {
-  primary: string
-  secondary: string
-  accent: string
-  gradient: {
-    from: string
-    to: string
-  }
-  icon: string
-  label: string
-  description: string
-}
 
 export const SPECIALITY_THEMES: Record<Exclude<Speciality, null>, SpecialityTheme> = {
   medicine: {
