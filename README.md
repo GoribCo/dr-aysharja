@@ -25,7 +25,7 @@ src/
     i18n/              Interface translations
     navigation/        Menu definitions and route matching
     site/              Deployment URL and base path
-    types.ts           All shared types and component props
+    types.ts           Shared application types
 content/
   site.md              Shared doctor-site settings
   en/                  English profile and service content

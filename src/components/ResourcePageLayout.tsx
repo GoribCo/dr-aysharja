@@ -1,10 +1,15 @@
 'use client'
 
-import type { ResourcePageLayoutProps } from '@/lib/types'
-
 import Link from 'next/link'
 import ContentPageTitle from './ContentPageTitle'
 import { useUiLang } from './UiLanguageProvider'
+
+type ResourcePageLayoutProps = {
+  title: string
+  intro: string
+  children: React.ReactNode
+  footer?: React.ReactNode
+}
 
 export default function ResourcePageLayout({ title, intro, children, footer }: ResourcePageLayoutProps) {
   const { t } = useUiLang()

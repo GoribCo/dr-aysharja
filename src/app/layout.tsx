@@ -1,5 +1,3 @@
-import type { RootLayoutProps } from '@/lib/types'
-
 import { SITE_URL, BASE_PATH } from '@/lib/site/deployment'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
@@ -15,6 +13,10 @@ import StickyAppointmentCTA from '@/components/StickyAppointmentCTA'
 import SiteHeader from '@/components/layouts/SiteHeader'
 import { loadDoctorContent, loadDoctorContentByLanguage, loadSiteSettings } from '@/lib/content/loaders'
 import { loadDoctorName } from '@/lib/content/loaders'
+
+type RootLayoutProps = {
+  children: React.ReactNode
+}
 
 const inter = Inter({
   subsets: ['latin'],

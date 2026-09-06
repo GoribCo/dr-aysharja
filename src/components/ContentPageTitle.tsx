@@ -1,6 +1,10 @@
 'use client'
 
-import type { ContentPageTitleProps } from '@/lib/types'
+interface ContentPageTitleProps {
+    eyebrow: string
+    heading: string
+    intro?: string
+}
 
 export default function ContentPageTitle({
                                              eyebrow,

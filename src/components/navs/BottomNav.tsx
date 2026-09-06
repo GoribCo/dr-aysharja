@@ -1,13 +1,19 @@
 'use client'
 
-import type { ChevronProps, NavigationAccordionProps, BottomNavProps, NavigationItem } from '@/lib/types'
-
 import Link from 'next/link'
 import { version as appVersion } from '../../../package.json'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '@/components/UiLanguageProvider'
+
+import type { NavigationItem } from '@/lib/types'
+
+type ChevronProps = { open: boolean }
+
+type NavigationAccordionProps = { item: NavigationItem; pathname: string; mobile?: boolean; onNavigate?: () => void }
+
+type BottomNavProps = { isAuthenticated?: boolean }
 
 function translatedLabel(label: string, nav: Record<string, string>) {
   return nav[label.toLowerCase()] || label

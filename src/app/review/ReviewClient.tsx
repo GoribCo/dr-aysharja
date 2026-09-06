@@ -1,13 +1,15 @@
 'use client'
 
-import type { StarsProps, ReviewContent, PatientReview } from '@/lib/types'
-
 import { useState } from 'react'
 import Link from 'next/link'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 import ContentPageTitle from "@/components/ContentPageTitle";
+
+import type { ReviewContent, PatientReview } from '@/lib/types'
+
+type StarsProps = { rating: number; label?: string }
 
 function text(content: ReviewContent | null, key: string, fallback: string) {
   return typeof content?.[key] === 'string' ? content[key] as string : fallback

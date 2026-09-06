@@ -1,8 +1,13 @@
 'use client'
 
-import type { ContentLanguageProviderProps, ContentLanguageContextValue, ContentLanguage } from '@/lib/types'
-
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+
+import type { DoctorContentByLanguage, ContentLanguageContextValue, ContentLanguage } from '@/lib/types'
+
+type ContentLanguageProviderProps = {
+  children: React.ReactNode
+  contentByLanguage: DoctorContentByLanguage
+}
 
 const STORAGE_KEY = 'rxprofile_language'
 const DEFAULT_CONTENT_LANG: ContentLanguage = 'bn'

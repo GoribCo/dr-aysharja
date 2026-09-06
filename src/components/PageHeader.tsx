@@ -1,7 +1,12 @@
-import type { PageHeaderProps } from '@/lib/types'
-
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
+
+interface PageHeaderProps {
+  backHref: string
+  backLabel: string
+  /** Extra items for the right side */
+  right?: React.ReactNode
+}
 
 export default function PageHeader({ backHref, backLabel, right }: PageHeaderProps) {
   return (

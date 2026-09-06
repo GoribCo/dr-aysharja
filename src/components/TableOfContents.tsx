@@ -1,8 +1,12 @@
 'use client'
 
-import type { Heading, TableOfContentsProps } from '@/lib/types'
-
 import { useEffect, useState } from 'react'
+
+import type { Heading } from '@/lib/types'
+
+interface TableOfContentsProps {
+  content: string // raw markdown
+}
 
 function extractHeadings(markdown: string): Heading[] {
   const lines = markdown.split('\n')

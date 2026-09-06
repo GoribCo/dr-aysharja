@@ -1,12 +1,12 @@
 'use client'
 
-import type { DesktopNavProps } from '@/lib/types'
-
 import Link from 'next/link'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import { usePathname } from 'next/navigation'
 import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import AboutDropdown from './AboutDropdown'
+
+type DesktopNavProps = { isAuthenticated?: boolean }
 
 export default function DesktopNav({ isAuthenticated = false }: DesktopNavProps) {
   const pathname = usePathname()

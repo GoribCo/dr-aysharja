@@ -1,7 +1,5 @@
 'use client'
 
-import type { ServiceIconProps, DoctorService } from '@/lib/types'
-
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import ContentPageTitle from '@/components/ContentPageTitle'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
@@ -9,6 +7,10 @@ import { getAppointmentAction } from '@/lib/doctor/appointments'
 
 import { useUiLang } from '@/components/UiLanguageProvider'
 import ReactMarkdown from 'react-markdown'
+
+import type { DoctorService } from '@/lib/types'
+
+type ServiceIconProps = { name?: string }
 
 function ServiceIcon({ name }: ServiceIconProps) {
   if (name === 'Bone') {

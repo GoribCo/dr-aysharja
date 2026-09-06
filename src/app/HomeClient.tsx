@@ -1,13 +1,19 @@
 'use client'
 
-import type { SectionLabelProps, HomeClientProps } from '@/lib/types'
-
 import { BASE_PATH } from '@/lib/site/deployment'
 
 import Link from 'next/link'
 import {useEffect, useState} from 'react'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
+
+import type { DoctorContent } from '@/lib/types'
+
+type SectionLabelProps = { children: React.ReactNode }
+
+interface HomeClientProps {
+    doctorContent: DoctorContent
+}
 
 function text(content: Record<string, unknown>, key: string, fallback = '') {
     return typeof content[key] === 'string' ? content[key] as string : fallback

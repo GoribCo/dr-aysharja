@@ -1,12 +1,15 @@
 'use client'
 
-import type { SiteHeaderProps } from '@/lib/types'
-
 import Link from 'next/link'
 import SettingsDrawer from '@/components/SettingsDrawer'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 import { useUiLang } from '@/components/UiLanguageProvider'
+
+interface SiteHeaderProps {
+  initialHome?: Record<string, unknown> | null
+  doctorName: string
+}
 
 function text(content: Record<string, unknown>, key: string, fallback = '') {
   return typeof content[key] === 'string' ? content[key] as string : fallback

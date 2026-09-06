@@ -1,12 +1,14 @@
 'use client'
 
-import type { AppearanceSettingsProps, FontSize } from '@/lib/types'
-
 import ThemeSelector from '@/components/ThemeSelector'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useFontSize } from '@/components/FontSizeProvider'
 import { UI_LANGUAGES } from '@/lib/i18n/translations'
+
+import type { FontSize } from '@/lib/types'
+
+type AppearanceSettingsProps = { embedded?: boolean }
 
 export default function AppearanceSettings({ embedded = false }: AppearanceSettingsProps) {
   const { t } = useUiLang()

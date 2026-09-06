@@ -15,7 +15,7 @@ Import the specific module you need. There is no root barrel export, so browser 
 
 `content/loaders.ts` reads from `content/site.md` and `content/{language}/`, including `resources/*.md`. Use it from server components and build code. `loadDoctorContentByLanguage()` supplies the language provider with the complete content at build time; client components read that provider through `useDoctorContent()` or `useContentLanguage()`.
 
-All domain, content, UI and component types live in `src/lib/types.ts`. Import them with `import type`; implementation files contain runtime code only. `DoctorSectionKey` identifies the ordinary Markdown sections, excluding collections such as services and resources.
+Shared domain, content and UI types live in `src/lib/types.ts` and use `import type`. Component-specific props are private to their component files. `DoctorSectionKey` identifies the ordinary Markdown sections, excluding collections such as services and resources.
 
 Filesystem functions use `load…` names, such as `loadDoctorContent`, `loadContentSection`, and `loadSiteSettings`. `listContentLanguages()` discovers profile languages. Resource-only translations do not enable incomplete profile languages.
 

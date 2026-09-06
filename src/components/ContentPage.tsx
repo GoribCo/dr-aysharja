@@ -1,7 +1,5 @@
 'use client'
 
-import type { ContentPageProps, DoctorSection } from '@/lib/types'
-
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { useUiLang } from '@/components/UiLanguageProvider'
@@ -11,6 +9,14 @@ import ThemeToggle from '@/components/ThemeToggle'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 
 import ContentPageTitle from "@/components/ContentPageTitle";
+
+import type { DoctorSectionKey, DoctorSection } from '@/lib/types'
+
+interface ContentPageProps {
+  sectionKey: DoctorSectionKey
+  title: string
+  description?: string
+}
 
 export default function ContentPage({ sectionKey, title, description }: ContentPageProps) {
   const { t } = useUiLang()

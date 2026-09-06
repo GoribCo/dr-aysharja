@@ -1,7 +1,5 @@
 'use client'
 
-import type { ProfileClientProps, ProfileContent } from '@/lib/types'
-
 import { BASE_PATH } from '@/lib/site/deployment'
 
 import Link from 'next/link'
@@ -11,6 +9,10 @@ import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 
 import { useUiLang } from '@/components/UiLanguageProvider'
+
+import type { DoctorSection, ProfileContent } from '@/lib/types'
+
+type ProfileClientProps = {initialProfile: DoctorSection | null}
 
 function ArrowIcon() {
     return <span aria-hidden="true">&#8594;</span>

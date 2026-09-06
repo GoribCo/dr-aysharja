@@ -1,11 +1,16 @@
 'use client'
 
-import type { MoreSheetProps } from '@/lib/types'
-
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '@/components/UiLanguageProvider'
+
+interface MoreSheetProps {
+  open: boolean
+  pathname: string
+  isAuthenticated: boolean
+  onClose: () => void
+}
 
 export default function MoreSheet({ open, pathname, isAuthenticated, onClose }: MoreSheetProps) {
   const { t } = useUiLang()

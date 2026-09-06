@@ -1,10 +1,4 @@
-import type * as React from 'react'
-
-// Shared domain, content, UI and component types. This module contains no runtime code.
-
-export interface HomeClientProps {
-    doctorContent: DoctorContent
-}
+// Shared domain, content and UI types. This module contains no runtime code.
 
 export interface ContentLanguageContextValue {
   lang: ContentLanguage
@@ -13,26 +7,7 @@ export interface ContentLanguageContextValue {
   content: DoctorContent | null
 }
 
-export interface ContentPageProps {
-  sectionKey: DoctorSectionKey
-  title: string
-  description?: string
-}
-
-export interface ContentPageTitleProps {
-    eyebrow: string
-    heading: string
-    intro?: string
-}
-
 export type FontSize = 'small' | 'medium' | 'large'
-
-export interface PageHeaderProps {
-  backHref: string
-  backLabel: string
-  /** Extra items for the right side */
-  right?: React.ReactNode
-}
 
 export interface SpecialityContextValue {
   speciality: Speciality
@@ -44,10 +19,6 @@ export interface Heading {
   id: string
   text: string
   level: number
-}
-
-export interface TableOfContentsProps {
-  content: string // raw markdown
 }
 
 export type Theme = 'light' | 'dark'
@@ -103,18 +74,6 @@ export type PatientReview = {
   service?: string
   review: string
   status: string
-}
-
-export interface SiteHeaderProps {
-  initialHome?: Record<string, unknown> | null
-  doctorName: string
-}
-
-export interface MoreSheetProps {
-  open: boolean
-  pathname: string
-  isAuthenticated: boolean
-  onClose: () => void
 }
 
 export type Speciality =
@@ -331,52 +290,6 @@ export interface NavigationItem {
   path: string
   children?: NavigationItem[]
 }
-
-export type SectionLabelProps = { children: React.ReactNode }
-
-export type RootLayoutProps = {
-  children: React.ReactNode
-}
-
-export type AppearanceSettingsProps = { embedded?: boolean }
-
-export type ContentLanguageProviderProps = {
-  children: React.ReactNode
-  contentByLanguage: DoctorContentByLanguage
-}
-
-export type FontSizeProviderProps = { children: React.ReactNode }
-
-export type ResourcePageProps = { page: ResourcePage }
-
-export type ResourcePageLayoutProps = {
-  title: string
-  intro: string
-  children: React.ReactNode
-  footer?: React.ReactNode
-}
-
-export type SpecialityProviderProps = { children: React.ReactNode }
-
-export type ThemeProviderProps = { children: React.ReactNode }
-
-export type UiLanguageProviderProps = { children: React.ReactNode }
-
-export type ProfileClientProps = {initialProfile: DoctorSection | null}
-
-export type StarsProps = { rating: number; label?: string }
-
-export type ServiceIconProps = { name?: string }
-
-export type AboutDropdownProps = { pathname: string; item?: NavigationItem }
-
-export type ChevronProps = { open: boolean }
-
-export type NavigationAccordionProps = { item: NavigationItem; pathname: string; mobile?: boolean; onNavigate?: () => void }
-
-export type BottomNavProps = { isAuthenticated?: boolean }
-
-export type DesktopNavProps = { isAuthenticated?: boolean }
 
 export interface SettingsPageContent {
   heading: string

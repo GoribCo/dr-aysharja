@@ -1,8 +1,10 @@
 'use client'
 
-import type { ThemeProviderProps, Theme, ThemePreference, ThemeContextValue } from '@/lib/types'
-
 import { createContext, useContext, useEffect, useState } from 'react'
+
+import type { Theme, ThemePreference, ThemeContextValue } from '@/lib/types'
+
+type ThemeProviderProps = { children: React.ReactNode }
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: 'light',

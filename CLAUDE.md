@@ -83,7 +83,7 @@ rxprofile/
 
 Doctor and resource pages load Markdown from `content/site.md` and `content/{language}/`, including `resources/*.md`. Server code uses `loadDoctorContent()` and `loadDoctorContentByLanguage()`; client components read the language provider.
 
-All application types and component props are defined in `src/lib/types.ts` and imported with `import type`. Learning utilities and their unused components have been removed.
+Shared application types are defined in `src/lib/types.ts` and imported with `import type`. Component props stay local to their component files. Learning utilities and their unused components have been removed.
 
 ## Stage Markdown Format
 

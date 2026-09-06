@@ -1,10 +1,12 @@
 'use client'
 
-import type { SpecialityProviderProps, SpecialityContextValue, Speciality, SpecialityTheme } from '@/lib/types'
-
 import { createContext, useContext, useEffect, useState } from 'react'
 
 import { NEUTRAL_THEME, getSpecialityTheme } from '@/lib/appearance/speciality-themes'
+
+import type { SpecialityContextValue, Speciality, SpecialityTheme } from '@/lib/types'
+
+type SpecialityProviderProps = { children: React.ReactNode }
 
 const STORAGE_KEY = 'rxprofile_speciality'
 

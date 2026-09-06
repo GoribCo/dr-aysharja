@@ -1,10 +1,12 @@
 'use client'
 
-import type { UiLanguageProviderProps, UiLangContextValue } from '@/lib/types'
-
 import { createContext, useContext } from 'react'
 import { useContentLanguage } from './ContentLanguageProvider'
 import { translations } from '@/lib/i18n/translations'
+
+import type { UiLangContextValue } from '@/lib/types'
+
+type UiLanguageProviderProps = { children: React.ReactNode }
 
 const UiLangContext = createContext<UiLangContextValue>({
   lang: 'en',

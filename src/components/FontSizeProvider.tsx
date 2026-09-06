@@ -1,8 +1,10 @@
 'use client'
 
-import type { FontSizeProviderProps, FontSize } from '@/lib/types'
-
 import { createContext, useContext, useEffect, useState } from 'react'
+
+import type { FontSize } from '@/lib/types'
+
+type FontSizeProviderProps = { children: React.ReactNode }
 
 const sizes: Record<FontSize, string> = { small: '14px', medium: '16px', large: '18px' }
 const storageKey = 'rxprofile_font_size'
