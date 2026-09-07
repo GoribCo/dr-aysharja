@@ -10,7 +10,7 @@ From an existing copy with dependencies installed:
 npm run create:doctor -- ../dr-morgan --name "Dr. Alex Morgan" --speciality cardiology
 ```
 
-The destination must not exist and must be outside the current project. The command creates a separate project with one English language, neutral page wording, blank contact details, no patient records, a generic portrait, and hidden optional professional sections. It does not copy the current doctor's photographs, qualifications, biography, developer inquiry, git history, dependencies or local editor settings. It does not deploy anything.
+The destination must not exist and must be outside the current project. The command creates a separate project with one English language, neutral page wording, blank contact details, no patient records, a generic portrait, and all six About pages enabled. It does not copy the current doctor's photographs, qualifications, biography, developer inquiry, git history, dependencies or local editor settings. It does not deploy anything.
 
 ```bash
 cd ../dr-morgan
@@ -30,7 +30,7 @@ Supported speciality keys: `medicine`, `dental`, `orthopaedic`, `gynaecology`, `
 | `content/practice.md` | Phone, email, WhatsApp, optional separate booking number, online booking URL and map coordinates |
 | `content/en/practice.md` | Chamber name, address, consultation days and hours |
 | `content/en/services/` | Actual services; review each entry and change `visible: false` to `visible: true` |
-| `content/en/experience.md`, `awards.md`, `memberships.md`, `publications.md`, `qualifications.md` | Verified professional records; enable the pages when ready |
+| `content/en/experience.md`, `awards.md`, `memberships.md`, `publications.md`, `qualifications.md` | Replace starter wording with verified professional records; set `visible: false` to hide unused pages |
 | `content/patients/en.md` | Authentic feedback with permission; starts empty |
 | `content/en/home.md` and other page files | Introductions and page wording |
 | `content/en/resources/` | Review privacy, terms, FAQ and help for this practice |

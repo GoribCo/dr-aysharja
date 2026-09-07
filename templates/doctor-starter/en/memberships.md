@@ -1,7 +1,7 @@
 ---
 title: Memberships
 description: 'Professional information for {{doctorName}}'
-visible: false
+visible: true
 ---
 
-Add verified information here and set visible to true.
+Professional memberships will be added here.

@@ -1,7 +1,7 @@
 ---
 title: Experience
 description: 'Professional information for {{doctorName}}'
-visible: false
+visible: true
 ---
 
-Add verified information here and set visible to true.
+Professional experience will be added here.

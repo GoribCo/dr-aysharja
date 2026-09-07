@@ -1,7 +1,7 @@
 ---
 title: Awards
 description: 'Professional information for {{doctorName}}'
-visible: false
+visible: true
 ---
 
-Add verified information here and set visible to true.
+Awards and recognition will be added here.
