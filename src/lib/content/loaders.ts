@@ -69,7 +69,7 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
   const doctor = loadDoctorDetails(lang)
   const practice = loadPractice(lang)
   const chamber = practice.chamber
-  const services = ['home.md', 'speciality.md'].includes(filename) ? loadDoctorServices(lang) : []
+  const services = filename === 'home.md' ? loadDoctorServices(lang) : []
   const templateVars: Record<string, string> = {
     ...createDoctorNameVariables(loadDoctorIdentity(lang)),
     chamberName: chamber.name, chamberAddress: chamber.address,
@@ -96,7 +96,7 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
   if (filename === 'review.md') pageData = { ...data, reviews: loadPatientFeedback(lang).reviews }
   const finalData = resolveContentTemplates(pageData, templateVars)
   const finalContent = resolveContentTemplates(content, templateVars)
-  const parsedChambers = ['appointment.md', 'contact.md', 'chamber.md'].includes(filename)
+  const parsedChambers = ['appointment.md', 'contact.md'].includes(filename)
     ? (Object.entries(chamber).some(([key, value]) => key !== 'phone' && Boolean(value)) ? parseChambers([chamber]) : [])
     : []
 
@@ -191,23 +191,16 @@ export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG):
       settings: loadSettingsPageContent(),
     },
     profile: loadContentSection('profile.md', lang),
-    about: loadContentSection('about.md', lang),
-    speciality: loadContentSection('speciality.md', lang),
-    subSpeciality: loadContentSection('sub-speciality.md', lang),
     qualifications: loadContentSection('qualifications.md', lang),
     experience: loadContentSection('experience.md', lang),
-    languages: loadContentSection('languages.md', lang),
     memberships: loadContentSection('memberships.md', lang),
     awards: loadContentSection('awards.md', lang),
     publications: loadContentSection('publications.md', lang),
     services: loadContentSection('services.md', lang), // Kept for backwards compatibility if needed, but not used in UI anymore
     servicesList: loadDoctorServices(lang),
-    chamber: loadContentSection('chamber.md', lang),
     appointment: loadContentSection('appointment.md', lang),
     review: loadContentSection('review.md', lang),
     home: loadContentSection('home.md', lang),
-    articles: loadContentSection('articles.md', lang),
-    faq: loadContentSection('faq.md', lang),
     contact: loadContentSection('contact.md', lang),
   }
 }

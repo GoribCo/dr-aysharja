@@ -22,11 +22,7 @@ export interface SpecialityContextValue {
   setSpeciality: (speciality: Speciality) => void
 }
 
-export interface Heading {
-  id: string
-  text: string
-  level: number
-}
+
 
 export type Theme = 'light' | 'dark'
 
@@ -163,7 +159,7 @@ export interface SiteSettings {
   theme?: { colorLight?: string; colorDark?: string; primary?: string }
 }
 
-export type DoctorSectionKey = 'profile' | 'about' | 'speciality' | 'subSpeciality' | 'qualifications' | 'experience' | 'languages' | 'memberships' | 'awards' | 'publications' | 'services' | 'chamber' | 'appointment' | 'review' | 'home' | 'articles' | 'faq' | 'contact'
+export type DoctorSectionKey = 'profile' | 'qualifications' | 'experience' | 'memberships' | 'awards' | 'publications' | 'services' | 'appointment' | 'review' | 'home' | 'contact'
 
 export type DoctorContent = Record<DoctorSectionKey, DoctorSection | null> & {
   site: SiteSettings

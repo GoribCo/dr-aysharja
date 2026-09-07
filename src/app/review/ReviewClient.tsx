@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import ThemeToggle from '@/components/ThemeToggle'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 import ContentPageTitle from "@/components/ContentPageTitle";

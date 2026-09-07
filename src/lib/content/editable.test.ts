@@ -59,7 +59,7 @@ test('one doctor edit updates names, homepage credentials, profile and Qualifica
   assert.match((data.home as any).doctorName, /Updated/)
   assert.deepEqual((data.home as any).credentialItems, ['Degree One', 'Degree Two'])
   assert.equal(data.qualifications?.content.trim(), '- **Degree One**\n- **Degree Two**')
-  assert.match(data.languages?.content ?? '', /Hindi/)
+  assert.ok((data.profile as any).languages.includes('Hindi'))
   assert.doesNotMatch(JSON.stringify(data), /{{\s*\w+\s*}}/)
 }))
 

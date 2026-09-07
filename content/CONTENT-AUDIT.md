@@ -1,6 +1,6 @@
 # Content audit and migration notes
 
-Reviewed English and Bengali doctor/page content, all service entries, English/Bengali/Hindi Resources, shared settings, appearance definitions, image references and legacy JSON files.
+Reviewed English and Bengali doctor/page content, all service entries, English/Bengali/Hindi Resources, shared settings, appearance definitions, image references and legacy JSON files. Subsequent cleanup removed unused legacy pages, language-learning JSON and byte-identical image copies.
 
 ## Repetition resolved
 
@@ -9,7 +9,7 @@ Reviewed English and Bengali doctor/page content, all service entries, English/B
 - Phone numbers were repeated under shared Contact and Appointment settings. `practice.md` now provides one main number with an optional booking override.
 - Qualifications were repeated as a sentence, a homepage list and a Qualifications list. Plain qualification entries in `doctor/{language}.md` now supply each display.
 - Profile names, biography, title, affiliation and language list now live in `doctor/{language}.md`. Profile page files contain page wording only.
-- Home and the legacy speciality summary repeated service names. Both now derive names from visible service files. Home displays the first six in service order.
+- Home now derives names from visible service files; the unused speciality summary has been removed. Home displays the first six in service order.
 - Patient records and homepage quotations now live in `patients/{language}.md`, separately from Reviews page instructions and form labels.
 - Technical settings, theme definitions and the developer inquiry remain separate from the doctor's personal information.
 
@@ -26,7 +26,7 @@ These are existing content issues, not newly verified facts:
 - The English homepage quotation is a placeholder, whereas Bengali is empty. Both were moved without inventing a testimonial.
 - The existing reviews are marked approved, but two describe prenatal/gynecological care while the site describes orthopaedics. They have been preserved in `patients/` for review, without rewriting patient statements or changing approval status. Confirm whether they belong to this doctor.
 - Experience, Awards, Memberships and Publications contain explicitly labeled sample entries. Replace these with actual records, or set `visible: false` on those pages until ready.
-- The unused Articles and Sub-speciality files also contain sample material. There are no corresponding public routes currently.
+- The unused Articles and Sub-speciality sample files were removed because they had no public routes.
 - English and Bengali sometimes use different editorial wording. Shared factual fields now have one source per language, but translating an edit remains a human task.
 
 ## Current limitations

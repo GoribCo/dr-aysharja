@@ -80,9 +80,9 @@ Reviews live in `patients/`, apart from the page labels. Only `status: approved`
 
 `hi/resources/` contains prepared Hindi resource translations. Hindi is not currently enabled as a complete doctor profile language.
 
-`site.md` and `appearance/` are normally maintained by the website maintainer. `en/qualifications.md`, `bn/qualifications.md`, and the language/speciality summary files contain automatic placeholders. Change their source data rather than replacing the placeholders.
+`site.md` and `appearance/` are normally maintained by the website maintainer. `en/qualifications.md` and `bn/qualifications.md` contain automatic placeholders. Change their source data rather than replacing the placeholders.
 
-Legacy files `about.md`, `articles.md`, `faq.md`, `languages.md`, `speciality.md`, `sub-speciality.md` and `chamber.md` have no standalone route in the current menu. The public FAQ comes from `resources/faq.md`, and the public biography comes from `doctor/{language}.md`. `languages.json` and `levels.json` are unused remnants of an earlier project; they do not control this doctor's website.
+The public FAQ comes from `resources/faq.md`, and the public biography and spoken languages come from `doctor/{language}.md`. Legacy page files without public routes and the unused language-learning JSON files have been removed.
 
 See [CONTENT-AUDIT.md](CONTENT-AUDIT.md) for existing information that needs the doctor's confirmation.
 
@@ -96,7 +96,7 @@ See [CONTENT-AUDIT.md](CONTENT-AUDIT.md) for existing information that needs the
 
 কোলনের আগের নাম, `---` চিহ্ন এবং লাইনের শুরুর ফাঁকা স্থান বদলাবেন না। ফোন নম্বর উদ্ধৃতি চিহ্নের মধ্যে রাখুন। `{{doctorName}}`-এর মতো লেখা অপরিবর্তিত রাখুন। সম্পাদনার পরে ওয়েবসাইটের দায়িত্বে থাকা ব্যক্তিকে প্রিভিউ, বিল্ড ও প্রকাশ করতে বলুন।
 
-## How chamber placeholders work
+## How shared chamber details work
 
 For a Bengali page, the loader reads `bn/practice.md`; for an English page, it reads `en/practice.md`.
 
@@ -106,4 +106,4 @@ For a Bengali page, the loader reads `bn/practice.md`; for an English page, it r
 | `{{chamberAddress}}` | `chamber.address` |
 | `{{consultationDays}}` | `chamber.visitingDays` and `chamber.visitingHours`, joined with ` · ` |
 
-These are automatic substitutions during the build, not information collected from a patient or an external service. Edit the practice file, leave the placeholders intact, and rebuild to update the pages. A language without a practice file falls back to English.
+The loader assembles these values during the build; nothing is collected from a patient or an external service. Home, Appointment and Contact receive these shared values directly. Edit the practice file and rebuild to update the pages. A language without a practice file falls back to English.
