@@ -1,16 +1,11 @@
 ---
+# Page wording only. For personal details, schedules and reviews, start with content/README.md.
 title: হোম
-doctorName: '{{doctorName}}'
 brandSubtitle: চিকিৎসা পোর্টফোলিও
 heroEyebrow: সহানুভূতিশীল ও যত্নশীল চিকিৎসা
 heroTitle: সুস্থতার পথে আরও নিশ্চিন্ত একটি পদক্ষেপ।
-credentials: 'এমবিবিএস, ডি-অর্থো'
-specialization: অর্থোপেডিকস
 heroDescription: 'হাড়, জয়েন্ট ও পেশির সমস্যা এবং আঘাতের জন্য মনোযোগী চিকিৎসা পরামর্শ।'
 appointmentNote: ফোনে অ্যাপয়েন্টমেন্ট
-consultationHours: ''
-availability: ''
-availabilityNote: ''
 introLabel: আপনার চিকিৎসক
 introTitle: যত্ন শুরু হয় মনোযোগ দিয়ে শোনা থেকে।
 introText: >-
@@ -21,29 +16,13 @@ learnMore: '{{doctorShortName}} সম্পর্কে আরও জানু�
 servicesLabel: চিকিৎসার ক্ষেত্র
 servicesTitle: প্রতিটি ধাপে পাশে আছি।
 viewServices: সব সেবা দেখুন
-services:
-  - সাধারণ অর্থোপেডিক পরামর্শ
-  - হাড় ভাঙার চিকিৎসা ও ফলোআপ
-  - জয়েন্টের ব্যথা ও আর্থ্রাইটিস
-  - খেলাধুলার আঘাতের চিকিৎসা
-  - 'কোমর, ঘাড় ও মেরুদণ্ডের যত্ন'
-  - অস্টিওপোরোসিস ও হাড়ের স্বাস্থ্য
 chamberLabel: চেম্বারে আসুন
 chamberTitle: 'আপনার অ্যাপয়েন্টমেন্ট, সহজভাবে।'
-chamberName: ''
-chamberAddress: ''
 availabilityLabel: সময়সূচি
-consultationDays: ''
 credentialsLabel: যোগ্যতা
-credentialItems:
-  - এমবিবিএস
-  - ডি-অর্থো
-testimonial: ''
-testimonialAuthor: ''
 ctaLabel: আপনার স্বাস্থ্য নিয়ে কথা বলি
 ctaTitle: প্রথম পদক্ষেপটি হতে পারে একটি ফোন কল।
 callToBook: অ্যাপয়েন্টমেন্টের জন্য ফোন করুন
-footerAddress: ''
 ---
 
 {{doctorName}}-এর হোমপেজ কনটেন্ট।

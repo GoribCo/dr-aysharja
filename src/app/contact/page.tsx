@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import ContactClient from './ContactClient'
-import { getDoctorName } from '@/lib/doctorContent'
+import { loadDoctorName } from '@/lib/content/loaders'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = getDoctorName('en');
+  const doctorName = loadDoctorName('en');
   return {
   title: 'Contact',
   description: 'Contact details and clinic information.',

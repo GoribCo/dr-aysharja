@@ -1,0 +1,62 @@
+'use client'
+
+import Link from 'next/link'
+import ContentPageTitle from '../ContentPageTitle'
+import MobileSectionTabs from '../navs/MobileSectionTabs'
+import { useUiLang } from '../UiLanguageProvider'
+
+type ResourcePageLayoutProps = {
+  title: string
+  intro: string
+  children: React.ReactNode
+  footer?: React.ReactNode
+  category?: string
+  navigation?: React.ReactNode
+  summary?: React.ReactNode
+  about?: boolean
+}
+
+export default function ResourcePageLayout({ title, intro, children, footer, category, navigation, summary, about = false }: ResourcePageLayoutProps) {
+  const { t } = useUiLang()
+  const eyebrow = category ?? t.nav.resources
+  const showSummary = !about || Boolean(summary)
+  return <div className="px-5 pb-28 pt-6 sm:px-8 lg:pb-10 lg:pt-10">
+    <div className="mx-auto max-w-4xl">
+      <ContentPageTitle eyebrow={eyebrow} heading={title} intro={intro} />
+      {navigation ?? (!about && <MobileSectionTabs label={t.nav.resources} items={[
+        { href: '/privacy/', label: t.nav.privacyShort },
+        { href: '/terms/', label: t.nav.termsShort },
+        { href: '/faq/', label: t.nav.faqShort },
+        { href: '/settings/', label: t.nav.settings },
+        { href: '/help/', label: t.nav.help },
+      ]} />)}
+      <section className={about ? (showSummary ? "about-page-grid" : "grid min-w-0") : "grid items-start gap-5 md:grid-cols-[1fr_1.35fr]"}>
+        {showSummary && <div className={about ? "about-summary" : "rounded-2xl bg-teal-800 p-6 text-white shadow-sm dark:bg-teal-950 sm:p-8"}>
+          {summary ?? (about ? <><h2 className="text-xl font-semibold">{title}</h2><p className="mt-3 text-sm leading-7">{intro}</p></> : <>
+          <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-white/12" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7h.01" /></svg>
+          </div>
+          <p className="text-sm font-medium text-teal-100">{eyebrow}</p>
+          <h2 className="mt-2 text-2xl font-semibold leading-tight">{title}</h2>
+          <p className="mt-4 text-sm leading-6 text-teal-100/80">{intro}</p>
+          </>)}
+          {!about && <Link href="/contact/" className="mt-7 inline-flex items-center rounded-lg bg-white px-4 py-3 text-sm font-semibold text-teal-800 transition hover:bg-teal-50">{t.nav.contact}<span className="ml-2" aria-hidden="true">→</span></Link>}
+        </div>}
+        <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:p-8">
+          {children}
+        </div>
+      </section>
+      {footer}
+      <section className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900/60 sm:flex-row sm:items-center sm:p-7">
+        <div>
+          <p className="text-sm font-semibold text-slate-900 dark:text-white">{about ? t.doctor.readyToSchedule : t.nav.help}</p>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t.doctor.readyToScheduleText}</p>
+        </div>
+        <div className="flex w-full shrink-0 flex-wrap gap-3 sm:w-auto">
+          <Link href="/appointment/" className="rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500">{t.nav.appointment}</Link>
+          <Link href="/contact/" className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-teal-500 hover:text-teal-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-teal-400 dark:hover:text-teal-300">{t.nav.contact}</Link>
+        </div>
+      </section>
+    </div>
+  </div>
+}

@@ -1,4 +1,5 @@
-import type { ContentLanguage } from '@/lib/doctorContent'
+import type { ContentLanguage } from '@/lib/types'
+
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 
 export function useDoctorContent(lang: ContentLanguage) {

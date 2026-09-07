@@ -1,28 +1,7 @@
 ---
+# Page wording only. For personal details, schedules and reviews, start with content/README.md.
 title: প্রোফাইল
 description: '{{doctorName}}-এর পরিচিতি'
-salutation: ডা.
-firstName: ঐশর্য্য
-middleName: লক্ষ্মী
-lastName: পোদ্দার
-designation: অর্থোপেডিক চিকিৎসক
-affiliation: ''
-role: কনসালট্যান্ট
-yearsOfExperience: ৭
-languages:
-  - বাংলা
-  - ইংরেজি
-bio: >-
-  {{doctorName}} হাড়, জয়েন্ট, পেশি ও চলাফেরার সমস্যায় অর্থোপেডিক চিকিৎসা
-  পরামর্শ দেন। রোগীর উপসর্গ ও দৈনন্দিন অসুবিধা বুঝে চিকিৎসার বিকল্প এবং পরবর্তী
-  পরিচর্যা নিয়ে আলোচনা করেন।
-specializationSummary: >-
-  হাড় ভাঙা, জয়েন্টের ব্যথা, আর্থ্রাইটিস, খেলাধুলার আঘাত, কোমর ও ঘাড়ের সমস্যা
-  এবং পুনর্বাসনের পরামর্শ।
-specializationTags:
-  - অর্থোপেডিকস
-  - হাড় ও জয়েন্টের যত্ন
-  - আঘাত ও পুনর্বাসন
 ---
 
 {{doctorName}}-এর পরিচিতি।

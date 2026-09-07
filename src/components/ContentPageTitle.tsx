@@ -1,6 +1,6 @@
 'use client'
 
-interface Props {
+interface ContentPageTitleProps {
     eyebrow: string
     heading: string
     intro?: string
@@ -10,7 +10,7 @@ export default function ContentPageTitle({
                                              eyebrow,
                                              heading,
                                              intro,
-                                         }: Props) {
+                                         }: ContentPageTitleProps) {
     return <div className="mb-10 flex items-start justify-between gap-6">
         <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-teal-700 dark:text-teal-300">{eyebrow}</p>

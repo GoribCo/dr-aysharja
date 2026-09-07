@@ -2,3 +2,7 @@ node_modules
 .next
 out
 .idea
+
+# Local metadata and generated TypeScript build cache
+.DS_Store
+*.tsbuildinfo

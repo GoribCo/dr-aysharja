@@ -2,15 +2,9 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'light' | 'dark'
-export type ThemePreference = 'system' | Theme
+import type { Theme, ThemePreference, ThemeContextValue } from '@/lib/types'
 
-interface ThemeContextValue {
-  theme: Theme
-  preference: ThemePreference
-  setPreference: (preference: ThemePreference) => void
-  toggleTheme: () => void
-}
+type ThemeProviderProps = { children: React.ReactNode }
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: 'light',
@@ -23,7 +17,7 @@ export function useTheme() {
   return useContext(ThemeContext)
 }
 
-export default function ThemeProvider({ children }: { children: React.ReactNode }) {
+export default function ThemeProvider({ children }: ThemeProviderProps) {
   const [preference, setPreferenceState] = useState<ThemePreference>('system')
   const [systemTheme, setSystemTheme] = useState<Theme>('light')
   const theme = preference === 'system' ? systemTheme : preference

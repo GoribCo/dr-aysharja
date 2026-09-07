@@ -2,14 +2,11 @@
 
 import { createContext, useContext } from 'react'
 import { useContentLanguage } from './ContentLanguageProvider'
-import { type UiLang, type Translations, translations } from '@/lib/i18n'
+import { translations } from '@/lib/i18n/translations'
 
+import type { UiLangContextValue } from '@/lib/types'
 
-interface UiLangContextValue {
-  lang: UiLang
-  t: Translations
-  setLang: (lang: UiLang) => void
-}
+type UiLanguageProviderProps = { children: React.ReactNode }
 
 const UiLangContext = createContext<UiLangContextValue>({
   lang: 'en',
@@ -21,7 +18,7 @@ export function useUiLang() {
   return useContext(UiLangContext)
 }
 
-export default function UiLanguageProvider({ children }: { children: React.ReactNode }) {
+export default function UiLanguageProvider({ children }: UiLanguageProviderProps) {
   const { lang, setLang } = useContentLanguage()
 
   return (

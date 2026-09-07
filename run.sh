@@ -10,5 +10,5 @@ fi
 
 rm -rf .next out
 
-# Port is set in src/config.ts → dev.port
-npm run dev -- --port 3010
+# Override the development port with PORT if needed.
+npm run dev -- --port "${PORT:-3010}"

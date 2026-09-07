@@ -1,18 +1,18 @@
 'use client'
 
+import { BASE_PATH } from '@/lib/site/deployment'
+
 import Link from 'next/link'
 import {useEffect, useState} from 'react'
-import {useContentLanguage} from '@/components/ContentLanguageProvider'
-import {useDoctorContent} from '@/hooks/useDoctorContent'
+import { useContentLanguage } from '@/components/ContentLanguageProvider'
+import { useDoctorContent } from '@/hooks/useDoctorContent'
 
-interface Props {
-    doctorContent: any
-    config: {
-        url: {
-            site: string;
-            basePath: string
-        },
-    }
+import type { DoctorContent } from '@/lib/types'
+
+type SectionLabelProps = { children: React.ReactNode }
+
+interface HomeClientProps {
+    doctorContent: DoctorContent
 }
 
 function text(content: Record<string, unknown>, key: string, fallback = '') {
@@ -35,12 +35,12 @@ function PhoneIcon() {
     </svg>
 }
 
-function SectionLabel({children}: { children: React.ReactNode }) {
+function SectionLabel({children}: SectionLabelProps) {
     return <p
         className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-teal-700 dark:text-teal-300">{children}</p>
 }
 
-export default function HomeClient({doctorContent: initialContent, config}: Props) {
+export default function HomeClient({doctorContent: initialContent}: HomeClientProps) {
     const [visible, setVisible] = useState(false)
     const {lang} = useContentLanguage()
     const {content: fetchedContent} = useDoctorContent(lang)
@@ -74,11 +74,11 @@ export default function HomeClient({doctorContent: initialContent, config}: Prop
                 </div>
                 <div className="hero-portrait reveal reveal-delay">
                     <div className="portrait-frame">
-                      {profileImage && <img src={`${config.url.basePath}${profileImage}`} alt={doctorName}/>} 
+                      {profileImage && <img src={`${BASE_PATH}${profileImage}`} alt={doctorName}/>}
                     </div>
-                    <div className="portrait-caption"><span className="status-dot"/> {text(home, 'availability')}
+                    {text(home, 'availability') && <div className="portrait-caption"><span className="status-dot"/> {text(home, 'availability')}
                         <small>{text(home, 'availabilityNote')}</small>
-                    </div>
+                    </div>}
                 </div>
             </section>
 
@@ -119,7 +119,7 @@ export default function HomeClient({doctorContent: initialContent, config}: Prop
                 </Link>
             </section>
 
-            <section className="visit-section content-section reveal" aria-labelledby="visit-title">
+            {text(home, 'chamberName') && <section className="visit-section content-section reveal" aria-labelledby="visit-title">
                 <div className="visit-card">
                     <div>
                         <SectionLabel>{text(home, 'chamberLabel')}</SectionLabel>
@@ -144,7 +144,7 @@ export default function HomeClient({doctorContent: initialContent, config}: Prop
                         <a href={phoneHref} className="button button-light"><PhoneIcon/> {text(home, 'callToBook')}</a>
                     </div>
                 </div>
-            </section>
+            </section>}
 
             <section className="credentials-section content-section reveal" aria-labelledby="credentials-title">
                 <SectionLabel>{text(home, 'credentialsLabel')}</SectionLabel>
@@ -154,11 +154,11 @@ export default function HomeClient({doctorContent: initialContent, config}: Prop
                     <span key={credential}>{credential}</span>)}
                 </div>
             </section>
-            <section className="quote-section reveal"
+            {text(home, 'testimonial') && <section className="quote-section reveal"
                      aria-label={text(home, 'testimonialLabel', 'Patient testimonial')}>
                 <blockquote>“{text(home, 'testimonial')}”</blockquote>
                 <cite>{text(home, 'testimonialAuthor')}</cite>
-            </section>
+            </section>}
             <section className="final-cta reveal" aria-labelledby="cta-title">
                 <div>
                     <SectionLabel>{text(home, 'ctaLabel')}</SectionLabel>

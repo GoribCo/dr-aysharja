@@ -1,11 +1,20 @@
 'use client'
 
 import Link from 'next/link'
+import SectionIcon from './SectionIcon'
+import { version as appVersion } from '../../../package.json'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import config from '@/config'
-import { navigation, isNavigationItemActive, type NavigationItem } from '@/lib/navigation'
+import { useEffect, useRef, useState } from 'react'
+import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '@/components/UiLanguageProvider'
+
+import type { NavigationItem } from '@/lib/types'
+
+type ChevronProps = { open: boolean }
+
+type NavigationAccordionProps = { item: NavigationItem; pathname: string; mobile?: boolean; onNavigate?: () => void }
+
+type BottomNavProps = { isAuthenticated?: boolean }
 
 function translatedLabel(label: string, nav: Record<string, string>) {
   return nav[label.toLowerCase()] || label
@@ -49,13 +58,12 @@ const icons = {
   ),
 }
 
-function Chevron({ open }: { open: boolean }) {
+function Chevron({ open }: ChevronProps) {
   return <svg aria-hidden="true" className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
 }
 
-function AboutAccordion({ pathname, mobile = false }: { pathname: string; mobile?: boolean }) {
+function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate }: NavigationAccordionProps) {
   const { t } = useUiLang()
-  const about = navigation.primary.find(item => item.label === 'About') as NavigationItem
   const childActive = about.children?.some(item => isNavigationItemActive(pathname, item.path)) ?? false
   const [open, setOpen] = useState(childActive)
 
@@ -72,17 +80,17 @@ function AboutAccordion({ pathname, mobile = false }: { pathname: string; mobile
       <button
         type="button"
         aria-expanded={open}
-        aria-controls={mobile ? 'mobile-about-links' : 'desktop-about-links'}
+        aria-controls={`${mobile ? 'mobile' : 'desktop'}-${about.label.toLowerCase()}-links`}
         onClick={toggle}
         className={mobile
-          ? `flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${childActive ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'}`
+          ? `flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${childActive ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'}`
           : `flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left font-medium text-sm transition-colors ${childActive ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
       >
-        <span className="flex items-center gap-3">{translatedLabel(about.label, t.nav)}</span>
+        <span className="flex items-center gap-3"><SectionIcon path={about.path} />{translatedLabel(about.label, t.nav)}</span>
         <Chevron open={open} />
       </button>
       <div
-        id={mobile ? 'mobile-about-links' : 'desktop-about-links'}
+        id={`${mobile ? 'mobile' : 'desktop'}-${about.label.toLowerCase()}-links`}
         className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
         aria-hidden={!open}
       >
@@ -95,10 +103,13 @@ function AboutAccordion({ pathname, mobile = false }: { pathname: string; mobile
                   key={item.path}
                   href={item.path}
                   tabIndex={open ? 0 : -1}
+                  onClick={onNavigate}
+                  aria-current={active ? 'page' : undefined}
                   className={mobile
-                    ? `block border-b border-gray-100 px-3 py-2.5 text-sm dark:border-gray-800 ${active ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'}`
-                    : `block rounded-xl px-3 py-2 text-sm ${active ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                    ? `flex items-center gap-2.5 border-b border-gray-100 px-3 py-2.5 text-sm dark:border-gray-800 ${active ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'}`
+                    : `flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm ${active ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
                 >
+                  <SectionIcon path={item.path} small />
                   {translatedLabel(item.label, t.nav)}
                 </Link>
               )
@@ -110,10 +121,31 @@ function AboutAccordion({ pathname, mobile = false }: { pathname: string; mobile
   )
 }
 
-export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?: boolean }) {
+export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
   const { t } = useUiLang()
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
+
+  const moreRef = useRef<HTMLDivElement>(null)
+  useEffect(() => { setMoreOpen(false) }, [pathname])
+  useEffect(() => {
+    if (!moreOpen) return
+    function dismiss(event: MouseEvent) {
+      if (!moreRef.current?.contains(event.target as Node)) setMoreOpen(false)
+    }
+    function escape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMoreOpen(false)
+        moreRef.current?.querySelector<HTMLButtonElement>('[aria-controls="mobile-more-links"]')?.focus()
+      }
+    }
+    document.addEventListener('mousedown', dismiss)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('mousedown', dismiss)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [moreOpen])
 
   const iconFor = (path: string) => path === '/' ? icons.home : path === '/profile/' ? icons.profile : path === '/settings/' ? icons.settings : path === '/review/' ? icons.review : icons.courses
   const primaryItems = navigation.primary.filter(item => !item.children)
@@ -122,7 +154,9 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
   const mobileItems = ['/', '/profile/', '/services/', '/appointment/']
     .map(path => primaryItems.find(item => item.path === path))
     .filter((item): item is NavigationItem => Boolean(item))
-  const moreItems = navigation.primary.filter(item => !mobileItems.some(primary => primary.path === item.path) && item.path !== '/contact/')
+  const moreItems = ['/about/', '/resources/', '/review/']
+    .map(path => navigation.primary.find(item => item.path === path))
+    .filter((item): item is NavigationItem => Boolean(item))
   const contact = navigation.primary.find(item => item.path === '/contact/')
 
   return (
@@ -151,11 +185,11 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
               </Link>
             )
           })}
-          <div className="relative">
+          <div className="relative" ref={moreRef}>
             {moreOpen && (
-              <div className="absolute bottom-full right-0 mb-2 w-52 rounded-xl border border-gray-200 bg-white p-2 shadow-xl dark:border-gray-700 dark:bg-gray-900">
+              <div id="mobile-more-links" className="absolute bottom-full right-0 mb-2 max-h-[70dvh] overflow-y-auto w-64 rounded-xl border border-gray-200 bg-white p-2 shadow-xl dark:border-gray-700 dark:bg-gray-900">
                 {moreItems.map(item => (
-                  item.children ? <AboutAccordion key={item.path} pathname={pathname} mobile /> : (
+                  item.children ? <NavigationAccordion key={item.path} item={item} pathname={pathname} mobile onNavigate={() => setMoreOpen(false)} /> : (
                   <Link
                     key={item.path}
                     href={item.path}
@@ -178,8 +212,8 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
             <button
               type="button"
               aria-expanded={moreOpen}
-              aria-haspopup="menu"
-              aria-label="More navigation options"
+              aria-controls="mobile-more-links"
+              aria-label={t.nav.more}
               onClick={() => setMoreOpen(open => !open)}
               className={`flex flex-col items-center gap-0.5 py-2 px-4 min-w-14 transition-colors ${
                 moreItems.some(item => item.children?.some(child => isNavigationItemActive(pathname, child.path)) || isNavigationItemActive(pathname, item.path)) || Boolean(contact && isNavigationItemActive(pathname, contact.path))
@@ -188,7 +222,7 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
               }`}
             >
               {icons.more}
-              <span className="text-[10px] font-medium">More</span>
+              <span className="text-[10px] font-medium">{t.nav.more}</span>
             </button>
           </div>
         </div>
@@ -205,8 +239,8 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
         </div>
 
         {/* Nav items */}
-        <div className="flex-1 flex flex-col gap-1 px-3 py-4">
-          {navItems.map(item => item.children ? <AboutAccordion key={item.path} pathname={pathname} /> : (() => {
+        <div className="flex-1 overflow-y-auto flex flex-col gap-1 px-3 py-4">
+          {navItems.map(item => item.children ? <NavigationAccordion key={item.path} item={item} pathname={pathname} /> : (() => {
             const active = isNavigationItemActive(pathname, item.path)
             return (
               <Link
@@ -229,7 +263,7 @@ export default function BottomNav({ isAuthenticated = true }: { isAuthenticated?
 
         {/* Footer */}
         <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800">
-          <p className="text-xs text-gray-400 dark:text-gray-600">v{config.app.version}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600">v{appVersion}</p>
         </div>
       </nav>
     </>
