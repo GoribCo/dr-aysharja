@@ -5,6 +5,9 @@ import type { UiLang, Translations } from '../types'
 const en: Translations = {
   nav: {
     resources: 'Resources',
+    privacyShort: 'Privacy',
+    termsShort: 'Terms',
+    faqShort: 'FAQ',
     privacy: 'Privacy policy',
     terms: 'Terms of use',
     faq: 'FAQ',
@@ -23,8 +26,8 @@ const en: Translations = {
     appointment: 'Appointment',
     contact: 'Contact',
     more: 'More',
-    previousSections: 'Scroll to earlier About sections',
-    nextSections: 'Scroll to more About sections',
+    previousSections: 'Scroll to earlier sections',
+    nextSections: 'Scroll to more sections',
   },
   settings: {
     panelTitle: 'Display settings',
@@ -104,6 +107,9 @@ const en: Translations = {
 const bn: Translations = {
   nav: {
     resources: 'প্রয়োজনীয় তথ্য',
+    privacyShort: 'গোপনীয়তা',
+    termsShort: 'শর্তাবলি',
+    faqShort: 'জিজ্ঞাসা',
     privacy: 'গোপনীয়তা নীতি',
     terms: 'ব্যবহারের শর্তাবলি',
     faq: 'সচরাচর জিজ্ঞাসা',
@@ -122,8 +128,8 @@ const bn: Translations = {
     appointment: 'অ্যাপয়েন্টমেন্ট',
     contact: 'যোগাযোগ',
     more: 'আরও',
-    previousSections: 'পরিচিতির আগের বিভাগগুলো দেখুন',
-    nextSections: 'পরিচিতির আরও বিভাগ দেখুন',
+    previousSections: 'আগের বিভাগগুলো দেখুন',
+    nextSections: 'আরও বিভাগ দেখুন',
   },
   settings: {
     panelTitle: 'প্রদর্শন সেটিংস',
@@ -203,6 +209,9 @@ const bn: Translations = {
 const hi: Translations = {
   nav: {
     resources: 'उपयोगी जानकारी',
+    privacyShort: 'गोपनीयता',
+    termsShort: 'शर्तें',
+    faqShort: 'प्रश्न',
     privacy: 'गोपनीयता नीति',
     terms: 'उपयोग की शर्तें',
     faq: 'अक्सर पूछे जाने वाले प्रश्न',
@@ -221,8 +230,8 @@ const hi: Translations = {
     appointment: 'अपॉइंटमेंट',
     contact: 'संपर्क',
     more: 'अधिक',
-    previousSections: 'परिचय के पिछले अनुभाग देखें',
-    nextSections: 'परिचय के और अनुभाग देखें',
+    previousSections: 'पिछले अनुभाग देखें',
+    nextSections: 'और अनुभाग देखें',
   },
   settings: {
     panelTitle: 'डिस्प्ले सेटिंग्स',

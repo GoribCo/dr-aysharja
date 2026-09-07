@@ -211,6 +211,9 @@ export interface Translations {
     appointment: string
     contact: string
     resources: string
+    privacyShort: string
+    termsShort: string
+    faqShort: string
     privacy: string
     terms: string
     faq: string

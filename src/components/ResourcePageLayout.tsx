@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import ContentPageTitle from './ContentPageTitle'
+import MobileSectionTabs from './MobileSectionTabs'
 import { useUiLang } from './UiLanguageProvider'
 
 type ResourcePageLayoutProps = {
@@ -22,7 +23,13 @@ export default function ResourcePageLayout({ title, intro, children, footer, cat
   return <div className="px-5 pb-28 pt-6 sm:px-8 lg:pb-10 lg:pt-10">
     <div className="mx-auto max-w-4xl">
       <ContentPageTitle eyebrow={eyebrow} heading={title} intro={intro} />
-      {navigation}
+      {navigation ?? (!about && <MobileSectionTabs label={t.nav.resources} items={[
+        { href: '/privacy/', label: t.nav.privacyShort },
+        { href: '/terms/', label: t.nav.termsShort },
+        { href: '/faq/', label: t.nav.faqShort },
+        { href: '/settings/', label: t.nav.settings },
+        { href: '/help/', label: t.nav.help },
+      ]} />)}
       <section className={about ? (showSummary ? "about-page-grid" : "grid min-w-0") : "grid items-start gap-5 md:grid-cols-[1fr_1.35fr]"}>
         {showSummary && <div className={about ? "about-summary" : "rounded-2xl bg-teal-800 p-6 text-white shadow-sm dark:bg-teal-950 sm:p-8"}>
           {summary ?? (about ? <><h2 className="text-xl font-semibold">{title}</h2><p className="mt-3 text-sm leading-7">{intro}</p></> : <>
