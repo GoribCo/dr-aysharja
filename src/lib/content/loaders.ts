@@ -72,6 +72,7 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
   const services = filename === 'home.md' ? loadDoctorServices(lang) : []
   const templateVars: Record<string, string> = {
     ...createDoctorNameVariables(loadDoctorIdentity(lang)),
+    doctorRole: doctor.role, doctorAffiliation: doctor.affiliation,
     chamberName: chamber.name, chamberAddress: chamber.address,
     consultationDays: [chamber.visitingDays, chamber.visitingHours].filter(Boolean).join(' · '),
     qualificationsList: doctor.qualifications.map(value => `- **${value}**`).join('\n'),

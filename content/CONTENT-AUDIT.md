@@ -19,13 +19,13 @@ Different page introductions have been preserved: short homepage introductions a
 
 These are existing content issues, not newly verified facts:
 
-- Chamber name, address and visiting times are still explicitly unconfirmed. The existing map coordinates were preserved, but the doctor must confirm that they match the actual chamber.
-- English doctor details have placeholder affiliation and years of experience; Bengali lists seven years and no affiliation. No date of starting practice was supplied, so experience has not been calculated or guessed.
+- Chamber details are now supplied by the doctor: Life Care Diagnostic & Clinic, Upajela More (Muktijodda Bhaban), Fakirhat, Bagerhat; every Monday, 4–7 PM. The appointment phone is 01762-575454. The previous unconfirmed map coordinates were cleared; exact coordinates for this chamber have not been supplied.
+- Both languages now list Orthopedics Specialist at Khulna Medical College & Hospital. English still has placeholder years of experience; Bengali lists seven years. No date of starting practice was supplied, so experience has not been calculated or guessed.
 - The Profile listed Bengali and English. The older, unused language page additionally claimed conversational Hindi and proficiency levels. The new shared list preserves the Profile's two languages. Confirm Hindi and proficiency before adding them to the doctor details.
-- English availability says “Taking appointments” and contains `[Confirm availability]`; Bengali availability is empty. Confirm these in `en/practice.md` and `bn/practice.md`.
+- Availability now shows the supplied Monday 4–7 PM schedule in both languages.
 - The English homepage quotation is a placeholder, whereas Bengali is empty. Both were moved without inventing a testimonial.
 - The existing reviews are marked approved, but two describe prenatal/gynecological care while the site describes orthopaedics. They have been preserved in `patients/` for review, without rewriting patient statements or changing approval status. Confirm whether they belong to this doctor.
-- Experience, Awards, Memberships and Publications contain explicitly labeled sample entries. Replace these with actual records, or set `visible: false` on those pages until ready.
+- Experience now lists the supplied current hospital role. Awards, Memberships and Publications still contain explicitly labeled sample entries. Replace these with actual records, or set `visible: false` on those pages until ready.
 - The unused Articles and Sub-speciality sample files were removed because they had no public routes.
 - English and Bengali sometimes use different editorial wording. Shared factual fields now have one source per language, but translating an edit remains a human task.
 

@@ -5,9 +5,9 @@ salutation: ডা.
 firstName: ঐশর্য্য
 middleName: লক্ষ্মী
 lastName: পোদ্দার
-designation: অর্থোপেডিক চিকিৎসক
-affiliation: ''
-role: কনসালট্যান্ট
+designation: অর্থোপেডিকস বিশেষজ্ঞ
+affiliation: খুলনা মেডিকেল কলেজ ও হাসপাতাল
+role: অর্থোপেডিকস বিশেষজ্ঞ
 yearsOfExperience: ৭
 languages:
   - বাংলা

@@ -5,9 +5,9 @@ salutation: Dr.
 firstName: Aysharja
 middleName: Laxmi
 lastName: Podder
-designation: Orthopaedic Doctor
-affiliation: '[Add hospital / chamber name]'
-role: Consultant
+designation: Orthopedics Specialist
+affiliation: Khulna Medical College & Hospital
+role: Orthopedics Specialist
 yearsOfExperience: '[Add]'
 languages:
   - Bangla

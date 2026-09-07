@@ -1,7 +1,7 @@
 ---
 # Clinic contact details / চেম্বারের যোগাযোগের তথ্য
 # Keep phone numbers in quotes. Leave bookingPhone empty to use phone for bookings.
-phone: '+8801719100070'
+phone: '+8801762575454'
 email: aysharjpodder@gmail.com
 whatsapp: '8801719100070'
 bookingPhone: ''
