@@ -1,6 +1,6 @@
 'use client'
 
-import ResourcePageLayout from '@/components/ResourcePageLayout'
+import ResourcePageLayout from '@/components/layouts/ResourcePageLayout'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import SettingsClient from './SettingsClient'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'

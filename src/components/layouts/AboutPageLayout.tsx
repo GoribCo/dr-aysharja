@@ -1,6 +1,6 @@
 'use client'
 
-import MobileSectionTabs from '../MobileSectionTabs'
+import MobileSectionTabs from '../navs/MobileSectionTabs'
 import ResourcePageLayout from './ResourcePageLayout'
 import { useContentLanguage } from '../ContentLanguageProvider'
 import { useUiLang } from '../UiLanguageProvider'

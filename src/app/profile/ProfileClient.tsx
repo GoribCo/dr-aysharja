@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
-import AboutPageLayout from '@/components/AboutPageLayout'
+import AboutPageLayout from '@/components/layouts/AboutPageLayout'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useUiLang } from '@/components/UiLanguageProvider'
 import type { DoctorSection, ProfileContent } from '@/lib/types'

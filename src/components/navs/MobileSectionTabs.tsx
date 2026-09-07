@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 import { isNavigationItemActive } from '@/lib/navigation/routes'
-import { useUiLang } from './UiLanguageProvider'
+import { useUiLang } from '../UiLanguageProvider'
 
 export default function MobileSectionTabs({ label, items }: {
   label: string

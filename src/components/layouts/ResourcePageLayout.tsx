@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import ContentPageTitle from '../ContentPageTitle'
-import MobileSectionTabs from '../MobileSectionTabs'
+import MobileSectionTabs from '../navs/MobileSectionTabs'
 import { useUiLang } from '../UiLanguageProvider'
 
 type ResourcePageLayoutProps = {
