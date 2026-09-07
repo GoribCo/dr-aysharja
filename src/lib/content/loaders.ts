@@ -130,11 +130,14 @@ export function loadResourceContent(page: ResourcePage, lang: ContentLanguage = 
   return { intro: data.intro, sections }
 }
 
-export function loadSettingsPageContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG): SettingsPageContent | null {
-  const section = loadContentSection('resources/settings.md', lang)
-  if (!section?.isVisible) return null
-  const data = section as DoctorSection & Partial<SettingsPageContent>
-  const { heading, description, emailLabel, emailHref, phoneLabel, phoneHref } = data
+export function loadSettingsPageContent(): SettingsPageContent | null {
+  const data = loadSiteSettings().websiteInquiry
+  if (!data) return null
+  const { heading, description, emailLabel, phoneLabel, phoneHref } = data
+  if (typeof data.emailAddress !== 'string' || typeof data.emailSubject !== 'string' ||
+    typeof data.emailBody !== 'string') return null
+  // Shared English copy stays readable in site.md; encode only the generated link.
+  const emailHref = `mailto:${data.emailAddress}?subject=${encodeURIComponent(data.emailSubject)}&body=${encodeURIComponent(data.emailBody)}`
   if (typeof heading !== 'string' || typeof description !== 'string' ||
     typeof emailLabel !== 'string' || typeof emailHref !== 'string' ||
     typeof phoneLabel !== 'string' || typeof phoneHref !== 'string') return null
@@ -146,7 +149,7 @@ export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG):
     site: loadSiteSettings(),
     resources: {
       ...Object.fromEntries(RESOURCE_PAGES.map(page => [page, loadResourceContent(page, lang)])) as Record<ResourcePage, ResourceContent | null>,
-      settings: loadSettingsPageContent(lang),
+      settings: loadSettingsPageContent(),
     },
     profile: loadContentSection('profile.md', lang),
     about: loadContentSection('about.md', lang),

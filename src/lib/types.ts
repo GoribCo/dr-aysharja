@@ -142,7 +142,19 @@ export interface DoctorService {
   isVisible: boolean;
 }
 
+export interface WebsiteInquiryContent {
+  heading: string
+  description: string
+  emailLabel: string
+  emailAddress: string
+  emailSubject: string
+  emailBody: string
+  phoneLabel: string
+  phoneHref: string
+}
+
 export interface SiteSettings {
+  websiteInquiry?: WebsiteInquiryContent
   profileImage?: string
   appointment?: { phone?: string; bookingUrl?: string }
   contact?: { phone?: string; email?: string; whatsapp?: string; latitude?: number | null; longitude?: number | null }

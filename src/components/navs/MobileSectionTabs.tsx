@@ -47,19 +47,5 @@ export default function MobileSectionTabs({ label, items }: {
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
   }
 
-  return <div className="section-tabs-shell">
-      <button type="button" className="section-tabs-button" aria-label={t.nav.previousSections}
-        aria-controls={id} disabled={scrollEdges.start} onClick={() => scrollTabs(-1)}>
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m14 6-6 6 6 6" /></svg>
-      </button>
-      <nav id={id} ref={navigationRef} className="section-tabs" aria-label={label}>
-      {items.map(item => <Link key={item.href} href={item.href}
-        aria-current={isNavigationItemActive(pathname, item.href) ? 'page' : undefined}
-      >{item.label}</Link>)}
-      </nav>
-      <button type="button" className="section-tabs-button" aria-label={t.nav.nextSections}
-        aria-controls={id} disabled={scrollEdges.end} onClick={() => scrollTabs(1)}>
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m10 6 6 6-6 6" /></svg>
-      </button>
-    </div>
+  return ''
 }
