@@ -27,7 +27,7 @@ Tests live beside the code they cover in `*.test.ts` files.
 
 ## Deployment configuration
 
-`site/deployment.ts` exports `SITE_URL` and `BASE_PATH`, using `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_BASE_PATH`. These public values are baked into the static build. `next.config.ts` reads the same base-path environment variable for routing.
+`site/config.ts` reads the public URL and default language from site.md, with `NEXT_PUBLIC_SITE_URL` overriding the URL. Browser-safe `site/deployment.ts` exports `BASE_PATH` and scopes preference keys by path using `NEXT_PUBLIC_BASE_PATH`. These public values are baked into the static build. `next.config.ts` reads the same base-path environment variable for routing.
 
 The application version comes from `package.json`. `run.sh` uses port 3010 by default and accepts `PORT`; plain `npm run dev` uses the framework default port.
 

@@ -12,6 +12,8 @@ export type FontSize = 'small' | 'medium' | 'large'
 export interface SpecialityConfiguration {
   themes: Record<Exclude<Speciality, null>, SpecialityTheme>
   neutralTheme: SpecialityTheme
+  defaultSpeciality?: Speciality
+  primaryColor?: string
   labels: Record<UiLang, Record<Exclude<Speciality, null>, string>>
 }
 
@@ -150,11 +152,14 @@ export interface WebsiteInquiryContent {
 }
 
 export interface SiteSettings {
+  url?: string
+  defaultLanguage?: ContentLanguage
+  speciality?: Speciality
   websiteInquiry?: WebsiteInquiryContent
   profileImage?: string
-  appointment?: { phone?: string; bookingUrl?: string }
+  appointment?: { phone?: string; url?: string }
   contact?: { phone?: string; email?: string; whatsapp?: string; latitude?: number | null; longitude?: number | null }
-  branding?: { shortName?: string; version?: string }
+  branding?: { shortName?: string; monogram?: string; icon?: string; version?: string }
   seo?: { defaultDescription?: string }
   theme?: { colorLight?: string; colorDark?: string; primary?: string }
 }
@@ -275,6 +280,9 @@ export interface Translations {
     availableServices: string
     consultationCtaHeading: string
     consultationCtaText: string
+    onlineBooking: string
+    onlineBookingText: string
+    bookingUnavailable: string
     phoneBooking: string
     phoneBookingHeading: string
     phoneBookingText: string

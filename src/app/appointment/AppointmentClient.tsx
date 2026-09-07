@@ -44,12 +44,18 @@ export default function AppointmentClient() {
       <div className="mx-auto max-w-4xl">
         <ContentPageTitle eyebrow={t.doctor.bookAppointment} heading={appointment.title ?? t.doctor.bookAppointment} intro={appointment.description} />
 
+        {action.url && <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800 sm:p-8">
+          <h2 className="text-2xl font-semibold">{t.doctor.onlineBooking}</h2>
+          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">{t.doctor.onlineBookingText}</p>
+          <a href={action.url} className="mt-5 inline-flex rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white">{t.doctor.onlineBooking} →</a>
+        </section>}
+        {action.type === 'none' && <p className="mb-6 text-slate-600 dark:text-slate-300">{t.doctor.bookingUnavailable}</p>}
         {action.phone && (
           <section className="rounded-2xl bg-teal-800 p-6 text-white shadow-sm dark:bg-teal-950 sm:p-8" aria-labelledby="call-heading">
             <p className="text-sm font-medium text-teal-100">{t.doctor.phoneBooking}</p>
             <h2 id="call-heading" className="mt-2 text-2xl font-semibold leading-tight">{t.doctor.phoneBookingHeading}</h2>
             <p className="mt-4 text-sm leading-6 text-teal-100/80">{t.doctor.phoneBookingText}</p>
-            <a href={action.primaryHref ?? `tel:${action.phone}`} className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-5 py-4 text-base font-semibold text-teal-800 transition hover:bg-teal-50 sm:w-auto">
+            <a href={`tel:${action.phone}`} className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-5 py-4 text-base font-semibold text-teal-800 transition hover:bg-teal-50 sm:w-auto">
               <PhoneIcon /> Call {action.phone}
             </a>
           </section>
@@ -90,7 +96,7 @@ export default function AppointmentClient() {
         {action.phone && (
           <section className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900/60 sm:flex-row sm:items-center sm:p-7">
             <div><p className="text-sm font-semibold text-slate-900 dark:text-white">{t.doctor.readyToSchedule}</p><p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t.doctor.readyToScheduleText}</p></div>
-            <a href={action.primaryHref ?? `tel:${action.phone}`} className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 sm:w-auto"><PhoneIcon /> {t.doctor.bookByPhone}</a>
+            <a href={`tel:${action.phone}`} className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 sm:w-auto"><PhoneIcon /> {t.doctor.bookByPhone}</a>
           </section>
         )}
       </div>

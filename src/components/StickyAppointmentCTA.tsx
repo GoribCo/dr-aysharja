@@ -1,10 +1,12 @@
 'use client'
 
+import { useUiLang } from './UiLanguageProvider'
 import { getAppointmentAction } from '@/lib/doctor/appointments'
 import { useContentLanguage } from '@/components/ContentLanguageProvider'
 
 export default function StickyAppointmentCTA() {
   const { content } = useContentLanguage()
+  const { t } = useUiLang()
   const appointmentAction = getAppointmentAction(content?.site.appointment ?? {})
 
   if (appointmentAction.type === 'none') return null
@@ -18,9 +20,9 @@ export default function StickyAppointmentCTA() {
             target={appointmentAction.type === 'external' ? '_blank' : undefined}
             rel={appointmentAction.type === 'external' ? 'noopener noreferrer' : undefined}
             className="flex-1 rounded-xl px-4 py-3 text-center text-sm font-semibold text-white shadow-sm"
-            style={{ backgroundColor: '#2563eb' }}
+            style={{ backgroundColor: 'var(--site-accent)' }}
           >
-            {appointmentAction.primaryLabel}
+            {t.doctor.bookAppointment}
           </a>
         )}
         {appointmentAction.secondaryHref && (
@@ -28,7 +30,7 @@ export default function StickyAppointmentCTA() {
             href={appointmentAction.secondaryHref}
             className="flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           >
-            {appointmentAction.secondaryLabel}
+            {t.doctor.bookByPhone}
           </a>
         )}
       </div>

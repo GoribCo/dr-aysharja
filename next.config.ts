@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  allowedDevOrigins: ['192.168.0.232','192.168.0.231', 'localhost'],
+  allowedDevOrigins: (process.env.DEV_ALLOWED_ORIGINS || 'localhost').split(','),
 }
 
 export default nextConfig

@@ -6,7 +6,7 @@ import { loadDoctorName, loadSiteSettings } from '@/lib/content/loaders'
 export const dynamic = 'force-static'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = loadDoctorName('en');
+  const doctorName = loadDoctorName();
   const site = loadSiteSettings()
   return {
   title: `${doctorName} - Professional Profile`,
@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function HomePage() {
-  // Load content in default language (bn) - will be dynamically loaded on client
-  const doctorContent = loadDoctorContent('bn')
+  // Render the configured default language; visitors can select another supported language.
+  const doctorContent = loadDoctorContent()
 
   return <HomeClient doctorContent={doctorContent} />
 }

@@ -5,7 +5,8 @@ import SectionIcon from './SectionIcon'
 import { version as appVersion } from '../../../package.json'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { navigation, isNavigationItemActive } from '@/lib/navigation/routes'
+import { navigation, isNavigationItemActive, visibleNavigation } from '@/lib/navigation/routes'
+import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useUiLang } from '@/components/UiLanguageProvider'
 
 import type { NavigationItem } from '@/lib/types'
@@ -122,6 +123,9 @@ function NavigationAccordion({ item: about, pathname, mobile = false, onNavigate
 }
 
 export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
+  const { content } = useContentLanguage()
+  const branding = content?.site.branding
+  const profile = content?.profile as (NonNullable<typeof content>['profile'] & { doctorShortName?: string; doctorInitials?: string }) | undefined
   const { t } = useUiLang()
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
@@ -148,16 +152,17 @@ export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
   }, [moreOpen])
 
   const iconFor = (path: string) => path === '/' ? icons.home : path === '/profile/' ? icons.profile : path === '/settings/' ? icons.settings : path === '/review/' ? icons.review : icons.courses
-  const primaryItems = navigation.primary.filter(item => !item.children)
-  const navItems = [...navigation.primary, ...(isAuthenticated ? navigation.authenticatedOnly : [])]
+  const primaryNavigation = visibleNavigation(content)
+  const primaryItems = primaryNavigation.filter(item => !item.children)
+  const navItems = [...primaryNavigation, ...(isAuthenticated ? navigation.authenticatedOnly : [])]
 
   const mobileItems = ['/', '/profile/', '/services/', '/appointment/']
     .map(path => primaryItems.find(item => item.path === path))
     .filter((item): item is NavigationItem => Boolean(item))
   const moreItems = ['/about/', '/resources/', '/review/']
-    .map(path => navigation.primary.find(item => item.path === path))
+    .map(path => primaryNavigation.find(item => item.path === path))
     .filter((item): item is NavigationItem => Boolean(item))
-  const contact = navigation.primary.find(item => item.path === '/contact/')
+  const contact = primaryNavigation.find(item => item.path === '/contact/')
 
   return (
     <>
@@ -233,9 +238,9 @@ export default function BottomNav({ isAuthenticated = true }: BottomNavProps) {
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100 dark:border-gray-800">
           <div className="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center shrink-0">
-            <span className="text-white text-sm font-bold">L</span>
+            <span className="text-white text-sm font-bold">{branding?.monogram || profile?.doctorInitials || '+'}</span>
           </div>
-          <span className="text-lg font-bold text-gray-900 dark:text-white">RxProfile</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">{branding?.shortName || profile?.doctorShortName || t.nav.profile}</span>
         </div>
 
         {/* Nav items */}

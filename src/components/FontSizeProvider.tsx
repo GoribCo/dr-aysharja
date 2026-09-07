@@ -1,5 +1,6 @@
 'use client'
 
+import { preferenceKey } from '@/lib/site/deployment'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 import type { FontSize } from '@/lib/types'
@@ -7,7 +8,7 @@ import type { FontSize } from '@/lib/types'
 type FontSizeProviderProps = { children: React.ReactNode }
 
 const sizes: Record<FontSize, string> = { small: '14px', medium: '16px', large: '18px' }
-const storageKey = 'rxprofile_font_size'
+const storageKey = preferenceKey('font-size')
 const FontSizeContext = createContext({ fontSize: 'medium' as FontSize, setFontSize: (_size: FontSize) => {} })
 
 export const useFontSize = () => useContext(FontSizeContext)

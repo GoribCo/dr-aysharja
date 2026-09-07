@@ -3,7 +3,7 @@ import ContentPage from '@/components/ContentPage'
 import { loadDoctorName } from '@/lib/content/loaders'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = loadDoctorName('en');
+  const doctorName = loadDoctorName();
   return {
   title: 'Qualifications',
   description: 'Professional qualifications and credentials',

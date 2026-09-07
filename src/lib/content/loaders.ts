@@ -6,32 +6,29 @@ import path from 'path'
 import matter from 'gray-matter'
 import { formatDoctorName, createDoctorNameVariables } from '../doctor/name'
 import { parseChambers } from '../doctor/chambers'
+import { getDefaultLanguage, loadSiteConfiguration } from '../site/config'
 import { RESOURCE_PAGES } from './resources'
 import { loadDoctorDetails, loadPractice, loadPatientFeedback, readEditableFile } from './editable'
 
-// Default language for content
-const DEFAULT_CONTENT_LANG: ContentLanguage = 'bn'
 
 // Cache for loaded content to avoid repeated disk reads
 const contentCache = new Map<string, any>()
 
-function getContentDir(lang: ContentLanguage = DEFAULT_CONTENT_LANG): string {
+function getContentDir(lang: ContentLanguage = getDefaultLanguage()): string {
   return path.join(process.cwd(), 'content', lang)
 }
 
 export function loadSiteSettings(): SiteSettings {
   const cacheKey = 'site_settings'
   if (process.env.NODE_ENV === 'production' && contentCache.has(cacheKey)) return contentCache.get(cacheKey)
-  const filePath = path.join(process.cwd(), 'content', 'site.md')
-  if (!fs.existsSync(filePath)) return {}
-  const { data } = matter(fs.readFileSync(filePath, 'utf-8'))
-  const practice = loadPractice('en')
+  const data = loadSiteConfiguration()
+  const practice = loadPractice(getDefaultLanguage())
   const shared = readEditableFile('doctor/shared.md')
   if (typeof shared.profileImage !== 'string') throw new Error('doctor/shared.md: profileImage must be text.')
   const settings: SiteSettings = {
     ...data,
     profileImage: shared.profileImage,
-    appointment: { phone: practice.bookingPhone, bookingUrl: practice.bookingUrl },
+    appointment: { phone: practice.bookingPhone, url: practice.bookingUrl },
     contact: { phone: practice.phone, email: practice.email, whatsapp: practice.whatsapp,
       latitude: practice.latitude, longitude: practice.longitude },
   }
@@ -39,7 +36,7 @@ export function loadSiteSettings(): SiteSettings {
   return settings
 }
 
-export function loadDoctorIdentity(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorNameParts {
+export function loadDoctorIdentity(lang: ContentLanguage = getDefaultLanguage()): DoctorNameParts {
   const data = loadDoctorDetails(lang)
   const field = (key: string) => typeof data[key as keyof typeof data] === 'string' ? String(data[key as keyof typeof data]).trim() : ''
   const name = { salutation: field('salutation'), firstName: field('firstName'), middleName: field('middleName'), lastName: field('lastName') }
@@ -49,11 +46,11 @@ export function loadDoctorIdentity(lang: ContentLanguage = DEFAULT_CONTENT_LANG)
   return name
 }
 
-export function loadDoctorName(lang: ContentLanguage = DEFAULT_CONTENT_LANG): string {
+export function loadDoctorName(lang: ContentLanguage = getDefaultLanguage()): string {
   return formatDoctorName(loadDoctorIdentity(lang))
 }
 
-export function loadContentSection(filename: string, lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorSection | null {
+export function loadContentSection(filename: string, lang: ContentLanguage = getDefaultLanguage()): DoctorSection | null {
   const contentDir = getContentDir(lang)
   const cacheKey = `${lang}:${filename}`
 
@@ -107,7 +104,7 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
 
   const result = {
     ...finalData,
-    ...(filename === 'profile.md' ? { doctorName: templateVars.doctorName, doctorShortName: templateVars.doctorShortName } : {}),
+    ...(['profile.md', 'home.md'].includes(filename) ? { doctorName: templateVars.doctorName, doctorShortName: templateVars.doctorShortName, doctorInitials: [doctor.firstName, doctor.middleName, doctor.lastName].filter(Boolean).map(part => Array.from(part)[0]).join('') } : {}),
     title: (finalData.title as string) || '',
     description: (finalData.description as string) || '',
     content: finalContent,
@@ -119,7 +116,7 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
   return result
 }
 
-export function loadDoctorServices(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorService[] {
+export function loadDoctorServices(lang: ContentLanguage = getDefaultLanguage()): DoctorService[] {
   const contentDir = getContentDir(lang)
   const cacheKey = `${lang}:services_list`
 
@@ -160,7 +157,7 @@ export function loadDoctorServices(lang: ContentLanguage = DEFAULT_CONTENT_LANG)
 }
 
 /** Resource copy uses the same localized Markdown and template loader as profile content. */
-export function loadResourceContent(page: ResourcePage, lang: ContentLanguage = DEFAULT_CONTENT_LANG): ResourceContent | null {
+export function loadResourceContent(page: ResourcePage, lang: ContentLanguage = getDefaultLanguage()): ResourceContent | null {
   const section = loadContentSection(`resources/${page}.md`, lang)
   if (!section?.isVisible) return null
   const data = section as DoctorSection & Partial<ResourceContent>
@@ -184,7 +181,7 @@ export function loadSettingsPageContent(): SettingsPageContent | null {
   return { heading, description, emailLabel, emailHref, phoneLabel, phoneHref }
 }
 
-export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorContent {
+export function loadDoctorContent(lang: ContentLanguage = getDefaultLanguage()): DoctorContent {
   return {
     site: loadSiteSettings(),
     resources: {
@@ -208,8 +205,10 @@ export function loadDoctorContent(lang: ContentLanguage = DEFAULT_CONTENT_LANG):
 
 /** Load every configured translation during the static build. */
 export function loadDoctorContentByLanguage(): DoctorContentByLanguage {
+  const languages = listContentLanguages()
+  if (!languages.includes(getDefaultLanguage())) throw new Error('site.md: defaultLanguage needs a complete doctor profile and page content folder.')
   return Object.fromEntries(
-    listContentLanguages().map(lang => [lang, loadDoctorContent(lang)]),
+    languages.map(lang => [lang, loadDoctorContent(lang)]),
   ) as DoctorContentByLanguage
 }
 
@@ -221,7 +220,7 @@ export function hasContentLanguageDirectory(lang: ContentLanguage): boolean {
 // Get available content languages
 export function listContentLanguages(): ContentLanguage[] {
   const contentRoot = path.join(process.cwd(), 'content')
-  if (!fs.existsSync(contentRoot)) return [DEFAULT_CONTENT_LANG]
+  if (!fs.existsSync(contentRoot)) return [getDefaultLanguage()]
   
   const dirs = fs.readdirSync(contentRoot)
     .filter(dir => {
@@ -233,5 +232,5 @@ export function listContentLanguages(): ContentLanguage[] {
     }) as ContentLanguage[]
 
   const available = ['bn', 'en', 'hi'].filter(lang => dirs.includes(lang as ContentLanguage)) as ContentLanguage[]
-  return available.length > 0 ? available : [DEFAULT_CONTENT_LANG]
+  return available.length > 0 ? available : [getDefaultLanguage()]
 }

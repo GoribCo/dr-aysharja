@@ -135,7 +135,7 @@
     --ink: #18383a;
     --muted: #617678;
     --line: #d9e7e5;
-    --teal: #176f73;
+    --teal: var(--site-accent, #176f73);
     --mint: #e8f3f0;
     color: var(--ink);
     background: #fbfdfc;
@@ -420,3 +420,24 @@
 .about-content th, .about-content td { border: 1px solid var(--border-color); padding: 8px 12px; }
 @media (max-width: 767px) { .about-page-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } .about-summary { padding-bottom: 22px; border-bottom: 1px solid var(--border-color); } .about-identity { flex-direction: row; align-items: center; gap: 18px; } .about-avatar { width: 90px; height: 108px; aspect-ratio: auto; flex-shrink: 0; border-radius: 6px; object-position: top; } .about-identity h2 { margin-top: 6px; font-size: 1.125rem; } .about-designation { margin-top: 5px; font-size: .8125rem; } .about-profile-link { margin-top: 16px; padding-bottom: 0; } }
 @media (prefers-reduced-motion: reduce) { .section-tabs a { transition: none; } }
+
+/* Brand accent is configured in site.md; no speciality is encoded in the layout. */
+:root {
+  --site-accent: #176f73;
+  --color-indigo-50: color-mix(in srgb, var(--site-accent) 5%, white);
+  --color-indigo-100: color-mix(in srgb, var(--site-accent) 12%, white);
+  --color-indigo-300: color-mix(in srgb, var(--site-accent) 45%, white);
+  --color-indigo-400: color-mix(in srgb, var(--site-accent) 60%, white);
+  --color-indigo-600: var(--site-accent);
+  --color-indigo-950: color-mix(in srgb, var(--site-accent) 30%, #101c1f);
+  --color-primary-600: var(--site-accent);
+  --color-primary-700: color-mix(in srgb, var(--site-accent) 85%, black);
+  --color-teal-50: color-mix(in srgb, var(--site-accent) 5%, white);
+  --color-teal-100: color-mix(in srgb, var(--site-accent) 12%, white);
+  --color-teal-300: color-mix(in srgb, var(--site-accent) 45%, white);
+  --color-teal-500: var(--site-accent);
+  --color-teal-600: var(--site-accent);
+  --color-teal-700: color-mix(in srgb, var(--site-accent) 90%, black);
+  --color-teal-800: color-mix(in srgb, var(--site-accent) 75%, black);
+  --color-teal-950: color-mix(in srgb, var(--site-accent) 30%, #101c1f);
+}

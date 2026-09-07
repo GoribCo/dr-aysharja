@@ -4,13 +4,13 @@ import ProfileClient from './ProfileClient'
 import { loadDoctorName } from '@/lib/content/loaders'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = loadDoctorName('en');
+  const doctorName = loadDoctorName();
   return {
   title: 'Professional Profile',
-  description: `Meet ${doctorName} and learn about her approach to patient care.`,
+  description: `Meet ${doctorName} and learn about their approach to patient care.`,
   }
 }
 
 export default function ProfilePage() {
-  return <ProfileClient initialProfile={loadContentSection('profile.md', 'bn')} />
+  return <ProfileClient initialProfile={loadContentSection('profile.md')} />
 }

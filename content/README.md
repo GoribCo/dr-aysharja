@@ -107,3 +107,7 @@ For a Bengali page, the loader reads `bn/practice.md`; for an English page, it r
 | `{{consultationDays}}` | `chamber.visitingDays` and `chamber.visitingHours`, joined with ` · ` |
 
 The loader assembles these values during the build; nothing is collected from a patient or an external service. Home, Appointment and Contact receive these shared values directly. Edit the practice file and rebuild to update the pages. A language without a practice file falls back to English.
+
+## Create a separate doctor website
+
+Use the [new-doctor guide](../docs/new-doctor.md) and `npm run create:doctor` to create another site. Do not copy this doctor’s content directory into a new practice. The generator starts with blank personal records and neutral page templates. `site.md` now configures the actual speciality, initial language, branding and public URL; visitor display settings only affect presentation.

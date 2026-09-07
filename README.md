@@ -2,6 +2,10 @@
 
 A multilingual doctor profile website built with Next.js, React and Tailwind CSS. Doctor information and resource pages live in Markdown; the site exports static files with no database.
 
+## Reuse for another doctor
+
+Run `npm run create:doctor -- ../new-doctor --name "Dr. Alex Morgan" --speciality cardiology` to create a separate, clean starter. See [the new-doctor setup guide](docs/new-doctor.md) for content, languages, branding, booking and deployment.
+
 ## Development
 
 ```bash
@@ -53,7 +57,7 @@ Rebuild after changing content to update the static export.
 
 ## Deployment
 
-Set `NEXT_PUBLIC_SITE_URL` to the full public website URL and `NEXT_PUBLIC_BASE_PATH` to the deployment subdirectory (or leave it empty for a domain root). The shared defaults live in `src/lib/site/deployment.ts`; the base path is also read by `next.config.ts`.
+Set `NEXT_PUBLIC_SITE_URL` to the full public website URL and `NEXT_PUBLIC_BASE_PATH` to the deployment subdirectory (or leave it empty for a domain root). The public URL defaults to `content/site.md`; the base path is also read by `next.config.ts`.
 
 ```bash
 npm run build

@@ -31,7 +31,7 @@ export default function SiteHeader({ initialHome, doctorName }: SiteHeaderProps)
   return <header className="site-header">
     <div className="site-header-inner">
       <Link href="/" className="brand" aria-label={`${name} ${t.nav.home}`}>
-        <span className="brand-mark">ALP</span>
+        <span className="brand-mark">{fetchedContent?.site.branding?.monogram || text(home, 'doctorInitials', '+')}</span>
         <span><strong>{name}</strong>
                   <small>{text(home, 'brandSubtitle')}</small>
                   </span>

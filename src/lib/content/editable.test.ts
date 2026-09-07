@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import matter from 'gray-matter'
-import { loadDoctorContent, loadContentSection } from './loaders'
+import { loadDoctorContent, loadContentSection, loadDoctorServices } from './loaders'
 import { loadDoctorDetails, loadPractice } from './editable'
 
 function fixture(run: (edit: (filename: string, update: (data: any) => void) => void) => void) {
@@ -64,9 +64,10 @@ test('one doctor edit updates names, homepage credentials, profile and Qualifica
 }))
 
 test('service title and visibility changes reach Home without a second service list', () => fixture(edit => {
-  edit('en/services/general-orthopedic-consultation.md', data => { data.title = 'Updated service' })
+  const serviceFile = fs.readdirSync('content/en/services').find(file => file.endsWith('.md'))!
+  edit(`en/services/${serviceFile}`, data => { data.title = 'Updated service'; data.order = -1; data.visible = true })
   assert.equal((loadDoctorContent('en').home as any).services[0], 'Updated service')
-  edit('en/services/general-orthopedic-consultation.md', data => { data.visible = false })
+  edit(`en/services/${serviceFile}`, data => { data.visible = false })
   const data = loadDoctorContent('en')
   assert.ok(!(data.home as any).services.includes('Updated service'))
   assert.ok(!data.servicesList.some(service => service.title === 'Updated service'))
@@ -106,4 +107,36 @@ test('feedback records stay separate from page copy and feed both displays', () 
   assert.equal((data.home as any).testimonialAuthor, 'Patient A')
   assert.equal((data.review as any).reviews.length, 1)
   assert.equal((data.review as any).reviews[0].review, 'A selected quotation.')
+}))
+
+test('another speciality and online-only booking are configured entirely through content', () => fixture(edit => {
+  edit('site.md', data => {
+    data.defaultLanguage = 'en'
+    data.speciality = 'cardiology'
+    data.branding = { shortName: 'Heart Clinic', monogram: 'HC', icon: '/icon.svg' }
+    delete data.websiteInquiry
+  })
+  edit('doctor/en.md', data => {
+    data.firstName = 'Alex'
+    data.middleName = ''
+    data.lastName = 'Morgan'
+    data.designation = 'Cardiology Specialist'
+    data.role = 'Cardiology Specialist'
+    data.specialization = 'Cardiology'
+    data.bio = 'Meet {{doctorName}}.'
+    data.affiliation = 'Example Hospital'
+  })
+  edit('practice.md', data => {
+    data.phone = ''
+    data.bookingPhone = ''
+    data.bookingUrl = 'https://example.com/appointments'
+  })
+  const data = loadDoctorContent()
+  assert.equal((data.profile as any).doctorName, 'Dr. Alex Morgan')
+  assert.equal(data.site.speciality, 'cardiology')
+  assert.equal(data.site.defaultLanguage, 'en')
+  assert.equal(data.site.branding?.monogram, 'HC')
+  assert.equal(data.site.appointment?.url, 'https://example.com/appointments')
+  assert.equal(data.site.appointment?.phone, '')
+  assert.equal(data.resources.settings, null)
 }))
