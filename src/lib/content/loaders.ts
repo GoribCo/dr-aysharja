@@ -7,6 +7,7 @@ import matter from 'gray-matter'
 import { formatDoctorName, createDoctorNameVariables } from '../doctor/name'
 import { parseChambers } from '../doctor/chambers'
 import { RESOURCE_PAGES } from './resources'
+import { loadDoctorDetails, loadPractice, loadPatientFeedback, readEditableFile } from './editable'
 
 // Default language for content
 const DEFAULT_CONTENT_LANG: ContentLanguage = 'bn'
@@ -24,14 +25,23 @@ export function loadSiteSettings(): SiteSettings {
   const filePath = path.join(process.cwd(), 'content', 'site.md')
   if (!fs.existsSync(filePath)) return {}
   const { data } = matter(fs.readFileSync(filePath, 'utf-8'))
-  contentCache.set(cacheKey, data as SiteSettings)
-  return data as SiteSettings
+  const practice = loadPractice('en')
+  const shared = readEditableFile('doctor/shared.md')
+  if (typeof shared.profileImage !== 'string') throw new Error('doctor/shared.md: profileImage must be text.')
+  const settings: SiteSettings = {
+    ...data,
+    profileImage: shared.profileImage,
+    appointment: { phone: practice.bookingPhone, bookingUrl: practice.bookingUrl },
+    contact: { phone: practice.phone, email: practice.email, whatsapp: practice.whatsapp,
+      latitude: practice.latitude, longitude: practice.longitude },
+  }
+  contentCache.set(cacheKey, settings)
+  return settings
 }
 
 export function loadDoctorIdentity(lang: ContentLanguage = DEFAULT_CONTENT_LANG): DoctorNameParts {
-  const profilePath = path.join(getContentDir(lang), 'profile.md')
-  const data = fs.existsSync(profilePath) ? matter(fs.readFileSync(profilePath, 'utf-8')).data : {}
-  const field = (key: string) => typeof data[key] === 'string' ? data[key].trim() : ''
+  const data = loadDoctorDetails(lang)
+  const field = (key: string) => typeof data[key as keyof typeof data] === 'string' ? String(data[key as keyof typeof data]).trim() : ''
   const name = { salutation: field('salutation'), firstName: field('firstName'), middleName: field('middleName'), lastName: field('lastName') }
   if (!name.firstName && !name.middleName && !name.lastName) {
     return lang === 'en' ? { ...name, firstName: 'Doctor' } : loadDoctorIdentity('en')
@@ -56,14 +66,43 @@ export function loadContentSection(filename: string, lang: ContentLanguage = DEF
 
   const raw = fs.readFileSync(filePath, 'utf-8')
   const { data, content } = matter(raw)
-  const templateVars = createDoctorNameVariables(loadDoctorIdentity(lang))
-  const finalData = resolveContentTemplates(data, templateVars)
+  const doctor = loadDoctorDetails(lang)
+  const practice = loadPractice(lang)
+  const chamber = practice.chamber
+  const services = ['home.md', 'speciality.md'].includes(filename) ? loadDoctorServices(lang) : []
+  const templateVars: Record<string, string> = {
+    ...createDoctorNameVariables(loadDoctorIdentity(lang)),
+    chamberName: chamber.name, chamberAddress: chamber.address,
+    consultationDays: [chamber.visitingDays, chamber.visitingHours].filter(Boolean).join(' · '),
+    qualificationsList: doctor.qualifications.map(value => `- **${value}**`).join('\n'),
+    languagesList: doctor.languages.map(value => `- ${value}`).join('\n'),
+    servicesList: services.map(value => `- ${value.title}`).join('\n'),
+  }
+  let pageData = data
+  if (filename === 'profile.md') pageData = { ...data, ...doctor }
+  if (filename === 'home.md') {
+    const feedback = loadPatientFeedback(lang)
+    pageData = { ...data, doctorName: templateVars.doctorName,
+      credentials: doctor.qualifications.map(value => value.replace(/\*\*/g, '')).join(', '),
+      credentialItems: doctor.qualifications.map(value => value.replace(/\*\*/g, '')),
+      specialization: doctor.specialization,
+      chamberName: chamber.name, chamberAddress: chamber.address,
+      consultationHours: chamber.visitingHours, consultationDays: templateVars.consultationDays,
+      availability: practice.availability, availabilityNote: practice.availabilityNote,
+      services: services.slice(0, 6).map(service => service.title),
+      testimonial: feedback.featuredQuote, testimonialAuthor: feedback.featuredAuthor,
+    }
+  }
+  if (filename === 'review.md') pageData = { ...data, reviews: loadPatientFeedback(lang).reviews }
+  const finalData = resolveContentTemplates(pageData, templateVars)
   const finalContent = resolveContentTemplates(content, templateVars)
-  const parsedChambers = parseChambers(finalData.chambers ?? [])
+  const parsedChambers = ['appointment.md', 'contact.md', 'chamber.md'].includes(filename)
+    ? (Object.entries(chamber).some(([key, value]) => key !== 'phone' && Boolean(value)) ? parseChambers([chamber]) : [])
+    : []
 
   // If the content includes "TODO", we hide the section unless structured chamber data exists.
   const hasStructuredDetails = parsedChambers.length > 0
-  const isVisible = !content.includes('TODO') || hasStructuredDetails
+  const isVisible = data.visible !== false && (!content.includes('TODO') || hasStructuredDetails)
 
   const result = {
     ...finalData,
@@ -97,7 +136,7 @@ export function loadDoctorServices(lang: ContentLanguage = DEFAULT_CONTENT_LANG)
     const { data, content } = matter(raw)
     
     // If the content includes "TODO", we hide the service.
-    const isVisible = !content.includes('TODO');
+    const isVisible = data.visible !== false && !content.includes('TODO');
 
     const templateVars = createDoctorNameVariables(loadDoctorIdentity(lang))
     const finalContent = resolveContentTemplates(content, templateVars)
@@ -195,7 +234,8 @@ export function listContentLanguages(): ContentLanguage[] {
       const fullPath = path.join(contentRoot, dir)
       // Resource-only translations do not enable an incomplete profile language.
       return fs.statSync(fullPath).isDirectory() && ['bn', 'hi', 'en'].includes(dir) &&
-        fs.existsSync(path.join(fullPath, 'profile.md'))
+        fs.existsSync(path.join(fullPath, 'profile.md')) &&
+        fs.existsSync(path.join(contentRoot, 'doctor', `${dir}.md`))
     }) as ContentLanguage[]
 
   const available = ['bn', 'en', 'hi'].filter(lang => dirs.includes(lang as ContentLanguage)) as ContentLanguage[]

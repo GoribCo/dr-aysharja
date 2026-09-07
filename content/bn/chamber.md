@@ -3,6 +3,8 @@ title: চেম্বার
 description: '{{doctorName}}-এর ক্লিনিক ও চেম্বারের তথ্য'
 ---
 
-# চেম্বার
+{{chamberName}}
 
-চেম্বারের বিস্তারিত তথ্য এখনও যোগ করা হয়নি।
+{{chamberAddress}}
+
+{{consultationDays}}

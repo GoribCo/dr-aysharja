@@ -1,6 +1,6 @@
 # Doctor name configuration
 
-Edit the name fields in `content/en/profile.md` and `content/bn/profile.md`. Each language owns its spelling. Keep the title in `salutation` only.
+Edit the name fields in `content/doctor/en.md` and `content/doctor/bn.md`. Each language owns its spelling. Keep the title in `salutation` only.
 
 ```yaml
 salutation: Dr.

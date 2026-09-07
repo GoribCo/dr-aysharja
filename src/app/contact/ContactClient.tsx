@@ -27,7 +27,7 @@ export default function ContactClient() {
   const contact = content?.contact as ContactContent | null
   const chamber = contact?.chambers?.[0]
   const site = content?.site
-  const phone = normalizePhone(site?.appointment?.phone) ?? normalizePhone(site?.contact?.phone)
+  const phone = normalizePhone(site?.contact?.phone) ?? normalizePhone(site?.appointment?.phone)
   const email = configuredValue(site?.contact?.email)
   const whatsapp = normalizePhone(site?.contact?.whatsapp)
   const latitude = site?.contact?.latitude ?? null

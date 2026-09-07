@@ -76,9 +76,9 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                     <div className="portrait-frame">
                       {profileImage && <img src={`${BASE_PATH}${profileImage}`} alt={doctorName}/>}
                     </div>
-                    <div className="portrait-caption"><span className="status-dot"/> {text(home, 'availability')}
+                    {text(home, 'availability') && <div className="portrait-caption"><span className="status-dot"/> {text(home, 'availability')}
                         <small>{text(home, 'availabilityNote')}</small>
-                    </div>
+                    </div>}
                 </div>
             </section>
 
@@ -119,7 +119,7 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                 </Link>
             </section>
 
-            <section className="visit-section content-section reveal" aria-labelledby="visit-title">
+            {text(home, 'chamberName') && <section className="visit-section content-section reveal" aria-labelledby="visit-title">
                 <div className="visit-card">
                     <div>
                         <SectionLabel>{text(home, 'chamberLabel')}</SectionLabel>
@@ -144,7 +144,7 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                         <a href={phoneHref} className="button button-light"><PhoneIcon/> {text(home, 'callToBook')}</a>
                     </div>
                 </div>
-            </section>
+            </section>}
 
             <section className="credentials-section content-section reveal" aria-labelledby="credentials-title">
                 <SectionLabel>{text(home, 'credentialsLabel')}</SectionLabel>
@@ -154,11 +154,11 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                     <span key={credential}>{credential}</span>)}
                 </div>
             </section>
-            <section className="quote-section reveal"
+            {text(home, 'testimonial') && <section className="quote-section reveal"
                      aria-label={text(home, 'testimonialLabel', 'Patient testimonial')}>
                 <blockquote>“{text(home, 'testimonial')}”</blockquote>
                 <cite>{text(home, 'testimonialAuthor')}</cite>
-            </section>
+            </section>}
             <section className="final-cta reveal" aria-labelledby="cta-title">
                 <div>
                     <SectionLabel>{text(home, 'ctaLabel')}</SectionLabel>

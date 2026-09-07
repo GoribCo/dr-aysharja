@@ -1,8 +1,10 @@
 ---
-title: "Chamber"
-description: "Clinic and chamber details for {{doctorName}}"
+title: Chamber
+description: 'Clinic and chamber details for {{doctorName}}'
 ---
 
-# Chamber
+{{chamberName}}
 
-No chamber details have been configured yet.
+{{chamberAddress}}
+
+{{consultationDays}}

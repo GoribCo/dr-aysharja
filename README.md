@@ -27,7 +27,11 @@ src/
     site/              Deployment URL and base path
     types.ts           Shared application types
 content/
-  site.md              Shared doctor-site settings
+  README.md            Start here: doctor-friendly editing guide
+  practice.md          Shared contact details and map coordinates
+  doctor/              Personal details, qualifications, biography and portrait
+  patients/            Patient reviews and selected homepage quotations
+  site.md              Technical settings and developer inquiry
   en/                  English profile and service content
     resources/         Privacy, terms, FAQ and help Markdown
   bn/                  Bengali profile, services and resources
@@ -39,9 +43,11 @@ See [the library guide](src/lib/README.md) for module boundaries and function na
 
 ## Editing content
 
-Edit `content/site.md` for shared contact, booking, image and SEO settings. Edit `content/{language}/*.md` for localized profile pages and `content/{language}/services/*.md` for services. Resource text belongs in `content/{language}/resources/{privacy,terms,faq,help}.md`.
+Start with [the content editing guide](content/README.md). Edit `content/practice.md` for shared contact details and `content/{language}/practice.md` for chamber details, `content/doctor/{language}.md` for personal information, and `content/patients/{language}.md` for feedback. Localized page files contain page wording; service files are the source for Services and the homepage service list. Technical settings and the developer inquiry remain in `content/site.md`.
 
-The language selector enables languages with a profile file. Hindi resource files alone do not enable Hindi across the website. Interface labels live in `src/lib/i18n/translations.ts`.
+[The content audit](content/CONTENT-AUDIT.md) lists existing placeholders and facts that need confirmation.
+
+The language selector enables languages with both a profile page file and a doctor details file. Hindi resource files alone do not enable Hindi across the website. Interface labels live in `src/lib/i18n/translations.ts`.
 
 Rebuild after changing content to update the static export.
 

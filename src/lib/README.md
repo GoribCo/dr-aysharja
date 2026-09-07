@@ -13,7 +13,7 @@ Import the specific module you need. There is no root barrel export, so browser 
 
 ## Content loading
 
-`content/loaders.ts` reads from `content/site.md` and `content/{language}/`, including `resources/*.md`. Use it from server components and build code. `loadDoctorContentByLanguage()` supplies the language provider with the complete content at build time; client components read that provider through `useDoctorContent()` or `useContentLanguage()`.
+`content/editable.ts` reads and validates doctor details in `content/doctor/`, shared practice details in `content/practice.md` and localized chamber details in `content/{language}/practice.md`, and feedback in `content/patients/`. `content/loaders.ts` combines those shared sources with page wording and reads from `content/site.md` and `content/{language}/`, including `resources/*.md`. Use it from server components and build code. `loadDoctorContentByLanguage()` supplies the language provider with the complete content at build time; client components read that provider through `useDoctorContent()` or `useContentLanguage()`.
 
 Shared domain, content and UI types live in `src/lib/types.ts` and use `import type`. Component-specific props are private to their component files. `DoctorSectionKey` identifies the ordinary Markdown sections, excluding collections such as services and resources.
 
@@ -38,3 +38,5 @@ Edit `content/appearance/speciality-themes.md` for the nine speciality themes an
 The root layout loads and validates these files at build time and passes them to `SpecialityProvider`. Browser components use `useSpeciality().configuration`; do not import filesystem loaders into client components. Missing themes, invalid colors, and incomplete translations fail the build with the offending field. Rebuild after content changes. Tailwind explicitly scans the theme Markdown for gradient classes.
 
 The shared website development inquiry is configured under `websiteInquiry` in `content/site.md`, in English for every site language. Edit `emailAddress`, `emailSubject`, and multiline `emailBody` there; `loadSettingsPageContent()` generates the encoded mailto link. Language-specific Resources folders do not need a `settings.md` file.
+
+Shared factual fields are assembled by `loadContentSection()`, including direct page entrypoints. Home service titles derive from visible services; qualifications and chamber details use generated values. `visible: false` explicitly hides a section or service. Consult `content/README.md` and `content/CONTENT-AUDIT.md` for editing ownership and migration notes.

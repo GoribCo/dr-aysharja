@@ -1,8 +1,6 @@
 ---
-title: "Languages"
-description: "Languages spoken by {{doctorName}}"
+title: Languages
+description: 'Languages spoken by {{doctorName}}'
 ---
 
-- **Bengali** (Native)
-- **English** (Fluent)
-- **Hindi** (Conversational)
+{{languagesList}}
