@@ -1,9 +1,9 @@
 'use client'
 
-import MobileSectionTabs from './MobileSectionTabs'
+import MobileSectionTabs from '../MobileSectionTabs'
 import ResourcePageLayout from './ResourcePageLayout'
-import { useContentLanguage } from './ContentLanguageProvider'
-import { useUiLang } from './UiLanguageProvider'
+import { useContentLanguage } from '../ContentLanguageProvider'
+import { useUiLang } from '../UiLanguageProvider'
 import { BASE_PATH } from '@/lib/site/deployment'
 import type { DoctorSection, ProfileContent } from '@/lib/types'
 

@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import ContentPageTitle from './ContentPageTitle'
-import MobileSectionTabs from './MobileSectionTabs'
-import { useUiLang } from './UiLanguageProvider'
+import ContentPageTitle from '../ContentPageTitle'
+import MobileSectionTabs from '../MobileSectionTabs'
+import { useUiLang } from '../UiLanguageProvider'
 
 type ResourcePageLayoutProps = {
   title: string

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import ResourcePageLayout from './ResourcePageLayout'
+import ResourcePageLayout from './layouts/ResourcePageLayout'
 import { useUiLang } from './UiLanguageProvider'
 
 import { useContentLanguage } from './ContentLanguageProvider'

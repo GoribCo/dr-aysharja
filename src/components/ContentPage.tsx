@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useUiLang } from './UiLanguageProvider'
 import { useContentLanguage } from './ContentLanguageProvider'
-import AboutPageLayout, { type AboutPageKey } from './AboutPageLayout'
+import AboutPageLayout, { type AboutPageKey } from './layouts/AboutPageLayout'
 
 interface ContentPageProps {
   sectionKey: Exclude<AboutPageKey, 'profile'>
