@@ -9,37 +9,7 @@ import { useUiLang } from '@/components/UiLanguageProvider'
 import ReactMarkdown from 'react-markdown'
 
 import type { DoctorService } from '@/lib/types'
-
-type ServiceIconProps = { name?: string }
-
-function ServiceIcon({ name }: ServiceIconProps) {
-  if (name === 'Bone') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 16 16 8a3 3 0 1 0 4-4 3 3 0 1 0-4 4L8 16a3 3 0 1 0-4 4 3 3 0 1 0 4-4Z" />
-      </svg>
-    )
-  }
-
-  if (name === 'Heart') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
-      </svg>
-    )
-  }
-
-  if (name === 'Stethoscope') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 3v5a6 6 0 0 0 12 0V3M4 3h4M16 3h4M18 14a4 4 0 1 0 4 4v-1" />
-        <circle cx="21" cy="17" r="1" />
-      </svg>
-    )
-  }
-
-  return <span aria-hidden="true" className="text-lg">+</span>
-}
+import { ServiceIcon } from '@/components/Icons'
 
 export default function ServicesClient() {
   const { lang } = useContentLanguage()

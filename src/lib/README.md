@@ -33,7 +33,7 @@ The application version comes from `package.json`. `run.sh` uses port 3010 by de
 
 ## Speciality appearance content
 
-Edit `content/settings/appearance/speciality-themes.md` for the nine speciality themes and neutral fallback, and `content/settings/appearance/speciality-labels.md` for English, Bengali, and Hindi labels. Values live in YAML frontmatter; keep the existing speciality keys and quote hex colors. Theme entries include colors, gradient classes, icon, label, and description.
+Edit `content/settings/appearance/speciality-themes.md` for the nine speciality themes and neutral fallback. Edit `src/lib/i18n/translations.ts` for the translated speciality labels. Keep the existing speciality keys and quote hex colors. Theme entries include colors, gradient classes, icon, label, and description.
 
 The root layout loads and validates these files at build time and passes them to `SpecialityProvider`. Browser components use `useSpeciality().configuration`; do not import filesystem loaders into client components. Missing themes, invalid colors, and incomplete translations fail the build with the offending field. Rebuild after content changes. Tailwind explicitly scans the theme Markdown for gradient classes.
 

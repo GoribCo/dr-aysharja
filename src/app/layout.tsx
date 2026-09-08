@@ -9,7 +9,7 @@ import FontSizeProvider from '@/components/FontSizeProvider'
 import UiLanguageProvider from '@/components/UiLanguageProvider'
 import SpecialityProvider from '@/components/SpecialityProvider'
 import { loadSpecialityThemes } from '@/lib/appearance/speciality-themes'
-import { loadSpecialityLabels } from '@/lib/appearance/speciality-labels'
+import { specialityLabels } from '@/lib/i18n/translations'
 import type { Speciality } from '@/lib/types'
 import ContentLanguageProvider from '@/components/ContentLanguageProvider'
 import BottomNav from '@/components/navs/BottomNav'
@@ -97,7 +97,7 @@ export default function RootLayout({
     ...appearance,
     defaultSpeciality: site.speciality,
     primaryColor: site.theme?.primary,
-    labels: loadSpecialityLabels(Object.keys(appearance.themes) as Exclude<Speciality, null>[]),
+    labels: specialityLabels,
   }
 
   return (

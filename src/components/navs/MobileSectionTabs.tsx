@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 import { isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '../UiLanguageProvider'
+import { NextIcon, PreviousIcon } from '@/components/Icons'
 
 export default function MobileSectionTabs({ label, items }: {
   label: string
@@ -50,7 +51,7 @@ export default function MobileSectionTabs({ label, items }: {
   return <div className="section-tabs-shell">
       <button type="button" className="section-tabs-button" aria-label={t.nav.previousSections}
         aria-controls={id} disabled={scrollEdges.start} onClick={() => scrollTabs(-1)}>
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m14 6-6 6 6 6" /></svg>
+        <PreviousIcon />
       </button>
       <nav id={id} ref={navigationRef} className="section-tabs" aria-label={label}>
       {items.map(item => <Link key={item.href} href={item.href}
@@ -59,7 +60,7 @@ export default function MobileSectionTabs({ label, items }: {
       </nav>
       <button type="button" className="section-tabs-button" aria-label={t.nav.nextSections}
         aria-controls={id} disabled={scrollEdges.end} onClick={() => scrollTabs(1)}>
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m10 6 6 6-6 6" /></svg>
+        <NextIcon />
       </button>
     </div>
 }
