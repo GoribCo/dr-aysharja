@@ -9,37 +9,7 @@ import { useUiLang } from '@/components/UiLanguageProvider'
 import ReactMarkdown from 'react-markdown'
 
 import type { DoctorService } from '@/lib/types'
-
-type ServiceIconProps = { name?: string }
-
-function ServiceIcon({ name }: ServiceIconProps) {
-  if (name === 'Bone') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 16 16 8a3 3 0 1 0 4-4 3 3 0 1 0-4 4L8 16a3 3 0 1 0-4 4 3 3 0 1 0 4-4Z" />
-      </svg>
-    )
-  }
-
-  if (name === 'Heart') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
-      </svg>
-    )
-  }
-
-  if (name === 'Stethoscope') {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 3v5a6 6 0 0 0 12 0V3M4 3h4M16 3h4M18 14a4 4 0 1 0 4 4v-1" />
-        <circle cx="21" cy="17" r="1" />
-      </svg>
-    )
-  }
-
-  return <span aria-hidden="true" className="text-lg">+</span>
-}
+import { ServiceIcon } from '@/components/Icons'
 
 export default function ServicesClient() {
   const { lang } = useContentLanguage()
@@ -109,14 +79,14 @@ export default function ServicesClient() {
             ))}
           </ul>
         </section>
-        {appointment.phone && (
+        {appointment.primaryHref && (
           <section className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900/60 sm:flex-row sm:items-center sm:p-7">
             <div>
               <p className="text-sm font-semibold text-slate-900 dark:text-white">{t.doctor.consultationCtaHeading}</p>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t.doctor.consultationCtaText}</p>
             </div>
             <a
-              href={`tel:${appointment.phone}`}
+              href={appointment.primaryHref}
               className="w-full rounded-lg bg-teal-700 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 sm:w-auto"
             >
               {t.doctor.bookAppointment}

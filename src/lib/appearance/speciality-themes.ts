@@ -29,7 +29,7 @@ function validateTheme(value: unknown, location: string): asserts value is Speci
 }
 
 /** Read on the server; pass the result to SpecialityProvider for browser use. */
-export function loadSpecialityThemes(filePath = path.join(process.cwd(), 'content/appearance/speciality-themes.md')) {
+export function loadSpecialityThemes(filePath = path.join(process.cwd(), 'content/settings/appearance/speciality-themes.md')) {
   const { data } = matter(fs.readFileSync(filePath, 'utf8'))
   for (const key of specialityKeys) validateTheme(data.themes?.[key], `${filePath}: themes.${key}`)
   for (const key of Object.keys(data.themes)) {

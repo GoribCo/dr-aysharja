@@ -7,12 +7,9 @@ import { useDoctorContent } from '@/hooks/useDoctorContent'
 import ContentPageTitle from "@/components/ContentPageTitle";
 
 import type { ReviewContent, PatientReview } from '@/lib/types'
+import { text } from '@/lib/content/helpers'
 
 type StarsProps = { rating: number; label?: string }
-
-function text(content: ReviewContent | null, key: string, fallback: string) {
-  return typeof content?.[key] === 'string' ? content[key] as string : fallback
-}
 
 function reviews(content: ReviewContent): PatientReview[] {
   return Array.isArray(content.reviews)

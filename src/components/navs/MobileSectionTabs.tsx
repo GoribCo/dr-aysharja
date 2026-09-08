@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 import { isNavigationItemActive } from '@/lib/navigation/routes'
 import { useUiLang } from '../UiLanguageProvider'
+import { NextIcon, PreviousIcon } from '@/components/Icons'
 
 export default function MobileSectionTabs({ label, items }: {
   label: string
@@ -47,5 +48,19 @@ export default function MobileSectionTabs({ label, items }: {
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
   }
 
-  return ''
+  return <div className="section-tabs-shell">
+      <button type="button" className="section-tabs-button" aria-label={t.nav.previousSections}
+        aria-controls={id} disabled={scrollEdges.start} onClick={() => scrollTabs(-1)}>
+        <PreviousIcon />
+      </button>
+      <nav id={id} ref={navigationRef} className="section-tabs" aria-label={label}>
+      {items.map(item => <Link key={item.href} href={item.href}
+        aria-current={isNavigationItemActive(pathname, item.href) ? 'page' : undefined}
+      >{item.label}</Link>)}
+      </nav>
+      <button type="button" className="section-tabs-button" aria-label={t.nav.nextSections}
+        aria-controls={id} disabled={scrollEdges.end} onClick={() => scrollTabs(1)}>
+        <NextIcon />
+      </button>
+    </div>
 }

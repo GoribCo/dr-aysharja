@@ -8,31 +8,13 @@ import { useContentLanguage } from '@/components/ContentLanguageProvider'
 import { useDoctorContent } from '@/hooks/useDoctorContent'
 
 import type { DoctorContent } from '@/lib/types'
+import { ArrowIcon, PhoneIcon } from '@/components/Icons'
+import { list, text } from '@/lib/content/helpers'
 
 type SectionLabelProps = { children: React.ReactNode }
 
 interface HomeClientProps {
     doctorContent: DoctorContent
-}
-
-function text(content: Record<string, unknown>, key: string, fallback = '') {
-    return typeof content[key] === 'string' ? content[key] as string : fallback
-}
-
-function list(content: Record<string, unknown>, key: string) {
-    return Array.isArray(content[key]) ? content[key].filter((item): item is string => typeof item === 'string') : []
-}
-
-function ArrowIcon() {
-    return <span aria-hidden="true">&#8594;</span>
-}
-
-function PhoneIcon() {
-    return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor"
-                strokeWidth="1.8">
-        <path strokeLinecap="round" strokeLinejoin="round"
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.78.66 2.62a2 2 0 0 1-.45 2.11L6.96 9.74a16 16 0 0 0 7.3 7.3l1.29-1.29a2 2 0 0 1 2.11-.45c.84.32 1.72.54 2.62.66A2 2 0 0 1 22 16.92Z"/>
-    </svg>
 }
 
 function SectionLabel({children}: SectionLabelProps) {
@@ -46,7 +28,7 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
     const {content: fetchedContent} = useDoctorContent(lang)
     const home = (fetchedContent?.home ?? initialContent.home ?? {}) as Record<string, unknown>
     const phone = text(home, 'phone', fetchedContent?.site.appointment?.phone || '')
-    const phoneHref = phone ? `tel:${phone}` : '#'
+    const phoneHref = phone ? `tel:${phone}` : '/appointment/'
     const doctorName = text(home, 'doctorName')
     const services = list(home, 'services')
     const credentials = list(home, 'credentialItems')
@@ -63,14 +45,12 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                 <div className="hero-copy reveal"><p className="eyebrow">{text(home, 'heroEyebrow')}</p><h1
                     id="hero-title">{text(home, 'heroTitle')}</h1>
                     <p className="hero-name">{doctorName}</p>
-                    <p className="hero-role">{text(home, 'credentials')}
-                        <span aria-hidden="true">&#183;</span> {text(home, 'specialization')}</p>
+                    <p className="hero-role">{[text(home, 'credentials'), text(home, 'specialization')].filter(Boolean).join(' · ')}</p>
                     <p className="hero-description">{text(home, 'heroDescription')}</p>
-                    <a href={phoneHref}
+                    <Link href={phoneHref}
                        className="button button-primary"><PhoneIcon/> {text(home, 'callToBook')}
-                    </a>
-                    <p className="hero-note">{text(home, 'appointmentNote')} <span
-                        aria-hidden="true">&#183;</span> {text(home, 'consultationHours')}</p>
+                    </Link>
+                    <p className="hero-note">{[text(home, 'appointmentNote'), text(home, 'consultationHours')].filter(Boolean).join(' · ')}</p>
                 </div>
                 <div className="hero-portrait reveal reveal-delay">
                     <div className="portrait-frame">
@@ -96,7 +76,7 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                 </div>
             </section>
 
-            <section className="services-section content-section reveal" aria-labelledby="services-title">
+            {services.length > 0 && <section className="services-section content-section reveal" aria-labelledby="services-title">
                 <div className="section-heading">
                     <div>
                         <SectionLabel>{text(home, 'servicesLabel')}</SectionLabel>
@@ -117,7 +97,7 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                 <Link href="/services" className="text-link mobile-link">{text(home, 'viewServices')}
                     <ArrowIcon/>
                 </Link>
-            </section>
+            </section>}
 
             {text(home, 'chamberName') && <section className="visit-section content-section reveal" aria-labelledby="visit-title">
                 <div className="visit-card">
@@ -141,19 +121,19 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                               className="detail-label">{text(home, 'availabilityLabel')}</span>
                             <strong>{text(home, 'consultationDays')}</strong>
                         </div>
-                        <a href={phoneHref} className="button button-light"><PhoneIcon/> {text(home, 'callToBook')}</a>
+                        <Link href={phoneHref} className="button button-light"><PhoneIcon/> {text(home, 'callToBook')}</Link>
                     </div>
                 </div>
             </section>}
 
-            <section className="credentials-section content-section reveal" aria-labelledby="credentials-title">
+            {credentials.length > 0 && <section className="credentials-section content-section reveal" aria-labelledby="credentials-title">
                 <SectionLabel>{text(home, 'credentialsLabel')}</SectionLabel>
                 <h2 id="credentials-title"
                     className="sr-only">{text(home, 'credentialsLabel')}</h2>
                 <div className="credential-list">{credentials.map(credential =>
                     <span key={credential}>{credential}</span>)}
                 </div>
-            </section>
+            </section>}
             {text(home, 'testimonial') && <section className="quote-section reveal"
                      aria-label={text(home, 'testimonialLabel', 'Patient testimonial')}>
                 <blockquote>“{text(home, 'testimonial')}”</blockquote>
@@ -164,9 +144,9 @@ export default function HomeClient({doctorContent: initialContent}: HomeClientPr
                     <SectionLabel>{text(home, 'ctaLabel')}</SectionLabel>
                     <h2 id="cta-title">{text(home, 'ctaTitle')}</h2>
                 </div>
-                <a href={phoneHref}
+                <Link href={phoneHref}
                    className="cta-phone">{phone}<span><PhoneIcon/> {text(home, 'callToBook')}</span>
-                </a>
+                </Link>
             </section>
         </main>
     </div>

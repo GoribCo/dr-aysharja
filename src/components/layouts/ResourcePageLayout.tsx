@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ContentPageTitle from '../ContentPageTitle'
 import MobileSectionTabs from '../navs/MobileSectionTabs'
 import { useUiLang } from '../UiLanguageProvider'
+import { InfoIcon } from '@/components/Icons'
 
 type ResourcePageLayoutProps = {
   title: string
@@ -34,7 +35,7 @@ export default function ResourcePageLayout({ title, intro, children, footer, cat
         {showSummary && <div className={about ? "about-summary" : "rounded-2xl bg-teal-800 p-6 text-white shadow-sm dark:bg-teal-950 sm:p-8"}>
           {summary ?? (about ? <><h2 className="text-xl font-semibold">{title}</h2><p className="mt-3 text-sm leading-7">{intro}</p></> : <>
           <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-white/12" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7h.01" /></svg>
+            <InfoIcon />
           </div>
           <p className="text-sm font-medium text-teal-100">{eyebrow}</p>
           <h2 className="mt-2 text-2xl font-semibold leading-tight">{title}</h2>

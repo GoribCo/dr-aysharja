@@ -1,12 +1,12 @@
 # Doctor name configuration
 
-Edit the name fields in `content/doctor/en.md` and `content/doctor/bn.md`. Each language owns its spelling. Keep the title in `salutation` only.
+Edit the name fields in `content/doctor/en/profile.md` and `content/doctor/bn/profile.md`. Each language owns its spelling. Keep the title in `salutation` only.
 
 ```yaml
 salutation: Dr.
-firstName: Aysharja
-middleName: Laxmi
-lastName: Podder
+firstName: Alex
+middleName: Taylor
+lastName: Morgan
 ```
 
 `middleName` and `salutation` can be empty strings.
@@ -15,12 +15,12 @@ Use these placeholders in Markdown bodies or frontmatter, including nested lists
 
 | Placeholder | English example |
 | --- | --- |
-| `{{doctorName}}` or `{{doctorFullName}}` | Dr. Aysharja Laxmi Podder |
-| `{{doctorShortName}}` | Dr. Aysharja |
+| `{{doctorName}}` or `{{doctorFullName}}` | Dr. Alex Taylor Morgan |
+| `{{doctorShortName}}` | Dr. Alex |
 | `{{doctorSalutation}}` or `{{salutation}}` | Dr. |
-| `{{firstName}}` | Aysharja |
-| `{{middleName}}` | Laxmi |
-| `{{lastName}}` | Podder |
+| `{{firstName}}` | Alex |
+| `{{middleName}}` | Taylor |
+| `{{lastName}}` | Morgan |
 
 Do not add another title before a full-name or short-name placeholder. Templates resolve when content is loaded, including the profile itself.
 

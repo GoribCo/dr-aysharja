@@ -1,5 +1,7 @@
-import { SITE_URL, BASE_PATH } from '@/lib/site/deployment'
+import { BASE_PATH } from '@/lib/site/deployment'
+import { getDefaultLanguage, getSiteUrl } from '@/lib/site/config'
 import type { Metadata, Viewport } from 'next'
+import type { CSSProperties } from 'react'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import ThemeProvider from '@/components/ThemeProvider'
@@ -7,7 +9,7 @@ import FontSizeProvider from '@/components/FontSizeProvider'
 import UiLanguageProvider from '@/components/UiLanguageProvider'
 import SpecialityProvider from '@/components/SpecialityProvider'
 import { loadSpecialityThemes } from '@/lib/appearance/speciality-themes'
-import { loadSpecialityLabels } from '@/lib/appearance/speciality-labels'
+import { specialityLabels } from '@/lib/i18n/translations'
 import type { Speciality } from '@/lib/types'
 import ContentLanguageProvider from '@/components/ContentLanguageProvider'
 import BottomNav from '@/components/navs/BottomNav'
@@ -16,6 +18,7 @@ import StickyAppointmentCTA from '@/components/StickyAppointmentCTA'
 import SiteHeader from '@/components/layouts/SiteHeader'
 import { loadDoctorContent, loadDoctorContentByLanguage, loadSiteSettings } from '@/lib/content/loaders'
 import { loadDoctorName } from '@/lib/content/loaders'
+import Script from 'next/script'
 
 type RootLayoutProps = {
   children: React.ReactNode
@@ -28,17 +31,15 @@ const inter = Inter({
 })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = loadDoctorName('en');
+  const doctorName = loadDoctorName();
   const site = loadSiteSettings()
+  const SITE_URL = getSiteUrl()
   return {
     metadataBase: new URL(SITE_URL),
     applicationName: doctorName,
     icons: {
-      icon: [
-        { url: `${BASE_PATH}/icon-192.png`, sizes: '192x192', type: 'image/png' },
-        { url: `${BASE_PATH}/icon-512.png`, sizes: '512x512', type: 'image/png' },
-      ],
-      apple: `${BASE_PATH}/icon-192.png`,
+      icon: `${BASE_PATH}${site.branding?.icon || '/icon.svg'}`,
+      apple: `${BASE_PATH}${site.branding?.icon || '/icon.svg'}`,
     },
     title: {
       default: `${doctorName} - Professional Profile`,
@@ -53,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: site.seo?.defaultDescription,
       url: SITE_URL,
       siteName: doctorName,
-      locale: 'en_US',
+      locale: { en: 'en_US', bn: 'bn_BD', hi: 'hi_IN' }[getDefaultLanguage()],
       type: 'website',
     },
     twitter: {
@@ -88,23 +89,44 @@ export default function RootLayout({
   children,
 }: RootLayoutProps) {
   const contentByLanguage = loadDoctorContentByLanguage()
+  const site = loadSiteSettings()
+  const defaultLanguage = getDefaultLanguage()
+  const gaMeasurementId = site.analytics?.measurementId
   const appearance = loadSpecialityThemes()
   const specialityConfiguration = {
     ...appearance,
-    labels: loadSpecialityLabels(Object.keys(appearance.themes) as Exclude<Speciality, null>[]),
+    defaultSpeciality: site.speciality,
+    primaryColor: site.theme?.primary,
+    labels: specialityLabels,
   }
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={defaultLanguage} style={{ '--site-accent': site.theme?.primary || appearance.neutralTheme.primary } as CSSProperties} suppressHydrationWarning>
       <head>
-        <link rel="manifest" href={`${BASE_PATH}/manifest.json`} />
+        <link rel="manifest" href={`${BASE_PATH}/manifest.webmanifest`} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {gaMeasurementId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className={`${inter.variable} font-sans antialiased min-h-dvh`}>
         <ThemeProvider>
           <FontSizeProvider>
-          <ContentLanguageProvider contentByLanguage={contentByLanguage}>
+          <ContentLanguageProvider contentByLanguage={contentByLanguage} defaultLanguage={defaultLanguage}>
             <SpecialityProvider configuration={specialityConfiguration}>
               <UiLanguageProvider>
                 <ServiceWorkerRegistrar />
@@ -117,8 +139,8 @@ export default function RootLayout({
                   <BottomNav />
                   <main className="flex-1 min-w-0 min-h-dvh pb-24 lg:pb-0">
                     <SiteHeader
-                        initialHome={loadDoctorContent('bn').home as Record<string, unknown> | null}
-                        doctorName={loadDoctorName('bn')}
+                        initialHome={loadDoctorContent(defaultLanguage).home as Record<string, unknown> | null}
+                        doctorName={loadDoctorName(defaultLanguage)}
                     />
                     {children}
                   </main>

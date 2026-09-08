@@ -3,10 +3,11 @@ import ContentPage from '@/components/ContentPage'
 import { loadDoctorName } from '@/lib/content/loaders'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const doctorName = loadDoctorName('en');
+  const doctorName = loadDoctorName();
   return {
   title: 'Experience',
   description: 'Professional experience and career history',
+  alternates: { canonical: '/experience/' },
   }
 }
 

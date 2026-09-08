@@ -1,5 +1,6 @@
 'use client'
 
+import { preferenceKey } from '@/lib/site/deployment'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 import type { Theme, ThemePreference, ThemeContextValue } from '@/lib/types'
@@ -23,7 +24,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
   const theme = preference === 'system' ? systemTheme : preference
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme')
+    const stored = localStorage.getItem(preferenceKey('theme'))
     if (stored === 'light' || stored === 'dark' || stored === 'system') setPreferenceState(stored)
     const media = window.matchMedia('(prefers-color-scheme: dark)')
     const update = () => setSystemTheme(media.matches ? 'dark' : 'light')
@@ -38,7 +39,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
   }, [theme])
 
   function setPreference(next: ThemePreference) {
-    localStorage.setItem('theme', next)
+    localStorage.setItem(preferenceKey('theme'), next)
     setPreferenceState(next)
   }
 

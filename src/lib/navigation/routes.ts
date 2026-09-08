@@ -37,3 +37,16 @@ export function isNavigationItemActive(pathname: string, path: string) {
   if (path === '/') return pathname === '/'
   return pathname === path.replace(/\/$/, '') || pathname.startsWith(path)
 }
+/** Published sections only; an omitted/hidden section needs no navigation entry. */
+export function visibleNavigation(content: import('../types').DoctorContent | null): NavigationItem[] {
+  if (!content) return navigation.primary
+  const visible = (item: NavigationItem) => {
+    const key = item.path.replace(/^\/|\/$/g, '')
+    if (key === 'settings' || key === '') return true
+    if (key in content.resources) return Boolean(content.resources[key as keyof typeof content.resources])
+    const section = content[key as import('../types').DoctorSectionKey]
+    return Boolean(section?.isVisible)
+  }
+  return navigation.primary.map(item => item.children ? { ...item, children: item.children.filter(visible) } : item)
+    .filter(item => item.children ? item.children.length > 0 : visible(item))
+}

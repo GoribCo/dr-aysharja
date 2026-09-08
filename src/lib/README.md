@@ -13,7 +13,7 @@ Import the specific module you need. There is no root barrel export, so browser 
 
 ## Content loading
 
-`content/editable.ts` reads and validates doctor details in `content/doctor/`, shared practice details in `content/practice.md` and localized chamber details in `content/{language}/practice.md`, and feedback in `content/patients/`. `content/loaders.ts` combines those shared sources with page wording and reads from `content/site.md` and `content/{language}/`, including `resources/*.md`. Use it from server components and build code. `loadDoctorContentByLanguage()` supplies the language provider with the complete content at build time; client components read that provider through `useDoctorContent()` or `useContentLanguage()`.
+`content/editable.ts` reads and validates doctor details in `content/doctor/`, shared practice details in `content/doctor/contact.md` and localized chamber details in `content/doctor/{language}/chamber.md`, and feedback in `content/doctor/{language}/reviews.md`. `content/loaders.ts` combines those shared sources with page wording and reads from `content/settings/site.md` and `content/pages/{language}/`, including `resources/*.md`. Use it from server components and build code. `loadDoctorContentByLanguage()` supplies the language provider with the complete content at build time; client components read that provider through `useDoctorContent()` or `useContentLanguage()`.
 
 Shared domain, content and UI types live in `src/lib/types.ts` and use `import type`. Component-specific props are private to their component files. `DoctorSectionKey` identifies the ordinary Markdown sections, excluding collections such as services and resources.
 
@@ -27,16 +27,16 @@ Tests live beside the code they cover in `*.test.ts` files.
 
 ## Deployment configuration
 
-`site/deployment.ts` exports `SITE_URL` and `BASE_PATH`, using `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_BASE_PATH`. These public values are baked into the static build. `next.config.ts` reads the same base-path environment variable for routing.
+`site/config.ts` reads the public URL and default language from settings/site.md, with `NEXT_PUBLIC_SITE_URL` overriding the URL. Browser-safe `site/deployment.ts` exports `BASE_PATH` and scopes preference keys by path using `NEXT_PUBLIC_BASE_PATH`. These public values are baked into the static build. `next.config.ts` reads the same base-path environment variable for routing.
 
 The application version comes from `package.json`. `run.sh` uses port 3010 by default and accepts `PORT`; plain `npm run dev` uses the framework default port.
 
 ## Speciality appearance content
 
-Edit `content/appearance/speciality-themes.md` for the nine speciality themes and neutral fallback, and `content/appearance/speciality-labels.md` for English, Bengali, and Hindi labels. Values live in YAML frontmatter; keep the existing speciality keys and quote hex colors. Theme entries include colors, gradient classes, icon, label, and description.
+Edit `content/settings/appearance/speciality-themes.md` for the nine speciality themes and neutral fallback. Edit `src/lib/i18n/translations.ts` for the translated speciality labels. Keep the existing speciality keys and quote hex colors. Theme entries include colors, gradient classes, icon, label, and description.
 
 The root layout loads and validates these files at build time and passes them to `SpecialityProvider`. Browser components use `useSpeciality().configuration`; do not import filesystem loaders into client components. Missing themes, invalid colors, and incomplete translations fail the build with the offending field. Rebuild after content changes. Tailwind explicitly scans the theme Markdown for gradient classes.
 
-The shared website development inquiry is configured under `websiteInquiry` in `content/site.md`, in English for every site language. Edit `emailAddress`, `emailSubject`, and multiline `emailBody` there; `loadSettingsPageContent()` generates the encoded mailto link. Language-specific Resources folders do not need a `settings.md` file.
+The shared website development inquiry is configured under `websiteInquiry` in `content/settings/site.md`, in English for every site language. Edit `emailAddress`, `emailSubject`, and multiline `emailBody` there; `loadSettingsPageContent()` generates the encoded mailto link. Language-specific Resources folders do not need a `settings.md` file.
 
 Shared factual fields are assembled by `loadContentSection()`, including direct page entrypoints. Home service titles derive from visible services; qualifications and chamber details use generated values. `visible: false` explicitly hides a section or service. Consult `content/README.md` and `content/CONTENT-AUDIT.md` for editing ownership and migration notes.
