@@ -14,6 +14,8 @@ export function loadSiteConfiguration(): SiteSettings {
   if (theme?.primary !== undefined && (typeof theme.primary !== 'string' || !/^#[0-9a-f]{6}$/i.test(theme.primary))) throw new Error('settings/site.md: theme.primary must be a quoted six-digit hex color.')
   const branding = data.branding as { icon?: unknown } | undefined
   if (branding?.icon && (typeof branding.icon !== 'string' || !branding.icon.startsWith('/') || branding.icon.startsWith('//'))) throw new Error('settings/site.md: branding.icon must be a local path starting with /.')
+  const measurementId = (data.analytics as { measurementId?: unknown } | undefined)?.measurementId
+  if (measurementId !== undefined && (typeof measurementId !== 'string' || !/^G-[A-Z0-9]+$/.test(measurementId))) throw new Error('settings/site.md: analytics.measurementId must be a valid Google Analytics measurement ID.')
   return { ...data, defaultLanguage } as SiteSettings
 }
 

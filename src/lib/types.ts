@@ -161,6 +161,7 @@ export interface SiteSettings {
   contact?: { phone?: string; email?: string; whatsapp?: string; latitude?: number | null; longitude?: number | null }
   branding?: { shortName?: string; monogram?: string; icon?: string; version?: string }
   seo?: { defaultDescription?: string }
+  analytics?: { measurementId?: string }
   theme?: { colorLight?: string; colorDark?: string; primary?: string }
 }
 

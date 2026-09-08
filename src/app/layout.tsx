@@ -18,6 +18,7 @@ import StickyAppointmentCTA from '@/components/StickyAppointmentCTA'
 import SiteHeader from '@/components/layouts/SiteHeader'
 import { loadDoctorContent, loadDoctorContentByLanguage, loadSiteSettings } from '@/lib/content/loaders'
 import { loadDoctorName } from '@/lib/content/loaders'
+import Script from 'next/script'
 
 type RootLayoutProps = {
   children: React.ReactNode
@@ -90,6 +91,7 @@ export default function RootLayout({
   const contentByLanguage = loadDoctorContentByLanguage()
   const site = loadSiteSettings()
   const defaultLanguage = getDefaultLanguage()
+  const gaMeasurementId = site.analytics?.measurementId
   const appearance = loadSpecialityThemes()
   const specialityConfiguration = {
     ...appearance,
@@ -104,6 +106,22 @@ export default function RootLayout({
         <link rel="manifest" href={`${BASE_PATH}/manifest.webmanifest`} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {gaMeasurementId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className={`${inter.variable} font-sans antialiased min-h-dvh`}>
         <ThemeProvider>

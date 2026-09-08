@@ -10,6 +10,8 @@ branding:
   version: 0.1.0
 seo:
   defaultDescription: 'Professional profile, medical services, and appointment information.'
+analytics:
+  measurementId: G-QBQBCYDWNT
 theme:
   colorLight: '#f9fafb'
   colorDark: '#0f172a'
