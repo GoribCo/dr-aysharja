@@ -11,6 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: `${doctorName} - Professional Profile`,
   description: site.seo?.defaultDescription,
+  alternates: { canonical: '/' },
   }
 }
 

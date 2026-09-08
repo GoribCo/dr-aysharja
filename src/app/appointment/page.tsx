@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: 'Appointment',
   description: 'Book an appointment by phone or contact the clinic directly.',
+  alternates: { canonical: '/appointment/' },
   }
 }
 

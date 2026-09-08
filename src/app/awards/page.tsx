@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: 'Awards & Recognition',
   description: 'Awards, honors, and recognition received',
+  alternates: { canonical: '/awards/' },
   }
 }
 

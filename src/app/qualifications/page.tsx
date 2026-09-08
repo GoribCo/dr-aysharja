@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: 'Qualifications',
   description: 'Professional qualifications and credentials',
+  alternates: { canonical: '/qualifications/' },
   }
 }
 

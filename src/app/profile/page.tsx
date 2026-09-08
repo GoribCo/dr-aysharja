@@ -8,6 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: 'Professional Profile',
   description: `Meet ${doctorName} and learn about their approach to patient care.`,
+  alternates: { canonical: '/profile/' },
   }
 }
 

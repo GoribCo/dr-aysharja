@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: 'Services',
   description: loadContentSection('services.md')?.description || `Explore services and consultation information from ${doctorName}.`,
+  alternates: { canonical: '/services/' },
   }
 }
 

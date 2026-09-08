@@ -10,8 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = visibleNavigation(loadDoctorContent()).flatMap(item => item.children ?? [item])
     .map(item => item.path === '/' ? '' : item.path.replace(/\/$/, ''))
 
-  return routes.map((route, index) => ({
-    url: `${SITE_URL}${route}`,
+  return [...new Set(routes)].map((route, index) => ({
+    url: `${SITE_URL}${route}/`,
     changeFrequency: index === 0 ? 'weekly' : 'monthly',
     priority: index === 0 ? 1 : 0.7,
   }))
