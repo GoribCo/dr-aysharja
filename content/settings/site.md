@@ -11,7 +11,7 @@ branding:
 seo:
   defaultDescription: 'Professional profile, medical services, and appointment information.'
 analytics:
-  measurementId: G-QBQBCYDWNT
+  measurementId: 'G-QBQBCYDWNT'
 theme:
   colorLight: '#f9fafb'
   colorDark: '#0f172a'
@@ -19,6 +19,7 @@ theme:
 websiteInquiry:
   heading: Want a website like this?
   description: Get in touch to create a polished website for your practice or business.
+  phoneHref: 'tel:+8801719100070'
   emailLabel: Email sdiptapaik@gmail.com
   phoneLabel: Call +880 1719 100070
   emailAddress: sdiptapaik@gmail.com
@@ -36,7 +37,6 @@ websiteInquiry:
     [Your name]
     [Practice or business name]
     [Contact number]
-  phoneHref: 'tel:+8801719100070'
 ---
 
 Technical site settings and the shared English website-development inquiry. Doctor portrait: content/doctor/photo.md. Clinic contact details and opening times: content/doctor/contact.md and content/doctor/{language}/chamber.md.
