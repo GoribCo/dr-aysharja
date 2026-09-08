@@ -8,7 +8,7 @@ type SpecialityLabels = Record<UiLang, Record<Exclude<Speciality, null>, string>
 /** Read on the server and validate labels against the loaded theme keys. */
 export function loadSpecialityLabels(
   keys: Exclude<Speciality, null>[],
-  filePath = path.join(process.cwd(), 'content/appearance/speciality-labels.md'),
+  filePath = path.join(process.cwd(), 'content/settings/appearance/speciality-labels.md'),
 ): SpecialityLabels {
   const { data } = matter(fs.readFileSync(filePath, 'utf8'))
   for (const lang of ['en', 'bn', 'hi'] as const) {

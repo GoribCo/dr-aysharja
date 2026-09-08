@@ -24,24 +24,24 @@ Supported speciality keys: `medicine`, `dental`, `orthopaedic`, `gynaecology`, `
 
 | File | What to enter |
 | --- | --- |
-| `content/site.md` | Public website URL, default language, speciality, brand label/initials, icon and primary color |
-| `content/doctor/en.md` | Name, professional title, affiliation, biography, qualifications and spoken languages |
-| `content/doctor/shared.md` | Portrait path; put the actual image under `public/` |
-| `content/practice.md` | Phone, email, WhatsApp, optional separate booking number, online booking URL and map coordinates |
-| `content/en/practice.md` | Chamber name, address, consultation days and hours |
-| `content/en/services/` | Actual services; review each entry and change `visible: false` to `visible: true` |
-| `content/en/experience.md`, `awards.md`, `memberships.md`, `publications.md`, `qualifications.md` | Replace starter wording with verified professional records; set `visible: false` to hide unused pages |
-| `content/patients/en.md` | Authentic feedback with permission; starts empty |
-| `content/en/home.md` and other page files | Introductions and page wording |
-| `content/en/resources/` | Review privacy, terms, FAQ and help for this practice |
+| `content/settings/site.md` | Public website URL, default language, speciality, brand label/initials, icon and primary color |
+| `content/doctor/en/profile.md` | Name, professional title, affiliation, biography, qualifications and spoken languages |
+| `content/doctor/photo.md` | Portrait path; put the actual image under `public/` |
+| `content/doctor/contact.md` | Phone, email, WhatsApp, optional separate booking number, online booking URL and map coordinates |
+| `content/doctor/en/chamber.md` | Chamber name, address, consultation days and hours |
+| `content/doctor/en/services/` | Actual services; review each entry and change `visible: false` to `visible: true` |
+| `content/doctor/en/experience.md`, `awards.md`, `memberships.md`, `publications.md` | Replace starter wording with verified professional records; set `visible: false` to hide unused pages |
+| `content/doctor/en/reviews.md` | Authentic feedback with permission; starts empty |
+| `content/pages/en/home.md` and other page files | Introductions and page wording |
+| `content/pages/en/resources/` | Review privacy, terms, FAQ and help for this practice |
 
 The website updates shared names, qualifications, contact details and service lists automatically. Hidden sections are omitted from navigation and the sitemap. A visitor's accent-palette selection never changes the doctor's factual speciality.
 
 `branding.monogram` and `branding.shortName` are optional: when empty, the header/sidebar use initials and the short name derived from the doctor's name. The web-app manifest uses the doctor name and branding automatically. The default icon and portrait are generic SVGs. Supply a custom icon with `branding.icon`, using a path under `public/`.
 
-`theme.primary` is a six-digit hex color, for example `'#176f73'`. Choose a color with enough contrast for white button labels. Supported speciality palettes remain editable under `content/appearance/`.
+`theme.primary` is a six-digit hex color, for example `'#176f73'`. Choose a color with enough contrast for white button labels. Supported speciality palettes remain editable under `content/settings/appearance/`.
 
-The shared English developer inquiry is optional. It is omitted from a new starter. Add `websiteInquiry` to `site.md` only if this new website should display that contact panel.
+The shared English developer inquiry is optional. It is omitted from a new starter. Add `websiteInquiry` to `settings/site.md` only if this new website should display that contact panel.
 
 ## Phone and online booking
 
@@ -51,15 +51,15 @@ Leave `bookingPhone` empty to use the main `phone`. Set `bookingUrl` to a comple
 
 The shared interface currently supports English (`en`), Bengali (`bn`) and Hindi (`hi`). A starter includes English only; it does not invent translations. To enable another language:
 
-1. Copy `content/en/` to `content/bn/` or `content/hi/`, and translate page wording, services and practice details.
-2. Copy `content/doctor/en.md` and `content/patients/en.md` to the corresponding language filename, then translate the doctor details and any permitted feedback.
-3. Set `defaultLanguage` in `site.md` if that language should be the initial display.
+1. Copy `content/pages/en/` to `content/pages/bn/` or `content/pages/hi/`, and translate page wording.
+2. Copy `content/doctor/en/` to `content/doctor/bn/` or `content/doctor/hi/`, then translate profile, chamber, services, professional records and feedback.
+3. Set `defaultLanguage` in `settings/site.md` if that language should be the initial display.
 
-A language is enabled when it has both a profile page and a doctor-details file. Keep its practice file alongside its pages. Metadata and initial rendering use the configured default language. Adding interface languages beyond en/bn/hi requires translations and a small code extension.
+A language is enabled when it has both a profile page and a doctor-details file. Keep its chamber file alongside its doctor profile. Metadata and initial rendering use the configured default language. Adding interface languages beyond en/bn/hi requires translations and a small code extension.
 
 ## Publish
 
-Set `url` in `content/site.md` to the complete public address. For a site hosted under a subdirectory, include that subdirectory and set the build base path:
+Set `url` in `content/settings/site.md` to the complete public address. For a site hosted under a subdirectory, include that subdirectory and set the build base path:
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://example.com/dr-morgan NEXT_PUBLIC_BASE_PATH=/dr-morgan npm run build

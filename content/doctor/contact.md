@@ -12,4 +12,4 @@ longitude: 89.702113
 
 ---
 
-Practice contact and chamber details. One phone number is reused for contact and booking; set bookingPhone only if appointments use a different number. Edit chamber names, addresses and schedules in en/practice.md and bn/practice.md. Blank bookingUrl means booking by phone.
+Practice contact and chamber details. One phone number is reused for contact and booking; set bookingPhone only if appointments use a different number. Edit chamber names, addresses and schedules in en/chamber.md and bn/chamber.md. Blank bookingUrl means booking by phone.

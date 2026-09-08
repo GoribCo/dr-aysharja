@@ -21,8 +21,8 @@ export type DoctorDetails = DoctorNameParts & Omit<ProfileContent, 'doctorName'>
 }
 
 export function loadDoctorDetails(lang: ContentLanguage): DoctorDetails {
-  const relative = `doctor/${lang}.md`
-  const filename = fs.existsSync(path.join(process.cwd(), 'content', relative)) ? relative : 'doctor/en.md'
+  const relative = `doctor/${lang}/profile.md`
+  const filename = fs.existsSync(path.join(process.cwd(), 'content', relative)) ? relative : 'doctor/en/profile.md'
   const data = readEditableFile(filename)
   for (const key of ['salutation', 'firstName', 'middleName', 'lastName', 'designation', 'affiliation', 'role', 'yearsOfExperience', 'bio', 'specializationSummary', 'specialization']) text(data, key, filename)
   for (const key of ['qualifications', 'languages', 'specializationTags']) {
@@ -34,16 +34,16 @@ export function loadDoctorDetails(lang: ContentLanguage): DoctorDetails {
 }
 
 export function loadPractice(lang: ContentLanguage) {
-  const data = readEditableFile('practice.md')
-  for (const key of ['phone', 'email', 'whatsapp', 'bookingPhone', 'bookingUrl']) text(data, key, 'practice.md')
+  const data = readEditableFile('doctor/contact.md')
+  for (const key of ['phone', 'email', 'whatsapp', 'bookingPhone', 'bookingUrl']) text(data, key, 'doctor/contact.md')
   for (const key of ['latitude', 'longitude']) {
     if (data[key] !== null && (typeof data[key] !== 'number' || !Number.isFinite(data[key]))) {
-      throw new Error(`practice.md: ${key} must be a number or null.`)
+      throw new Error(`doctor/contact.md: ${key} must be a number or null.`)
     }
   }
-  const requestedFile = `${lang}/practice.md`
+  const requestedFile = `doctor/${lang}/chamber.md`
   const localizedFile = fs.existsSync(path.join(process.cwd(), 'content', requestedFile))
-    ? requestedFile : 'en/practice.md'
+    ? requestedFile : 'doctor/en/chamber.md'
   const localized = readEditableFile(localizedFile)
   const chamber = localized.chamber as Record<string, unknown> | undefined
   if (!chamber) throw new Error(`${localizedFile}: missing chamber`)
@@ -60,7 +60,7 @@ export function loadPractice(lang: ContentLanguage) {
 }
 
 export function loadPatientFeedback(lang: ContentLanguage) {
-  const filename = `patients/${lang}.md`
+  const filename = `doctor/${lang}/reviews.md`
   if (!fs.existsSync(path.join(process.cwd(), 'content', filename))) return { featuredQuote: '', featuredAuthor: '', reviews: [] }
   const data = readEditableFile(filename)
   const featuredQuote = text(data, 'featuredQuote', filename)

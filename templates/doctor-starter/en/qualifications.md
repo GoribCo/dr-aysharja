@@ -4,7 +4,7 @@ description: 'Professional information for {{doctorName}}'
 visible: true
 ---
 
-<!-- Edit qualifications in content/doctor/en.md; the list below updates automatically. -->
+<!-- Edit qualifications in content/doctor/en/profile.md; the list below updates automatically. -->
 
 {{qualificationsList}}
 

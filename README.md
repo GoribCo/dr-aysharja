@@ -32,14 +32,13 @@ src/
     types.ts           Shared application types
 content/
   README.md            Start here: doctor-friendly editing guide
-  practice.md          Shared contact details and map coordinates
-  doctor/              Personal details, qualifications, biography and portrait
-  patients/            Patient reviews and selected homepage quotations
-  site.md              Technical settings and developer inquiry
-  en/                  English profile and service content
-    resources/         Privacy, terms, FAQ and help Markdown
-  bn/                  Bengali profile, services and resources
-  hi/resources/        Prepared Hindi resource translations
+  doctor/              Routine updates by doctors and practice staff
+    contact.md         Shared phone, email and booking details
+    photo.md           Portrait path
+    en/, bn/           Profile, chamber, career, services and reviews
+  pages/               Website headings, instructions and resource wording
+    en/, bn/, hi/      Language-specific page files
+  settings/            Site configuration and appearance for the maintainer
 public/                Static assets and service worker
 ```
 
@@ -47,7 +46,7 @@ See [the library guide](src/lib/README.md) for module boundaries and function na
 
 ## Editing content
 
-Start with [the content editing guide](content/README.md). Edit `content/practice.md` for shared contact details and `content/{language}/practice.md` for chamber details, `content/doctor/{language}.md` for personal information, and `content/patients/{language}.md` for feedback. Localized page files contain page wording; service files are the source for Services and the homepage service list. Technical settings and the developer inquiry remain in `content/site.md`.
+Start with [the content editing guide](content/README.md). Edit `content/doctor/contact.md` for shared contact details and `content/doctor/{language}/chamber.md` for chamber details, `content/doctor/{language}/profile.md` for personal information, and `content/doctor/{language}/reviews.md` for feedback. Localized page files contain page wording; service files are the source for Services and the homepage service list. Technical settings and the developer inquiry remain in `content/settings/site.md`.
 
 [The content audit](content/CONTENT-AUDIT.md) lists existing placeholders and facts that need confirmation.
 
@@ -57,7 +56,7 @@ Rebuild after changing content to update the static export.
 
 ## Deployment
 
-Set `NEXT_PUBLIC_SITE_URL` to the full public website URL and `NEXT_PUBLIC_BASE_PATH` to the deployment subdirectory (or leave it empty for a domain root). The public URL defaults to `content/site.md`; the base path is also read by `next.config.ts`.
+Set `NEXT_PUBLIC_SITE_URL` to the full public website URL and `NEXT_PUBLIC_BASE_PATH` to the deployment subdirectory (or leave it empty for a domain root). The public URL defaults to `content/settings/site.md`; the base path is also read by `next.config.ts`.
 
 ```bash
 npm run build

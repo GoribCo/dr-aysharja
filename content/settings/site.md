@@ -37,4 +37,4 @@ websiteInquiry:
   phoneHref: 'tel:+8801719100070'
 ---
 
-Technical site settings and the shared English website-development inquiry. Doctor portrait: doctor/shared.md. Clinic contact details and opening times: practice.md.
+Technical site settings and the shared English website-development inquiry. Doctor portrait: content/doctor/photo.md. Clinic contact details and opening times: content/doctor/contact.md and content/doctor/{language}/chamber.md.

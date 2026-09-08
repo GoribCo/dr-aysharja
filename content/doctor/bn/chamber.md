@@ -9,4 +9,4 @@ availability: অ্যাপয়েন্টমেন্ট নেওয়�
 availabilityNote: 'প্রতি সোমবার, বিকাল ৪টা–সন্ধ্যা ৭টা'
 ---
 
-Edit chamber details and availability in this language. Shared phone numbers and map coordinates are in ../practice.md.
+Edit chamber details and availability in this language. Shared phone numbers and map coordinates are in ../contact.md.
